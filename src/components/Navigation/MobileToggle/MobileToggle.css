@@ -1,0 +1,24 @@
+.menu__toggle {
+    display: none;
+    padding: 2rem 1rem;
+    cursor: pointer;
+}
+
+.menu__toggle-icon {
+    font-size: 1.5rem;
+    color: var(--black-font-color);
+    overflow: hidden;
+}
+
+@media (max-width: 969px) {
+    .menu__list.menu--toggle {
+        left: 0;
+    }
+
+    .menu__toggle {
+        display: block;
+        position: absolute;
+        align-self: flex-end;
+        z-index: 200;
+    }
+}

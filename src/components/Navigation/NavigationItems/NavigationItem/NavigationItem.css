@@ -1,0 +1,42 @@
+.menu__item {
+    transition: 0.3s;
+}
+.menu__item:hover {
+    background-color: var(--clr-blue-main);
+    color: var(--white-font-color);
+}
+
+.menu__link {
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 2rem 1rem;
+    display: block;
+    color: var(--black-font-color);
+    font-family: var(--ff-general);
+    font-weight: var(--fw-bold);
+}
+
+.menu__item:hover .menu__link {
+    color: var(--white-font-color);
+}
+
+@media (max-width: 969px) {
+
+    .menu__item {
+        box-shadow: 0 0 1px 0 rgba(10, 22, 70, 0.06), 0 3px 3px -1px rgba(10, 22, 70, 0.06);
+    }
+
+    .menu__item:first-child {
+        box-shadow: 0 0 1px 0 rgba(10, 22, 70, 0.06), 0 3px 3px -1px rgba(10, 22, 70, 0.06),
+            inset 0 3px 3px -1px rgba(10, 22, 70, 0.06);
+    }
+
+    .menu__link {
+        background-color: var();
+    }
+
+    .menu__link:hover {
+        background-color: var();
+        color: var();
+    }
+}

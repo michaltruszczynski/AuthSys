@@ -1,0 +1,85 @@
+.form__item {
+    display: flex;
+    flex-direction: column;
+}
+
+/* .form__item > * {
+    align-self: start;
+} */
+
+.form__item--center {
+    align-self: center;
+}
+
+.form__label {
+    align-self: start;
+    font-weight: var(--fw-bold);
+    padding: 0.625rem 0;
+}
+
+.form__input {
+    -webkit-appearance: none;
+    align-self: start;
+    width: 100%;
+    max-width: 26rem;
+    box-sizing: border-box;
+
+    /* Fix for Safari/iOS date field */
+
+    min-height: clac(0.9rem + (0.8rem * 2) 0.6rem);
+
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    outline: none;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+    transition: background-color 0.25s, border-color 0.25s, color 0.25s;
+}
+
+.form__input:focus {
+    background-color: #ffffff;
+    box-shadow: 0 0 4px 0 var(--clr-blue-main);
+}
+
+.form__input:focus.form__input--error {
+    box-shadow: 0 0 4px 0 var(--clr-red-error);
+}
+
+.form__input::placeholder {
+    color: #bbbbbb;
+}
+
+.form__input--error {
+    color: var(--clr-red-error);
+    background-color: #fff8f8;
+    border-color: var(--clr-red-error);
+}
+
+.form__input--error::placeholder {
+    color: #ffbfbf;
+}
+
+.form__input-error {
+    align-self: start;
+    padding-top: 0.625rem;
+    color: var(--clr-red-error);
+    font-size: 0.9rem;
+    visibility: hidden;
+}
+
+.form__input--error + .form__input-error {
+    visibility: visible;
+}
+
+.form__info-message {
+    font-size: 1rem;
+    font-weight: var(--fw-small);
+}
+
+
+/* textarea.form__input {
+    resize: none;
+    min-height: 200px;
+} */

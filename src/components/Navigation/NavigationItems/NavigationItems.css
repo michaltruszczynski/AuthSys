@@ -1,0 +1,28 @@
+.menu__list-container {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.menu__list {
+    list-style: none;
+    display: flex;
+    transition: 0.3s;
+}
+
+@media (max-width: 969px) {
+    .menu__list {
+        position: absolute;
+        z-index: 200;
+        flex-direction: column;
+        left: -100%;
+        background-color: var(--clr-white-custom-bg);
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu__list.menu--toggle {
+        left: 0;
+    }
+}
