@@ -3,7 +3,7 @@ import Input from '../../components/Form/Input/Input';
 import './Signup.css';
 
 import { updateObject } from '../../utility/utility';
-import { required, length, containNumber, containSpecialChar, email, passwordMatch} from '../../utility/validators';
+import { required, length, containNumber, containSpecialChar, email, passwordMatch } from '../../utility/validators';
 
 class Signup extends Component {
 
@@ -45,7 +45,7 @@ class Signup extends Component {
                 value: '',
                 valid: false,
                 touched: false,
-                validators: [required, containSpecialChar, containNumber, length({min: 4})],
+                validators: [required, containSpecialChar, containNumber, length({ min: 4 })],
                 validationErrMsg: 'Please enter valid password.'
             },
             passwordConfirm: {
@@ -59,12 +59,13 @@ class Signup extends Component {
                 valid: false,
                 touched: false,
                 validators: [],
-                validationErrMsg: 'Please enter correct email.'
+                validationErrMsg: 'Please enter correct password'
             }
         },
         formisValid: false
     }
 
+    consfirmPassword = React.createRef();
 
     passwordMatchValidator = (password, confirmPassword) => {
         return password === confirmPassword;
@@ -72,7 +73,7 @@ class Signup extends Component {
     inputChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-
+        console.log(name)
         this.setState(prevState => {
             let isValid = true;
             for (const validator of prevState.signupForm[name].validators) {
@@ -86,6 +87,29 @@ class Signup extends Component {
                     touched: true
                 })
             });
+
+            if (name === 'password' || name === 'passwordConfirm') {
+                let isConfirmPaswordValid = false;
+                console.log('in')
+                if (name === 'password') {
+                    if (value === prevState.signupForm.passwordConfirm.value) {
+                        isConfirmPaswordValid = true;
+                    }
+                    console.log('test');
+                }
+
+                if (name === 'passwordConfirm') {
+                    if (value === prevState.signupForm.password.value) {
+                        isConfirmPaswordValid = true;
+                    }
+                    console.log('test');
+                }
+
+                updatedSignupForm.passwordConfirm.valid = isConfirmPaswordValid;
+            }
+
+
+
             let formIsValid = true;
             for (const inputName of Object.keys(updatedSignupForm)) {
                 formIsValid = formIsValid && updatedSignupForm[inputName].valid;
@@ -103,6 +127,19 @@ class Signup extends Component {
         // podłączyć Redux.
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('[Signup] shouldComponentUpdate ')
+        return true;
+    }
+
+    componentDidUpdate() {
+        console.log('[Signup] componentDidUpdate ')
+    }
+
+    componentDidMount() {
+        console.log('[Signup] componentDidMount ')
+    }
+
     render() {
         console.log('rendering')
         const formElementKeys = Object.keys(this.state.signupForm);
@@ -117,10 +154,11 @@ class Signup extends Component {
                 id={formElement.id}
                 elementType={formElement.config.elementType}
                 config={formElement.config.elementConfig}
-                value={formElement.value}
+                value={formElement.config.value}
                 invalid={formElement.config.valid}
                 shouldValidate={formElement.config.validators}
                 touched={formElement.config.touched}
+                errorMsg={formElement.config.validationErrMsg}
                 changed={this.inputChangeHandler}
             />
         ))

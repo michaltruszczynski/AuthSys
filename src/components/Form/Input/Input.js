@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Input.css';
 
 const Input = (props) => {
-    const {id, elementType, config, value, invalid, touched, changed} = props;
+    const {id, elementType, config, value, invalid, touched, changed, errorMsg} = props;
     let inputElement = null;
     let inputClasses = ["form__input"];
     if (!invalid && touched) {
@@ -28,7 +28,7 @@ const Input = (props) => {
         <div className="form__item">
             <label htmlFor={id} className="form__label">{config.label}: </label>
             {inputElement}
-            <span className="form__input-error">Form validation message</span>
+            <span className="form__input-error">{errorMsg}</span>
         </div>
     )
 }
