@@ -5,6 +5,8 @@ import './Signup.css';
 import { updateObject } from '../../utility/utility';
 import { required, length, containNumber, containSpecialChar, email, passwordMatch } from '../../utility/validators';
 
+import Validator from '../../components/UI/Validator/Validator';
+
 class Signup extends Component {
 
     state = {
@@ -33,7 +35,7 @@ class Signup extends Component {
                 valid: false,
                 touched: false,
                 validators: [required, email],
-                validationErrMsg: 'Please enter valid email.'
+                validationErrMsg: 'Please enter a valid email.'
             },
             password: {
                 elementType: 'input',
@@ -46,7 +48,7 @@ class Signup extends Component {
                 valid: false,
                 touched: false,
                 validators: [required, containSpecialChar, containNumber, length({ min: 4 })],
-                validationErrMsg: 'Please enter valid password.'
+                validationErrMsg: 'Please enter a valid password.'
             },
             passwordConfirm: {
                 elementType: 'input',
@@ -59,13 +61,13 @@ class Signup extends Component {
                 valid: false,
                 touched: false,
                 validators: [],
-                validationErrMsg: 'Please enter correct password'
+                validationErrMsg: 'Passwords don \'t match.'
             }
         },
         formisValid: false
     }
 
-    consfirmPassword = React.createRef();
+    confirmPassword = React.createRef();
 
     passwordMatchValidator = (password, confirmPassword) => {
         return password === confirmPassword;
@@ -87,6 +89,7 @@ class Signup extends Component {
                     touched: true
                 })
             });
+            //password check
 
             if (name === 'password' || name === 'passwordConfirm') {
                 let isConfirmPaswordValid = false;
@@ -163,25 +166,28 @@ class Signup extends Component {
             />
         ))
         return (
-            <div className="form__container">
-                <form onSubmit={this.submitHandler}>
-                    <div className="form__title">
-                        Sign Up
+            <>
+                <div className="form__container">
+                    <form onSubmit={this.submitHandler}>
+                        <div className="form__title">
+                            Sign Up
                     </div>
-                    <p className="form__description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                        impedit odit?
+                        <p className="form__description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
+                            impedit odit?
                     </p>
-                    {form}
-                    <div className="form__item ">
-                        <button className="form__btn" type="submit">Sign Up</button>
-                    </div>
-                    <div className="form__info-message">
-                        <p>Already have an account? <a href="3">Log in</a></p>
-                    </div>
-                </form>
-            </div>
+                        {form}
+                        <div className="form__item ">
+                            <button className="form__btn" type="submit">Sign Up</button>
+                        </div>
+                        <div className="form__info-message">
+                            <p>Already have an account? <a href="3">Log in</a></p>
+                        </div>
+                    </form>
 
+                </div>
+                <Validator />
+            </>
         )
     }
 }
