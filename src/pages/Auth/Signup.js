@@ -67,11 +67,11 @@ class Signup extends Component {
         formisValid: false
     }
 
-    confirmPassword = React.createRef();
 
     passwordMatchValidator = (password, confirmPassword) => {
         return password === confirmPassword;
     }
+
     inputChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -89,6 +89,7 @@ class Signup extends Component {
                     touched: true
                 })
             });
+
             //password check
 
             if (name === 'password' || name === 'passwordConfirm') {
@@ -107,11 +108,8 @@ class Signup extends Component {
                     }
                     console.log('test');
                 }
-
                 updatedSignupForm.passwordConfirm.valid = isConfirmPaswordValid;
             }
-
-
 
             let formIsValid = true;
             for (const inputName of Object.keys(updatedSignupForm)) {
@@ -186,7 +184,7 @@ class Signup extends Component {
                     </form>
 
                 </div>
-                <Validator />
+                <Validator passsword={this.state.signupForm.password.value} />
             </>
         )
     }

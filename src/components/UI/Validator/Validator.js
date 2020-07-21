@@ -8,23 +8,20 @@ class Validator extends Component {
         validators: {
             minCharacters: {
                 message: '4 charcters minimum',
-                validator: length(4),
-                passCheck: false
+                validator: length(4)
+
             },
             requiredCapitalChar: {
                 message: 'Contains at least 1 capital letter',
-                validator: containCapitalLetter,
-                passCheck: false
+                validator: containCapitalLetter
             },
             requiredNumber: {
                 message: 'Contains at least 1 number',
-                validator: containNumber,
-                passCheck: false
+                validator: containNumber
             },
             requiredSpecialChar: {
                 message: 'Contains !@#$%^&*',
-                validator: containSpecialChar,
-                passCheck: false
+                validator: containSpecialChar
             }
         },
         valid: false,
@@ -45,6 +42,7 @@ class Validator extends Component {
 
         return (
             <div>
+            <p></p>
                 <ul>
                     {validatorRules}
                 </ul>
