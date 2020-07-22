@@ -30,7 +30,6 @@ class Validator extends Component {
 
 
     render() {
-
         let validatorRules;
         const rules = Object.keys(this.state.validators);
         console.log(rules)

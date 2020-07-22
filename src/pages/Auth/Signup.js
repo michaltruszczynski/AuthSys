@@ -68,8 +68,25 @@ class Signup extends Component {
     }
 
 
-    passwordMatchValidator = (password, confirmPassword) => {
-        return password === confirmPassword;
+    passwordMatchValidator = (name, value, prevState) => {
+        if (name === 'password' || name === 'passwordConfirm') {
+            let isConfirmPaswordValid = false;
+            console.log('in')
+            if (name === 'password') {
+                if (value === prevState.signupForm.passwordConfirm.value) {
+                    isConfirmPaswordValid = true;
+                }
+                console.log('test');
+            }
+
+            if (name === 'passwordConfirm') {
+                if (value === prevState.signupForm.password.value) {
+                    isConfirmPaswordValid = true;
+                }
+                console.log('test');
+            }
+            // updatedSignupForm.passwordConfirm.valid = isConfirmPaswordValid;
+        }
     }
 
     inputChangeHandler = (event) => {
@@ -89,7 +106,7 @@ class Signup extends Component {
                     touched: true
                 })
             });
-
+            
             //password check
 
             if (name === 'password' || name === 'passwordConfirm') {
@@ -115,6 +132,7 @@ class Signup extends Component {
             for (const inputName of Object.keys(updatedSignupForm)) {
                 formIsValid = formIsValid && updatedSignupForm[inputName].valid;
             }
+
             return {
                 signupForm: updatedSignupForm,
                 formIsValid: formIsValid
