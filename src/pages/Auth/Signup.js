@@ -3,7 +3,7 @@ import Input from '../../components/Form/Input/Input';
 import './Signup.css';
 
 import { updateObject } from '../../utility/utility';
-import { required, length, containNumber, containSpecialChar, email, passwordMatch } from '../../utility/validators';
+import { required, length, containNumber, containSpecialChar, email} from '../../utility/validators';
 
 import Validator from '../../components/UI/Validator/Validator';
 
@@ -69,30 +69,30 @@ class Signup extends Component {
 
 
     passwordMatchValidator = (name, value, prevState) => {
-        if (name === 'password' || name === 'passwordConfirm') {
-            let isConfirmPaswordValid = false;
-            console.log('in')
-            if (name === 'password') {
-                if (value === prevState.signupForm.passwordConfirm.value) {
-                    isConfirmPaswordValid = true;
-                }
-                console.log('test');
-            }
-
-            if (name === 'passwordConfirm') {
-                if (value === prevState.signupForm.password.value) {
-                    isConfirmPaswordValid = true;
-                }
-                console.log('test');
-            }
-            // updatedSignupForm.passwordConfirm.valid = isConfirmPaswordValid;
+        if (name !== 'password' && name !== 'passwordConfirm') {
+            return prevState.prevState.signupForm.passwordConfirm.value;
         }
+
+        let isConfirmPaswordValid = false;
+
+        if (name === 'password') {
+            if (value === prevState.signupForm.passwordConfirm.value) {
+                isConfirmPaswordValid = true;
+            }
+        }
+
+        if (name === 'passwordConfirm') {
+            if (value === prevState.signupForm.password.value) {
+                isConfirmPaswordValid = true;
+            }
+        }
+        return isConfirmPaswordValid;
     }
 
     inputChangeHandler = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        console.log(name)
+
         this.setState(prevState => {
             let isValid = true;
             for (const validator of prevState.signupForm[name].validators) {
@@ -106,27 +106,8 @@ class Signup extends Component {
                     touched: true
                 })
             });
-            
-            //password check
 
-            if (name === 'password' || name === 'passwordConfirm') {
-                let isConfirmPaswordValid = false;
-                console.log('in')
-                if (name === 'password') {
-                    if (value === prevState.signupForm.passwordConfirm.value) {
-                        isConfirmPaswordValid = true;
-                    }
-                    console.log('test');
-                }
-
-                if (name === 'passwordConfirm') {
-                    if (value === prevState.signupForm.password.value) {
-                        isConfirmPaswordValid = true;
-                    }
-                    console.log('test');
-                }
-                updatedSignupForm.passwordConfirm.valid = isConfirmPaswordValid;
-            }
+            updatedSignupForm.passwordConfirm.valid = this.passwordMatchValidator(name, value, prevState)
 
             let formIsValid = true;
             for (const inputName of Object.keys(updatedSignupForm)) {
