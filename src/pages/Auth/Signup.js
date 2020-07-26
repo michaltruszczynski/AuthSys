@@ -5,8 +5,6 @@ import './Signup.css';
 import { updateObject } from '../../utility/utility';
 import { required, length, containNumber, containSpecialChar, email} from '../../utility/validators';
 
-import Validator from '../../components/UI/Validator/Validator';
-
 class Signup extends Component {
 
     state = {
@@ -48,7 +46,8 @@ class Signup extends Component {
                 valid: false,
                 touched: false,
                 validators: [required, containSpecialChar, containNumber, length({ min: 4 })],
-                validationErrMsg: 'Please enter a valid password.'
+                validationErrMsg: 'Please enter a valid password.',
+                customValidationMessage: true
             },
             passwordConfirm: {
                 elementType: 'input',
@@ -66,7 +65,6 @@ class Signup extends Component {
         },
         formisValid: false
     }
-
 
     passwordMatchValidator = (name, value, prevState) => {
         if (name !== 'password' && name !== 'passwordConfirm') {
@@ -160,6 +158,7 @@ class Signup extends Component {
                 touched={formElement.config.touched}
                 errorMsg={formElement.config.validationErrMsg}
                 changed={this.inputChangeHandler}
+                validator={formElement.config.customValidationMessage}
             />
         ))
         return (
@@ -181,9 +180,7 @@ class Signup extends Component {
                             <p>Already have an account? <a href="3">Log in</a></p>
                         </div>
                     </form>
-
                 </div>
-                <Validator passsword={this.state.signupForm.password.value} />
             </>
         )
     }

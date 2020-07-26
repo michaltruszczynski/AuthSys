@@ -11,6 +11,7 @@
   --clr-blue-dark: #006dcc;
 
   --clr-red-error: #d50000;
+  --clr-green: hsl(135, 64%, 50%);
 
   --ff-general: "Poppins", sans-serif;
   --fw-small: 300;
@@ -22,6 +23,11 @@
 * {
   margin: 0;
   padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100vw;
 }
 
 body {

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import Validator from '../../Validator/Validator';
 import './Input.css';
 
 const Input = (props) => {
-    const {id, elementType, config, value, invalid, touched, changed, errorMsg} = props;
+    const {id, elementType, config, value, invalid, touched, changed, errorMsg, validator} = props;
     let inputElement = null;
     let inputClasses = ["form__input"];
     if (!invalid && touched) {
@@ -29,6 +30,7 @@ const Input = (props) => {
             <label htmlFor={id} className="form__label">{config.label}: </label>
             {inputElement}
             <span className="form__input-error">{errorMsg}</span>
+            {validator && <Validator value={value} />}
         </div>
     )
 }

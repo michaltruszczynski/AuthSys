@@ -1,6 +1,7 @@
 .form__item {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 /* .form__item > * {

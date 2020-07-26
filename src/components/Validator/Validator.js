@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { length, containCapitalLetter, containNumber, containSpecialChar } from '../../../utility/validators';
-import { validationResult } from 'express-validator';
+import { length, containCapitalLetter, containNumber, containSpecialChar } from '../../utility/validators';
+
+import styles from './Validator.module.css';
 
 class Validator extends Component {
     state = {
@@ -34,15 +35,16 @@ class Validator extends Component {
         const rules = Object.keys(this.state.validators);
         console.log(rules)
         validatorRules = rules.map(rule => (
-            <li key={rule}>
-            {this.state.validators[rule].message}
+            <li className={styles.tooltip__item} key={rule}>
+            <i className={`${styles.tooltip__icon} fas fa-exclamation-circle`}></i>
+                <span>{this.state.validators[rule].message}</span>
             </li>
         ))
 
         return (
-            <div>
-            <p></p>
-                <ul>
+            <div className={styles.tooltip}>
+                <h3 >Password rules</h3>
+                <ul className={styles.tooltip__list}>
                     {validatorRules}
                 </ul>
             </div>
