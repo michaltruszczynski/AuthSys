@@ -5,7 +5,7 @@
     position: absolute;
     padding: 1rem;
     border-radius: 5px;
-    right: -50%;
+    right: 50%;
     background-color: #dee3e2;
     box-shadow: 0 0 1px 0 rgba(10, 22, 70, 0.06), 0 16px 16px -1px rgba(10, 22, 70, 0.06);;
 }

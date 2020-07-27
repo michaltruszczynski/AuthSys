@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PasswordValidator from '../../Validator/Validator';
+import ToolTip from '../../Tooltip/Tooltip';
 
 import './PasswordInput.css';
 
@@ -33,7 +34,9 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
                 onBlur={() => focusHandler(isInputActive)}
             />
             <span className="form__input-error">{errorMsg}</span>
-            {validator && <PasswordValidator value={value} active={isInputActive} />}
+            {true && <ToolTip>
+                <PasswordValidator value={value} active={isInputActive} />
+            </ToolTip>}
         </div>
     )
 }

@@ -1,4 +1,5 @@
-import React, { useEffect, createPortal } from 'react';
+import React, { useEffect } from 'react';
+import {createPortal} from 'react-dom';
 
 const Portal = (props) => {
     const { children } = props;
@@ -16,4 +17,4 @@ const Portal = (props) => {
     )
 }
 
-export default Postal;
+export default Portal;

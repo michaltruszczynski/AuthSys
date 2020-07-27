@@ -1,11 +1,16 @@
 import React from 'react';
 
+import Portal from '../UI/Portal/Portal';
 
 const Tooltip = (props) => {
 
 
     return (
-        <div></div>
+        <>
+            <Portal>
+                {props.children}
+            </Portal>
+        </>
     )
 }
 

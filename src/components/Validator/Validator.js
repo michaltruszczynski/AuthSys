@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Tooltip from '../Tooltip/Tooltip';
 import { length, containCapitalLetter, containNumber, containSpecialChar } from '../../utility/validators';
 
 import styles from './Validator.module.css';
@@ -55,7 +54,7 @@ class PasswordValidator extends Component {
         )
 
         return (
-            active ? validator : null
+            validator
         )
     }
 }
