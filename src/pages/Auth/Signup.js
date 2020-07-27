@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Input from '../../components/Form/Input/Input';
+
 import './Signup.css';
 
 import { updateObject } from '../../utility/utility';

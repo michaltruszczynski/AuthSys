@@ -14,7 +14,6 @@ const Portal = (props) => {
     return (
         createPortal(children, element)
     )
-
 }
 
 export default Postal;

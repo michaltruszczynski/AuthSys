@@ -17,6 +17,7 @@
 .tooltip__item {
     display: flex;
     align-items: center;
+    transition: color 0.3s;
 }
 
 .tooltip__item--green {
