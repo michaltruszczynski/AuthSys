@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Input from '../../components/Form/Input/Input';
+import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
 
 import './Signup.css';
 
 import { updateObject } from '../../utility/utility';
-import { required, length, containNumber, containSpecialChar, email} from '../../utility/validators';
+import { required, length, containNumber, containSpecialChar, email } from '../../utility/validators';
 
 class Signup extends Component {
 
@@ -147,21 +148,41 @@ class Signup extends Component {
             config: this.state.signupForm[key]
         }))
         console.log(formElementArray);
-        let form = formElementArray.map(formElement => (
-            <Input
-                key={formElement.id}
-                id={formElement.id}
-                elementType={formElement.config.elementType}
-                config={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={formElement.config.valid}
-                shouldValidate={formElement.config.validators}
-                touched={formElement.config.touched}
-                errorMsg={formElement.config.validationErrMsg}
-                changed={this.inputChangeHandler}
-                validator={formElement.config.customValidationMessage}
-            />
-        ))
+        let form = formElementArray.map(formElement => {
+            if (formElement.id === 'password') {
+                return (
+                    <PasswordInput
+                        key={formElement.id}
+                        id={formElement.id}
+                        elementType={formElement.config.elementType}
+                        config={formElement.config.elementConfig}
+                        value={formElement.config.value}
+                        invalid={formElement.config.valid}
+                        shouldValidate={formElement.config.validators}
+                        touched={formElement.config.touched}
+                        errorMsg={formElement.config.validationErrMsg}
+                        changed={this.inputChangeHandler}
+                        validator={formElement.config.customValidationMessage}
+                    />
+                )
+            } else {
+                return (
+                    <Input
+                        key={formElement.id}
+                        id={formElement.id}
+                        elementType={formElement.config.elementType}
+                        config={formElement.config.elementConfig}
+                        value={formElement.config.value}
+                        invalid={formElement.config.valid}
+                        shouldValidate={formElement.config.validators}
+                        touched={formElement.config.touched}
+                        errorMsg={formElement.config.validationErrMsg}
+                        changed={this.inputChangeHandler}
+                    />
+                )
+            }
+        })
+
         return (
             <>
                 <div className="form__container">
