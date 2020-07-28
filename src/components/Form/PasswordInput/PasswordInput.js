@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PasswordValidator from '../../Validator/Validator';
 import ToolTip from '../../Tooltip/Tooltip';
 
 import './PasswordInput.css';
 
-const PasswordInput = ({ id, elementType, config, value, invalid, touched, changed, errorMsg, validator }) => {
+const PasswordInput = ({ id, elementType, config, value, invalid, touched, changed, errorMsg, validator, isFocused }) => {
 
     const [isInputActive, setIsInputActive] = useState(false);
+    const [coords, setCoords] = useState()
 
-    const focusHandler = (isInputActive) => {
+    const passwordInputElementRef = useRef();
+    
+
+    useEffect(() => {
+
+       setCoords(passwordInputElementRef.current.getBoundingClientRect());
+
+    }, [])
+
+
+    const focusHandler = () => {
         setIsInputActive(!isInputActive);
     }
 
-    console.log(isInputActive)
+    console.log(isInputActive);
 
     let inputClasses = ["form__input"];
     if (!invalid && touched) {
         inputClasses.push("form__input--error")
     }
+    console.log('isFocused', isFocused, coords);
+
 
     return (
         <div className="form__item">
@@ -30,12 +43,13 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
                 value={value}
                 placeholder={config.placeholder}
                 onChange={changed}
-                onFocus={() => focusHandler(isInputActive)}
-                onBlur={() => focusHandler(isInputActive)}
+                onFocus={focusHandler}
+                onBlur={focusHandler}
+                ref={passwordInputElementRef}
             />
             <span className="form__input-error">{errorMsg}</span>
             {true && <ToolTip>
-                <PasswordValidator value={value} active={isInputActive} />
+                <PasswordValidator value={value} active={isInputActive} type={'tooltip'} />
             </ToolTip>}
         </div>
     )

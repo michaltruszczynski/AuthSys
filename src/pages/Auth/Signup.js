@@ -163,6 +163,7 @@ class Signup extends Component {
                         errorMsg={formElement.config.validationErrMsg}
                         changed={this.inputChangeHandler}
                         validator={formElement.config.customValidationMessage}
+                        isFocused
                     />
                 )
             } else {

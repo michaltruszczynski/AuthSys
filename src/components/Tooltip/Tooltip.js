@@ -6,11 +6,9 @@ const Tooltip = (props) => {
 
 
     return (
-        <>
             <Portal>
                 {props.children}
             </Portal>
-        </>
     )
 }
 
