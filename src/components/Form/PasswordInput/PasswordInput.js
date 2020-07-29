@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PasswordValidator from '../../Validator/Validator';
 import ToolTip from '../../Tooltip/Tooltip';
+import Resize from '../../UI/Resize/Resize';
 
 import './PasswordInput.css';
 
@@ -30,10 +31,12 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
         inputClasses.push("form__input--error")
     }
     console.log('isFocused', isFocused, coords);
+    
 
 
     return (
         <div className="form__item">
+        <Resize />
             <label htmlFor={id} className="form__label">{config.label}: </label>
             <input
                 className={inputClasses.join(' ')}
