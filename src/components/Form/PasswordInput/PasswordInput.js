@@ -11,11 +11,11 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
     const [coords, setCoords] = useState()
 
     const passwordInputElementRef = useRef();
-    
+
 
     useEffect(() => {
 
-       setCoords(passwordInputElementRef.current.getBoundingClientRect());
+        setCoords(passwordInputElementRef.current.getBoundingClientRect());
 
     }, [])
 
@@ -31,12 +31,12 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
         inputClasses.push("form__input--error")
     }
     console.log('isFocused', isFocused, coords);
-    
+
 
 
     return (
         <div className="form__item">
-        <Resize />
+            <Resize />
             <label htmlFor={id} className="form__label">{config.label}: </label>
             <input
                 className={inputClasses.join(' ')}

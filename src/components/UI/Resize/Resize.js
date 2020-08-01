@@ -28,7 +28,7 @@ const Resize = () => {
         }
 
         window.addEventListener('resize', handleResize);
-
+        console.log(dimensions)
         return _ => {
             window.removeEventListener('resize', handleResize)
         }
