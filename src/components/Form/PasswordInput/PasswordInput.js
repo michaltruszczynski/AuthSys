@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PasswordValidator from '../../Validator/Validator';
 import ToolTip from '../../Tooltip/Tooltip';
 import Resize from '../../UI/Resize/Resize';
+import useWindowSize from '../../../hooks/useWindowSize';
 
 import './PasswordInput.css';
 
@@ -9,7 +10,7 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
 
     const [isInputActive, setIsInputActive] = useState(false);
     const [coords, setCoords] = useState()
-
+    const size = useWindowSize();
     const passwordInputElementRef = useRef();
 
 
@@ -37,6 +38,7 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
     return (
         <div className="form__item">
             <Resize />
+            <p>{size.width}</p>
             <label htmlFor={id} className="form__label">{config.label}: </label>
             <input
                 className={inputClasses.join(' ')}
