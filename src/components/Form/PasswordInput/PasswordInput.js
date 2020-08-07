@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import PasswordValidator from '../../Validator/Validator';
 import ToolTip from '../../Tooltip/Tooltip';
 import Resize from '../../UI/Resize/Resize';
@@ -9,21 +9,31 @@ import './PasswordInput.css';
 const PasswordInput = ({ id, elementType, config, value, invalid, touched, changed, errorMsg, validator, isFocused }) => {
 
     const [isInputActive, setIsInputActive] = useState(false);
-    const [coords, setCoords] = useState()
+    const [coords, setCoords] = useState();
     const size = useWindowSize();
     const passwordInputElementRef = useRef();
 
-
     useEffect(() => {
+        console.log('Password input DidMount');
+        function handlePosition() {
+            const coordsRefEl = passwordInputElementRef.current.getBoundingClientRect();
+            const { height, width, top, left } = coordsRefEl;
+            const tooltipCoords = {
+                top: top + window.scrollY +  Math.floor(height / 2),
+                left: left + width
+            };
+            console.log('tooltipCoords' , tooltipCoords);
+            setCoords(tooltipCoords)
+        }
 
-        setCoords(passwordInputElementRef.current.getBoundingClientRect());
+        handlePosition();
 
-    }, [])
+    }, []);
 
 
     const focusHandler = () => {
         setIsInputActive(!isInputActive);
-    }
+    };
 
     console.log(isInputActive);
 
@@ -32,8 +42,6 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
         inputClasses.push("form__input--error")
     }
     console.log('isFocused', isFocused, coords);
-
-
 
     return (
         <div className="form__item">
@@ -53,10 +61,12 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
                 ref={passwordInputElementRef}
             />
             <span className="form__input-error">{errorMsg}</span>
-            {true && <ToolTip>
+            {}
+            {true && <ToolTip position={coords}>
                 <PasswordValidator value={value} active={isInputActive} type={'tooltip'} />
             </ToolTip>}
         </div>
     )
 }
+
 export default PasswordInput;

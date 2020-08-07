@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import {createPortal} from 'react-dom';
 
 const Portal = (props) => {
-    const { children } = props;
+    const { children, position } = props;
 
     const mount = document.getElementById('portal');
     const element = document.createElement('div');

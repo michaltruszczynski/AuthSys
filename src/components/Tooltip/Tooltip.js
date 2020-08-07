@@ -1,14 +1,20 @@
 import React from 'react';
 
 import Portal from '../UI/Portal/Portal';
+import styles from './Tooltip.module.css';
 
-const Tooltip = (props) => {
-
-
+const Tooltip = ({position, children}) => {
+    // console.log(position)
+    // const styleCoords = {
+    //     top: position.top + 'px',
+    //     left: position.left + 'px'
+    // }
     return (
-            <Portal>
-                {props.children}
-            </Portal>
+        <Portal>
+            <div className={styles.tooltip} >
+                {children}
+            </div>
+        </Portal>
     )
 }
 
