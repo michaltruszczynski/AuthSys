@@ -13,21 +13,22 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
     const size = useWindowSize();
     const passwordInputElementRef = useRef();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         console.log('Password input DidMount');
         function handlePosition() {
             const coordsRefEl = passwordInputElementRef.current.getBoundingClientRect();
             const { height, width, top, left } = coordsRefEl;
             const tooltipCoords = {
-                top: top + window.scrollY +  Math.floor(height / 2),
+                top: top + window.scrollY + Math.floor(height / 2),
                 left: left + width
             };
-            console.log('tooltipCoords' , tooltipCoords);
+            console.log('tooltipCoords', tooltipCoords);
             setCoords(tooltipCoords)
         }
 
         handlePosition();
-
+        window.addEventListener('resize', handlePosition)
+        return () => window.removeEventListener('resize', handlePosition)
     }, []);
 
 

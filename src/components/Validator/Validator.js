@@ -46,7 +46,7 @@ class PasswordValidator extends Component {
 
         const validator = (
             <>
-                <h3 >Password rules</h3>
+                <h3>Password rules</h3>
                 <ul className={styles.tooltip__list}>
                     {validatorRulesMsg}
                 </ul>
