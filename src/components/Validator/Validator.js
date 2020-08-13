@@ -31,7 +31,8 @@ class PasswordValidator extends Component {
 
 
     render() {
-        const { value, active } = this.props;
+        // console.log(styles)
+        const { value, active, large } = this.props;
         console.log('[rendering] PasswordValidator')
         let validatorRulesMsg;
 
@@ -46,8 +47,8 @@ class PasswordValidator extends Component {
 
         const validator = (
             <>
-                <h3>Password rules</h3>
-                <ul className={styles.tooltip__list}>
+                <h3 className={`${!large ? styles['tooltip__list--small'] : null }`}>Password rules</h3>
+                <ul className={`${styles.tooltip__list} ${!large ? styles["tooltip__list--small"] : null}`}>
                     {validatorRulesMsg}
                 </ul>
             </>

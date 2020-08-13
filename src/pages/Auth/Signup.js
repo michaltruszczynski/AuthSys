@@ -70,7 +70,7 @@ class Signup extends Component {
 
     passwordMatchValidator = (name, value, prevState) => {
         if (name !== 'password' && name !== 'passwordConfirm') {
-            return prevState.prevState.signupForm.passwordConfirm.value;
+            return prevState.signupForm.passwordConfirm.value;
         }
 
         let isConfirmPaswordValid = false;

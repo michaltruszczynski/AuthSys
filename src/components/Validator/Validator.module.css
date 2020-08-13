@@ -16,6 +16,11 @@
     display: block;
 }
 
+.tooltip__list--small {
+    font-size: 0.8rem;
+    color: var(--clr-red-error);
+}
+
 .tooltip__item {
     display: flex;
     align-items: center;
