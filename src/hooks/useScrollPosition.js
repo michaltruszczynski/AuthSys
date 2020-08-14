@@ -1,8 +1,8 @@
-import { useRef, useLatoutEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 
 const isBrowser = typeof window !== 'undefined';
 
-function getScrollPosition() {
+function getScrollPosition({ element, useWindow }) {
     if (!isBrowser) return { x: 0, y: 0 }
 
     const target = element ? element.current : document.body;

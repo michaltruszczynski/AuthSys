@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PasswordValidator from '../../Validator/Validator';
 import ToolTip from '../../Tooltip/Tooltip';
-import ToggleContent from '../../ToggleContent/ToggleContent'
+import ToggleContent from '../../ToggleContent/ToggleContent';
 // import Resize from '../../UI/Resize/Resize';
 // import useWindowSize from '../../../hooks/useWindowSize';
 
@@ -10,6 +10,7 @@ import './PasswordInput.css';
 const PasswordInput = ({ id, elementType, config, value, invalid, touched, changed, errorMsg, validator, isFocused }) => {
 
     const [isInputActive, setIsInputActive] = useState(false);
+    const [showPswdRules, setShowPswdRules] = useState(false)
     // const [coords, setCoords] = useState();
     const passwordInputElementRef = useRef();
     const tooltipRef = useRef();
@@ -35,13 +36,17 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
 
         handlePosition();
         window.addEventListener('resize', handlePosition);
-        return () => {window.removeEventListener('resize', handlePosition); console.log('unmounting')};
+        return () => { window.removeEventListener('resize', handlePosition); console.log('unmounting') };
     });
 
 
     const focusHandler = () => {
         setIsInputActive(!isInputActive);
     };
+
+    const handleToggleContent = () => {
+        setShowPswdRules( prevState => !prevState)
+    }
 
     // console.log(isInputActive);
 
@@ -57,7 +62,7 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
 
     return (
         <div className="form__item">
-            <label htmlFor={id} className="form__label">{config.label}: </label>
+            <label htmlFor={id} className="form__label" onClick={handleToggleContent}>{config.label}: </label>
             <input
                 className={inputClasses.join(' ')}
                 type={config.type}
@@ -71,16 +76,10 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
                 ref={passwordInputElementRef}
             />
             <span className="form__input-error">{errorMsg}</span>
-            {}
             {show && <ToolTip ref={tooltipRef}>
                 <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={true} />
             </ToolTip>}
-
-            {
-                show && <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={false} />
-            }
-
-
+             <ToggleContent show={showPswdRules}><PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={false} /></ToggleContent>
         </div>
     )
 }
