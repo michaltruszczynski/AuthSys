@@ -5,20 +5,20 @@ import styles from './toggleContent.module.css'
 const ToggleContent = ({ show, children }) => {
     const contentContainerRef = useRef();
     console.log(contentContainerRef)
-    useEffect( () => {
+    useEffect(() => {
         console.log(contentContainerRef)
-    },[]);
+    }, []);
 
     // useEffect(() => {
-        // const checkeElementDimensions = () => {
-        //     if (!contentContainerRef) return;
+    // const checkeElementDimensions = () => {
+    //     if (!contentContainerRef) return;
 
-        //     const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
+    //     const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
 
-        //     const { height } = coordsRefEl;
-        //     contentContainerRef.current.style.height = height + 'px';
-        // }
-        // checkeElementDimensions();
+    //     const { height } = coordsRefEl;
+    //     contentContainerRef.current.style.height = height + 'px';
+    // }
+    // checkeElementDimensions();
 
     //     const setHeight = () => {
     //         let height = 0;
@@ -41,7 +41,7 @@ const ToggleContent = ({ show, children }) => {
     // }, [show])
 
     const getWrapperStyle = () => {
-        return show && contentContainerRef.current ? { height: contentContainerRef.current.scrollHeight + 'px'} : { height: '0'}
+        return show && contentContainerRef.current ? { height: contentContainerRef.current.scrollHeight + 'px' } : { height: '0' }
     }
 
     return (

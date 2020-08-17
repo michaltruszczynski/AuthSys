@@ -4,22 +4,19 @@
     letter-spacing: 1.5;
     position: absolute;
     padding: 1rem;
+    margin-left: 0.9rem;
+    margin-right: 0.9rem;
     border-radius: 5px;
-    /* right: 50%; */
     background-color: #dee3e2;
     box-shadow: 0 0 1px 0 rgba(10, 22, 70, 0.06), 0 16px 16px -1px rgba(10, 22, 70, 0.06);
-    transition: all 0.2s;
+    transition: all 0.09s;
 }
 
 .tooltip::after {
     content: '';
-    /* position: relative; */
     position: absolute;
     left: 0;
     top: 10%;
-    /* height: 1rem; */
-    /* width: 1rem; */
-    /* background-color: blanchedalmond; */
     transform: translateX(-100%);
     border: 0.6rem solid transparent;
     border-right-color: #dee3e2;
