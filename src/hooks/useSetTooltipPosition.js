@@ -24,15 +24,12 @@ const useSetTooltipPosition = (node) => {
                 tooltipRef.current.style.top = tooltipPosition.top + 'px';
                 tooltipRef.current.style.left = tooltipPosition.left + 'px';
 
-                console.log('marker width', tooltipRefWidth, tooltipRef);
                 if (!tooltipWidth) {
-                    console.log('test1')
                     const tootltipFits = tooltipRefWidth * 1.06 < window.innerWidth - nodeRight ? true : false;
                     if (tootltipFits !== visible) {
                         setVisible(tootltipFits);
                         setTooltipWidth(tooltipRefWidth);
                     }
-                    console.log('visible:', tootltipFits);
                 }
             }
 
@@ -40,13 +37,11 @@ const useSetTooltipPosition = (node) => {
             if ((node.current && !tooltipRef.current)) {
                 const { right: nodeRight } = node.current.getBoundingClientRect();
                 if (tooltipWidth) {
-                    console.log('test2')
                     let tootltipFits = tooltipWidth * 1.06 < window.innerWidth - nodeRight ? true : false;
                     if (tootltipFits !== visible) {
                         setVisible(tootltipFits);
                         setTooltipWidth(0);
                     }
-                    console.log('visible:', tootltipFits);
                 }
             }
 

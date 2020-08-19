@@ -1,24 +1,19 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 
 import styles from './toggleContent.module.css'
 
 const ToggleContent = ({ show, children }) => {
     const contentContainerRef = useRef();
-    console.log(contentContainerRef)
-    useEffect(() => {
-        console.log(contentContainerRef)
-    }, []);
 
-    useEffect(() => {
-    const checkeElementDimensions = () => {
-        if (!contentContainerRef) return;
+    useLayoutEffect(() => {
+        const checkeElementDimensions = () => {
+            if (!contentContainerRef) return;
 
-        const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
+            const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
 
-        const { height } = coordsRefEl;
-        contentContainerRef.current.style.height = height + 'px';
-    }
-    checkeElementDimensions();
+            const { height } = coordsRefEl;
+            contentContainerRef.current.style.height = height + 'px';
+        }
 
         const setHeight = () => {
             let height = 0;
@@ -35,9 +30,11 @@ const ToggleContent = ({ show, children }) => {
                 contentContainerRef.current.style.height = height + 'px';
             }
 
-
         }
+
+        checkeElementDimensions();
         setHeight();
+
     }, [show])
 
     const getWrapperStyle = () => {

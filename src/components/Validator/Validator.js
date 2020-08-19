@@ -33,7 +33,7 @@ class PasswordValidator extends Component {
     render() {
         // console.log(styles)
         const { value, active, large } = this.props;
-        console.log('[rendering] PasswordValidator')
+        console.log('[PasswordValidator] rendering')
         let validatorRulesMsg;
 
         const rules = Object.keys(this.state.validators);
