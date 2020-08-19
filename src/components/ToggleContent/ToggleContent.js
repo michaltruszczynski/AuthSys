@@ -9,36 +9,36 @@ const ToggleContent = ({ show, children }) => {
         console.log(contentContainerRef)
     }, []);
 
-    // useEffect(() => {
-    // const checkeElementDimensions = () => {
-    //     if (!contentContainerRef) return;
+    useEffect(() => {
+    const checkeElementDimensions = () => {
+        if (!contentContainerRef) return;
 
-    //     const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
+        const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
 
-    //     const { height } = coordsRefEl;
-    //     contentContainerRef.current.style.height = height + 'px';
-    // }
-    // checkeElementDimensions();
+        const { height } = coordsRefEl;
+        contentContainerRef.current.style.height = height + 'px';
+    }
+    checkeElementDimensions();
 
-    //     const setHeight = () => {
-    //         let height = 0;
-    //         if (show) {
-    //             if (!contentContainerRef) return;
+        const setHeight = () => {
+            let height = 0;
+            if (show) {
+                if (!contentContainerRef) return;
 
-    //             const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
+                const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
 
-    //             const { heighte } = coordsRefEl;
-    //             height = heighte
-    //             console.log(height)
-    //             contentContainerRef.current.style.height = heighte + 'px';
-    //         } else {
-    //             contentContainerRef.current.style.height = height + 'px';
-    //         }
+                const { heighte } = coordsRefEl;
+                height = heighte
+                console.log(height)
+                contentContainerRef.current.style.height = heighte + 'px';
+            } else {
+                contentContainerRef.current.style.height = height + 'px';
+            }
 
 
-    //     }
-    //     setHeight();
-    // }, [show])
+        }
+        setHeight();
+    }, [show])
 
     const getWrapperStyle = () => {
         return show && contentContainerRef.current ? { height: contentContainerRef.current.scrollHeight + 'px' } : { height: '0' }

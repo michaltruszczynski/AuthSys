@@ -4,8 +4,9 @@ import ToolTip from '../../Tooltip/Tooltip';
 import ToggleContent from '../../ToggleContent/ToggleContent';
 
 // import useWindowSize from '../../../hooks/useWindowSize';
-import useElementDimensions from '../../../hooks/useElementDimensions';
-import useTooltip from '../../../hooks/useTooltip';
+// import useElementDimensions from '../../../hooks/useElementDimensions';
+import useSetTooltipPosition from '../../../hooks/useSetTooltipPosition';
+import useTooltipVisible from '../../../hooks/useTooltipVisible';
 
 import './PasswordInput.css';
 
@@ -13,7 +14,10 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
 
     const [isInputActive, setIsInputActive] = useState(false);
     const [showPswdRules, setShowPswdRules] = useState(false);
-    const [tooltipRef, elementRef] = useTooltip();
+    const inputRef = useRef()
+    const [tooltipRef, visible] = useSetTooltipPosition(inputRef);
+    // const [visible] = useTooltipVisible(inputRef, tooltipRef);
+    // const [inputDimensions] = useElementDimensions(inputRef);
 
     // const size = useWindowSize();
 
@@ -45,16 +49,14 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
                 onChange={changed}
                 onFocus={focusHandler}
                 onBlur={focusHandler}
-                // ref={passwordInputElementRef}
-                // ref={inputRef}
-                ref={elementRef}
+                ref={inputRef}
             />
             <span className="form__input-error">{errorMsg}</span>
-            {show && <ToolTip ref={tooltipRef}>
+            {visible && <ToolTip ref={tooltipRef}>
                 <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={true} />
             </ToolTip>}
             {
-                // <ToggleContent show={showPswdRules}><PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={false} /></ToggleContent>
+                !visible && <ToggleContent show={!invalid && touched}><PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={false} /></ToggleContent>
             }
         </div>
     )

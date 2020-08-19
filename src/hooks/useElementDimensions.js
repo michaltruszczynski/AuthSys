@@ -1,17 +1,22 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const useElementDimensions = () => {
-    const ref = useRef();
+const useElementDimensions = (node) => {
     const [dimensions, setDimensions] = useState();
 
     useEffect(() => {
-        if (!ref.current) return;
-        console.log(ref.current.getBoundingClientRect().toJSON());
-        setDimensions(ref.current.getBoundingClientRect().toJSON());
-        console.log('testing........')
 
-    }, [ref.current]);
+        const handleElementDimensions = () => {
+            if (!node) return;
 
-    return [ref, dimensions];
+            setDimensions(node.current.getBoundingClientRect().toJSON());
+        }
+
+        handleElementDimensions();
+        window.addEventListener('resize', handleElementDimensions);
+
+        return () => window.removeEventListener('resize', handleElementDimensions);
+    }, [node]);
+
+    return [dimensions];
 }
 export default useElementDimensions;
