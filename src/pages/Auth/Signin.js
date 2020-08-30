@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
+
 import Input from '../../components/Form/Input/Input';
 import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
 
-import './Signup.css';
 
+import './Signin.module.css';
+
+import { required, email } from '../../utility/validators';
 import { updateObject } from '../../utility/utility';
-import { required, length, containNumber, containSpecialChar, email } from '../../utility/validators';
+// import Input from '../../componen';
 
-class Signup extends Component {
-
+class Signin extends Component {
     state = {
-        signupForm: {
-            name: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Name',
-                    label: 'Name'
-                },
-                value: '',
-                valid: false,
-                touched: false,
-                validators: [required, length({ min: 4 }), length({ max: 5 })],
-                validationErrMsg: 'Please enter name.'
-            },
+        signinForm: {
             email: {
                 elementType: 'input',
                 elementConfig: {
@@ -35,7 +24,7 @@ class Signup extends Component {
                 valid: false,
                 touched: false,
                 validators: [required, email],
-                validationErrMsg: 'Please enter a valid email.'
+                validatorErrMsg: 'Please enter a valid email.'
             },
             password: {
                 elementType: 'input',
@@ -47,47 +36,12 @@ class Signup extends Component {
                 value: '',
                 valid: false,
                 touched: false,
-                validators: [required, containSpecialChar, containNumber, length({ min: 4 })],
-                validationErrMsg: 'Please enter a valid password.',
-                customValidation: true
-            },
-            passwordConfirm: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'Confirm password',
-                    label: 'Confirm password'
-                },
-                value: '',
-                valid: false,
-                touched: false,
-                validators: [],
-                validationErrMsg: 'Passwords don \'t match.'
+                validators: [required],
+                validatorErrMsg: 'Please enter a valid password.'
             }
         },
         formisValid: false
-    }
-
-    passwordMatchValidator = (name, value, prevState) => {
-        if (name !== 'password' && name !== 'passwordConfirm') {
-            return prevState.signupForm.passwordConfirm.value;
-        }
-
-        let isConfirmPaswordValid = false;
-
-        if (name === 'password') {
-            if (value === prevState.signupForm.passwordConfirm.value) {
-                isConfirmPaswordValid = true;
-            }
-        }
-
-        if (name === 'passwordConfirm') {
-            if (value === prevState.signupForm.password.value) {
-                isConfirmPaswordValid = true;
-            }
-        }
-        return isConfirmPaswordValid;
-    }
+    };
 
     inputChangeHandler = (event) => {
         const name = event.target.name;
@@ -95,27 +49,25 @@ class Signup extends Component {
 
         this.setState(prevState => {
             let isValid = true;
-            for (const validator of prevState.signupForm[name].validators) {
+            for (const validator of prevState.signinForm[name].validators) {
                 isValid = isValid && validator(value)
             }
 
-            const updatedSignupForm = updateObject(prevState.signupForm, {
-                [name]: updateObject(prevState.signupForm[name], {
+            const updatedSigninForm = updateObject(prevState.signinForm, {
+                [name]: updateObject(prevState.signinForm[name], {
                     value: value,
                     valid: isValid,
                     touched: true
                 })
             });
 
-            updatedSignupForm.passwordConfirm.valid = this.passwordMatchValidator(name, value, prevState)
-
             let formIsValid = true;
-            for (const inputName of Object.keys(updatedSignupForm)) {
-                formIsValid = formIsValid && updatedSignupForm[inputName].valid;
+            for (const inputName of Object.keys(updatedSigninForm)) {
+                formIsValid = formIsValid && updatedSigninForm[inputName].valid;
             }
 
             return {
-                signupForm: updatedSignupForm,
+                signinForm: updatedSigninForm,
                 formIsValid: formIsValid
             }
         });
@@ -142,10 +94,10 @@ class Signup extends Component {
 
     render() {
         console.log('rendering')
-        const formElementKeys = Object.keys(this.state.signupForm);
+        const formElementKeys = Object.keys(this.state.signinForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,
-            config: this.state.signupForm[key]
+            config: this.state.signinForm[key]
         }))
         console.log(formElementArray);
         let form = formElementArray.map(formElement => {
@@ -162,7 +114,7 @@ class Signup extends Component {
                         touched={formElement.config.touched}
                         errorMsg={formElement.config.validationErrMsg}
                         changed={this.inputChangeHandler}
-                        validator={formElement.config.customValidation}
+                        validator={formElement.config.customValidationMessage}
                         isFocused
                     />
                 )
@@ -183,7 +135,6 @@ class Signup extends Component {
                 )
             }
         })
-
         return (
             <>
                 <div className="form__container">
@@ -207,6 +158,7 @@ class Signup extends Component {
             </>
         )
     }
+
 }
 
-export default Signup;
+export default Signin;

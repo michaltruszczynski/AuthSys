@@ -4,6 +4,7 @@ import ToolTip from '../../Tooltip/Tooltip';
 import ToggleContent from '../../ToggleContent/ToggleContent';
 
 import useSetTooltipPosition from '../../../hooks/useSetTooltipPosition';
+// import useElementDimensions from '../../../hooks/useElementDimensions';
 
 import './PasswordInput.css';
 
@@ -11,6 +12,7 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
 
     const [isInputActive, setIsInputActive] = useState(false);
     const inputRef = useRef();
+    // const [ddd] = useElementDimensions(inputRef);
     const [tooltipRef, visible] = useSetTooltipPosition(inputRef);
 
     useEffect(() => {

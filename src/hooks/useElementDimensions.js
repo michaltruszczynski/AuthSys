@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 
 const useElementDimensions = (node) => {
-    const [dimensions, setDimensions] = useState();
-
+    // const [dimensions, setDimensions] = useState();
+    let dimensions = 0;
+    console.log('test')
     useEffect(() => {
 
         const handleElementDimensions = () => {
+            console.log(node.current)
             if (!node) return;
-
-            setDimensions(node.current.getBoundingClientRect().toJSON());
+            console.log(node.current.getBoundingClientRect().toJSON())
+            // setDimensions(node.current.getBoundingClientRect().toJSON());
         }
 
         handleElementDimensions();
