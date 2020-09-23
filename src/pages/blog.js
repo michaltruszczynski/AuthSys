@@ -2,9 +2,12 @@ import React from 'react';
 
 const Blog = () => {
     return (
-        <div>Blog
-        <p>cc</p>
-        </div>
+        <>
+            <div>
+                Blog
+            </div>
+            <p>cc</p>
+        </>
     )
 }
 
