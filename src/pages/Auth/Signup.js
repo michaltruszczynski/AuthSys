@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Input from '../../components/Form/Input/Input';
 import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import './Signup.css';
 
 import { updateObject } from '../../utility/utility';
 import { required, length, containNumber, containSpecialChar, email } from '../../utility/validators';
+
+import * as actions from '../../store/actions/index';
 
 class Signup extends Component {
 
@@ -65,7 +69,7 @@ class Signup extends Component {
                 validationErrMsg: 'Passwords don \'t match.'
             }
         },
-        formisValid: false
+        formIsValid: false
     }
 
     passwordMatchValidator = (name, value, prevState) => {
@@ -90,6 +94,7 @@ class Signup extends Component {
     }
 
     inputChangeHandler = (event) => {
+        console.log('inputChangeHandler')
         const name = event.target.name;
         const value = event.target.value;
 
@@ -121,8 +126,15 @@ class Signup extends Component {
         });
     }
 
-    submitHandler = () => {
+    submitHandler = (event) => {
+        event.preventDefault();
         console.log('Submit');
+        const authData = {
+            name: this.state.signupForm.name.value,
+            email: this.state.signupForm.email.value,
+            password: this.state.signupForm.password.value
+        }
+        this.props.onAuthSignup(authData)
 
         // podłączyć Redux.
     }
@@ -182,22 +194,33 @@ class Signup extends Component {
                     />
                 )
             }
-        })
+        });
 
+        if (this.props.loading) {
+            form = <Spinner />
+        }
+
+        if (this.props.signupSuccess) {
+            this.props.history.push('login');
+        }
+
+        console.log('formisValid', this.state.formIsValid)
         return (
             <>
                 <div className="form__container">
                     <form onSubmit={this.submitHandler}>
                         <div className="form__title">
                             Sign Up
-                    </div>
+                        </div>
+                        <p>You have been successfully registered.</p>
+                        <p>Please provide correct data.</p>
                         <p className="form__description">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
                             impedit odit?
                     </p>
                         {form}
                         <div className="form__item ">
-                            <button className="form__btn" type="submit">Sign Up</button>
+                            <button disabled={!this.state.formIsValid} className="form__btn" type="submit">Sign Up</button>
                         </div>
                         <div className="form__info-message">
                             <p>Already have an account? <a href="3">Log in</a></p>
@@ -209,4 +232,20 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+
+const mapStateToProps = state => {
+    return {
+        loading: state.loading,
+        error: state.error,
+        authRedirectPath: state.authRedirectPath,
+        signupSuccess: state.signupSuccess
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthSignup: (userData) => dispatch(actions.authSignup(userData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

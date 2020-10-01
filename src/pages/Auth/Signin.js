@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Input from '../../components/Form/Input/Input';
 import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
-
 
 import './Signin.module.css';
 
 import { required, email } from '../../utility/validators';
 import { updateObject } from '../../utility/utility';
-// import Input from '../../componen';
+
+import * as actions from '../../store/actions/index';
+import { authFail } from '../../store/actions/auth';
 
 class Signin extends Component {
     state = {
@@ -24,7 +26,7 @@ class Signin extends Component {
                 valid: false,
                 touched: false,
                 validators: [required, email],
-                validatorErrMsg: 'Please enter a valid email.'
+                validationErrMsg: 'Please enter a valid email.'
             },
             password: {
                 elementType: 'input',
@@ -37,10 +39,10 @@ class Signin extends Component {
                 valid: false,
                 touched: false,
                 validators: [required],
-                validatorErrMsg: 'Please enter a valid password.'
+                validationErrMsg: 'Please enter a valid password.'
             }
         },
-        formisValid: false
+        formIsValid: false
     };
 
     inputChangeHandler = (event) => {
@@ -73,23 +75,29 @@ class Signin extends Component {
         });
     }
 
-    submitHandler = () => {
-        console.log('Submit');
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log('[Signin] Submit');
+        const authData = {
+            email: this.state.signinForm.email.value,
+            password: this.state.signinForm.password.value
+        }
+        this.props.onAuthSignin(authData)
 
         // podłączyć Redux.
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('[Signup] shouldComponentUpdate', nextState, nextProps)
+        console.log('[Signin] shouldComponentUpdate', nextState, nextProps)
         return true;
     }
 
     componentDidUpdate() {
-        console.log('[Signup] componentDidUpdate ')
+        console.log('[Signin] componentDidUpdate ')
     }
 
     componentDidMount() {
-        console.log('[Signup] componentDidMount ')
+        console.log('[Signin] componentDidMount ')
     }
 
     render() {
@@ -135,30 +143,49 @@ class Signin extends Component {
                 )
             }
         })
+
+        let authRedirect = null;
+
+        if(this.props.authRedirect) {
+
+        }
+        
         return (
             <>
                 <div className="form__container">
-                    <form onSubmit={this.submitHandler}>
+                    <form className="form" onSubmit={this.submitHandler}>
                         <div className="form__title">
-                            Sign Up
-                    </div>
+                            Sign In
+                        </div>
                         <p className="form__description">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
                             impedit odit?
-                    </p>
+                        </p>
+                        <p className="form__error">{'Login failed. PLease provide correct credentials.'}</p>
                         {form}
                         <div className="form__item ">
-                            <button className="form__btn" type="submit">Sign Up</button>
+                            <button className="form__btn" type="submit">Sign In</button>
                         </div>
                         <div className="form__info-message">
-                            <p>Already have an account? <a href="3">Log in</a></p>
+                            <p>Forgot password? <a href="3">Change password</a></p>
                         </div>
                     </form>
                 </div>
             </>
         )
     }
-
 }
 
-export default Signin;
+const mapStateToProps = state => {
+    return {
+        error: state.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

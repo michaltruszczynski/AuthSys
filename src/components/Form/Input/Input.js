@@ -22,7 +22,6 @@ const Input = ({ id, elementType, config, value, invalid, touched, changed, erro
                 placeholder={config.placeholder}
                 onChange={changed}
             />
-
     }
 
     return (

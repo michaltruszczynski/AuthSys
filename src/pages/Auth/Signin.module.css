@@ -45,3 +45,11 @@
 /* .form__input--small {
     max-width: 250px;
 } */
+
+.form__error {
+    align-self: start;
+    padding-top: 0.625rem;
+    color: var(--clr-red-error);
+    font-size: 0.9rem;
+    visibility: hidden;
+}
