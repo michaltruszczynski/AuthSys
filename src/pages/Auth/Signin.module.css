@@ -53,3 +53,22 @@
     font-size: 0.9rem;
     visibility: hidden;
 }
+
+.form__message {
+    font-size: 1rem;
+    padding: 0.2rem 0;
+    max-width: 26rem;
+    font-weight: 500;
+}
+
+.form__message-success {
+    color: var(--clr-green);
+}
+
+.form__message-error {
+    color: var(--clr-red-error);
+}
+
+.form__message-hidden {
+    display: none;
+}

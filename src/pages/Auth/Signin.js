@@ -10,7 +10,6 @@ import { required, email } from '../../utility/validators';
 import { updateObject } from '../../utility/utility';
 
 import * as actions from '../../store/actions/index';
-import { authFail } from '../../store/actions/auth';
 
 class Signin extends Component {
     state = {
@@ -82,9 +81,7 @@ class Signin extends Component {
             email: this.state.signinForm.email.value,
             password: this.state.signinForm.password.value
         }
-        this.props.onAuthSignin(authData)
-
-        // podłączyć Redux.
+        this.props.onAuthSignin(authData);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -93,11 +90,15 @@ class Signin extends Component {
     }
 
     componentDidUpdate() {
-        console.log('[Signin] componentDidUpdate ')
+        console.log('[Signin] componentDidUpdate ');
     }
 
     componentDidMount() {
-        console.log('[Signin] componentDidMount ')
+        console.log('[Signin] componentDidMount ');
+        if(this.props.authRedirectPath) {
+            this.props.onSetAuthRedirectPath(null);
+        }
+
     }
 
     render() {
@@ -142,14 +143,22 @@ class Signin extends Component {
                     />
                 )
             }
-        })
+        });
 
-        let authRedirect = null;
 
-        if(this.props.authRedirect) {
+        let message = 'You have been registered. Please sign in.';
+        let messageClass = ["form__message", "form__message-hidden"];
 
+        if (this.props.authSignupSuccess) {
+            messageClass = ["form__message", "form__message-success"];
         }
-        
+
+        let errMessage = 'Login failed. PLease provide correct credentials.';
+        let errMessageClass = ["form__message", "form__message-hidden"];
+
+        if (this.props.authSignupSuccess) {
+            errMessage = ["form__message", "form__message-error"];
+        }
         return (
             <>
                 <div className="form__container">
@@ -157,11 +166,12 @@ class Signin extends Component {
                         <div className="form__title">
                             Sign In
                         </div>
+                        <p className={messageClass.join(' ')}>{message}</p>
                         <p className="form__description">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
                             impedit odit?
                         </p>
-                        <p className="form__error">{'Login failed. PLease provide correct credentials.'}</p>
+                        <p className={errMessageClass.join(' ')}>{errMessage}</p>
                         {form}
                         <div className="form__item ">
                             <button className="form__btn" type="submit">Sign In</button>
@@ -178,13 +188,17 @@ class Signin extends Component {
 
 const mapStateToProps = state => {
     return {
-        error: state.error
+        error: state.error,
+        authRedirectPath: state.authRedirectPath,
+        authSignupSuccess: state.authSignupSuccess
+
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData))
+        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData)),
+        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
     }
 }
 

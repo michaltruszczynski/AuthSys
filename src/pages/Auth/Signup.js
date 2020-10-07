@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import Input from '../../components/Form/Input/Input';
 import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -135,8 +136,9 @@ class Signup extends Component {
             password: this.state.signupForm.password.value
         }
         this.props.onAuthSignup(authData)
-
-        // podłączyć Redux.
+            // .then(() => {
+            //     this.props.history.push('/signin')
+            // })
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -200,20 +202,36 @@ class Signup extends Component {
             form = <Spinner />
         }
 
-        if (this.props.signupSuccess) {
-            this.props.history.push('login');
+        let errorMsgClasses = ["form__message", "form__message-error", "form__message-hidden"]
+        let errorMsg = 'Please provide correct data.';
+        if (this.props.error) {
+            errorMsgClasses = ["form__message", "form__message-error"];
+            console.log(this.props.error)
+            const errorMsgDetails = this.props.error.data;
+            console.log(errorMsgDetails)
+            const emailErrDetails = errorMsgDetails.filter(item => item.param === 'email');
+
+            if (emailErrDetails.length) {
+                errorMsg = 'Email already exists. Please choose different one.'
+            }
         }
 
-        console.log('formisValid', this.state.formIsValid)
+
+        let redirectToSignin = null;
+        if (this.props.authRedirectPath) {
+            redirectToSignin = <Redirect to={this.props.authRedirectPath} />
+        }
+
+        // console.log('formisValid', this.state.formIsValid)
         return (
             <>
                 <div className="form__container">
+                    {redirectToSignin}
                     <form onSubmit={this.submitHandler}>
                         <div className="form__title">
                             Sign Up
                         </div>
-                        <p>You have been successfully registered.</p>
-                        <p>Please provide correct data.</p>
+                        <p className={errorMsgClasses.join(' ')}>{errorMsg}</p>
                         <p className="form__description">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
                             impedit odit?
@@ -237,8 +255,7 @@ const mapStateToProps = state => {
     return {
         loading: state.loading,
         error: state.error,
-        authRedirectPath: state.authRedirectPath,
-        signupSuccess: state.signupSuccess
+        authRedirectPath: state.authRedirectPath
     }
 }
 

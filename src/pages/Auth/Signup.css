@@ -13,15 +13,34 @@
     flex-direction: column;
 }
 
+.form__title {
+    font-size: 1.7rem;
+    font-weight: var(--fw-bold);
+}
+
+.form__message {
+    font-size: 1rem;
+    padding: 0.2rem 0;
+    max-width: 26rem;
+    font-weight: 500;
+}
+
+.form__message-success {
+    color: var(--clr-green);
+}
+
+.form__message-error {
+    color: var(--clr-red-error);
+}
+
+.form__message-hidden {
+    display: none;
+}
+
 .form__description {
     max-width: 26rem;
     font-weight: var(--fw-small);
     text-align: justify;
-}
-
-.form__title {
-    font-size: 1.7rem;
-    font-weight: var(--fw-bold);
 }
 
 .form__btn {

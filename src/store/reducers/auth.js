@@ -7,26 +7,37 @@ const initialState = {
     userId: null,
     error: null,
     loading: false,
-    authRedirectPath: '/',
-    signupSuccess: false
+    authRedirectPath: null,
+    authSignupSuccess: false,
+    authSuccess: false
 }
 
 const authStart = (state, action) => {
-    return updateObject(state, { error: null, loading: true });
+    return updateObject(state, {
+        error: null,
+        loading: true 
+    });
 }
 
 const authSuccess = (state, action) => {
     return updateObject(state, {
         error: null,
-        loading: false
-    })
+        loading: false,
+        authRedirectPath: action.path,
+        authSuccess: true,
+        authSignupSuccess: true
+    });
 }
 
 const authFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false
-    })
+    });
+}
+
+const setAuthRedirectPath = (state, action) => {
+    return updateObject(state, {authRedirectPath: action.path});
 }
 
 const reducer = (state = initialState, action) => {
@@ -34,8 +45,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.AUTH_START: return authStart(state, action);
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_FAIL: return authFail(state, action);
+        case actionTypes.AUTH_SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state, action);
         default:
-            return state
+            return state;
     }
 }
 
