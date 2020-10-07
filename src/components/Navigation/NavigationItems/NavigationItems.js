@@ -9,7 +9,7 @@ const navItems = [
     { id: 'home', text: 'Feed', link: '/', auth: false, role: [1, 2, 3] },
     { id: 'blog', text: 'Blog', link: '/blog', auth: true, role: [1, 2, 3] },
     { id: 'shop', text: 'Shop', link: '/shop', auth: false, role: [1, 2, 3] },
-    { id: 'login', text: 'Login', link: '/shop', auth: false, role: [1, 2, 3] },
+    { id: 'login', text: 'Login', link: '/signin', auth: false, role: [1, 2, 3] },
     { id: 'logup', text: 'Signup', link: '/signup', auth: false, role: [1, 2, 3] }
 ];
 

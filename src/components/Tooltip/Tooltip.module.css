@@ -1,0 +1,23 @@
+.tooltip {
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    letter-spacing: 1.5;
+    position: absolute;
+    padding: 1rem;
+    margin-left: 0.9rem;
+    margin-right: 0.9rem;
+    border-radius: 5px;
+    background-color: #dee3e2;
+    box-shadow: 0 0 1px 0 rgba(10, 22, 70, 0.06), 0 16px 16px -1px rgba(10, 22, 70, 0.06);
+    transition: all 0.09s;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    transform: translateX(-100%);
+    border: 0.6rem solid transparent;
+    border-right-color: #dee3e2;
+}

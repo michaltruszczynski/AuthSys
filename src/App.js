@@ -5,6 +5,7 @@ import Layout from './components/Layout/Layout';
 
 import Welcome from './pages/Welcome/Welcome';
 import Signup from './pages/Auth/Signup';
+import Signin from './pages/Auth/Signin';
 
 class App extends Component {
 
@@ -15,6 +16,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Welcome} />
             <Route path="/signup" component={Signup} />
+            <Route path="/signin" component={Signin} />
           </Switch>
         </Layout>
       </Fragment>

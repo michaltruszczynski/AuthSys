@@ -1,0 +1,5 @@
+.toggle-container {
+    transition: all ease .5s;
+    overflow: hidden;
+    /* height: 0; */
+}
