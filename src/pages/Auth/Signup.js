@@ -155,7 +155,7 @@ class Signup extends Component {
     }
 
     render() {
-        console.log('rendering')
+        console.log('rendering');
         const formElementKeys = Object.keys(this.state.signupForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,

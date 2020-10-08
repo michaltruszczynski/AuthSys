@@ -21,6 +21,8 @@ const useSetTooltipPosition = (node) => {
                     left: nodeRight
                 }
 
+                console.log(tooltipPosition.top);
+
                 tooltipRef.current.style.top = tooltipPosition.top + 'px';
                 tooltipRef.current.style.left = tooltipPosition.left + 'px';
 
