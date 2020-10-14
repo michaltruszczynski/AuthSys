@@ -154,6 +154,10 @@ class Signup extends Component {
         console.log('[Signup] componentDidMount ')
     }
 
+    componentWillUnmount() {
+        this.props.onSetAuthRedirectPath(null);
+    }
+
     render() {
         console.log('rendering');
         const formElementKeys = Object.keys(this.state.signupForm);
@@ -261,7 +265,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthSignup: (userData) => dispatch(actions.authSignup(userData))
+        onAuthSignup: (userData) => dispatch(actions.authSignup(userData)),
+        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
     }
 }
 

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Input from '../../components/Form/Input/Input';
 import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import './Signin.module.css';
 
@@ -85,7 +87,7 @@ class Signin extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('[Signin] shouldComponentUpdate', nextState, nextProps)
+        console.log('[Signin] shouldComponentUpdate', nextState, nextProps);
         return true;
     }
 
@@ -95,10 +97,13 @@ class Signin extends Component {
 
     componentDidMount() {
         console.log('[Signin] componentDidMount ');
-        if(this.props.authRedirectPath) {
+        if (this.props.authRedirectPath) {
             this.props.onSetAuthRedirectPath(null);
         }
+    }
 
+    componentWillUnmount() {
+        this.props.onSetAuthRedirectPath(null);
     }
 
     render() {
@@ -107,7 +112,7 @@ class Signin extends Component {
         const formElementArray = formElementKeys.map(key => ({
             id: key,
             config: this.state.signinForm[key]
-        }))
+        }));
         console.log(formElementArray);
         let form = formElementArray.map(formElement => {
             if (formElement.config.customValidation) {
@@ -145,6 +150,10 @@ class Signin extends Component {
             }
         });
 
+        if (this.props.loading) {
+            form = <Spinner />
+        }
+
 
         let message = 'You have been registered. Please sign in.';
         let messageClass = ["form__message", "form__message-hidden"];
@@ -159,9 +168,16 @@ class Signin extends Component {
         if (this.props.authSignupSuccess) {
             errMessage = ["form__message", "form__message-error"];
         }
+
+        let redirect = null;
+        if (this.props.authRedirectPath) {
+            redirect = <Redirect to={this.props.authRedirectPath} />
+        }
+
         return (
             <>
                 <div className="form__container">
+                    {redirect}
                     <form className="form" onSubmit={this.submitHandler}>
                         <div className="form__title">
                             Sign In
@@ -188,6 +204,7 @@ class Signin extends Component {
 
 const mapStateToProps = state => {
     return {
+        loading: state.loading,
         error: state.error,
         authRedirectPath: state.authRedirectPath,
         authSignupSuccess: state.authSignupSuccess
