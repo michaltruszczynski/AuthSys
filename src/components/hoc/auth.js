@@ -14,7 +14,12 @@ const auth = (SpecificComponent, option) => {
         }
 
         render() {
-            return <SpecificComponent {...props} user={user} />
+            if(auth) {
+                return <SpecificComponent {...props} user={user} />
+            } else {
+                <Redirect to="/login" />
+            }
+            
         }
     }
     return authenticationCheck;
