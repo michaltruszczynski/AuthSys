@@ -120,3 +120,6 @@ export const setAuthRedirectPath = (path) => {
     }
 }
 
+export const authUserCheck = (userDta) => {
+
+}
