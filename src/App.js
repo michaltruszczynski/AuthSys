@@ -7,6 +7,8 @@ import Welcome from './pages/Welcome/Welcome';
 import Signup from './pages/Auth/Signup';
 import Signin from './pages/Auth/Signin';
 
+import Auth from './components/hoc/auth'
+
 class App extends Component {
 
   render() {
@@ -14,7 +16,7 @@ class App extends Component {
       <Fragment>
         <Layout>
           <Switch>
-            <Route exact path="/" component={Welcome} />
+            <Route exact path="/" component={Auth(Welcome)} />
             <Route path="/signup" component={Signup} />
             <Route path="/signin" component={Signin} />
           </Switch>

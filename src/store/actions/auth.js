@@ -100,14 +100,19 @@ export const authCheckState = () => {
             dispatch(logout())
         } else {
             const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            if (expirationDate <= new Date()) {
-                dispatch(logout());
-                console.log(new Date())
-                console.log('test logout')
-            } else {
+            // if (expirationDate <= new Date()) {
+                // dispatch(logout());
+                // console.log(new Date())
+                // console.log('test logout')
+            // } else {
                 const userId = localStorage.getItem('userId');
-                dispatch(authSigninSuccess(token, userId))
-            }
+                // dispatch(authSigninSuccess(token, userId));
+                const authHeader = { 'x-access-token': token };
+                axios.get('http://localhost:5000/api/authUserCheck', { headers: authHeader })
+                    .then(response => {
+                        console.log(response.data)
+                    })
+            // }
         }
 
     }
