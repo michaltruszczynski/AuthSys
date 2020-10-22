@@ -107,8 +107,9 @@ export const authCheckState = () => {
             // } else {
                 const userId = localStorage.getItem('userId');
                 // dispatch(authSigninSuccess(token, userId));
+                console.log(token)
                 const authHeader = { 'x-access-token': token };
-                axios.get('http://localhost:5000/api/authUserCheck', { headers: authHeader })
+                axios.get('http://localhost:5000/api/auth/authUserCheck', { headers: authHeader })
                     .then(response => {
                         console.log(response.data)
                     })
