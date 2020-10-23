@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
@@ -17,10 +18,11 @@ const auth = (SpecificComponent, option) => {
         }
 
         render() {
-            if (auth) {
+            console.log('[HOC auth] ', this.props.token )
+            if (this.props.token) {
                 return <SpecificComponent {...this.props} />
             } else {
-                // <Redirect to="/login" />
+                return <Redirect to="/signin" />
             }
 
         }
@@ -32,7 +34,9 @@ const auth = (SpecificComponent, option) => {
 
 const mapStateToProps = state => {
     return {
-        error: state.error
+        error: state.error,
+        token: state.token
+
     }
 }
 
