@@ -16,9 +16,9 @@ class App extends Component {
       <Fragment>
         <Layout>
           <Switch>
-            <Route exact path="/" component={Auth(Welcome)} />
             <Route path="/signup" component={Signup} />
             <Route path="/signin" component={Signin} />
+            <Route path="/" component={Auth(Welcome)} />
           </Switch>
         </Layout>
       </Fragment>

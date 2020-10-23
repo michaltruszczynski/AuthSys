@@ -1,9 +1,21 @@
 import React from 'react';
+import { Route, Link, withRouter } from 'react-router-dom';
 
-const Welcome = () => {
+import TestPage from '../TestPage/TestPage';
+
+const Welcome = (props) => {
     return (
-        <p>Welcome</p>
+        <div>
+            <p>Welcome</p>
+            <Link to={props.match.path + 'testpage1/'}>Test Page 1</Link>
+            <Link to={props.match.path + 'testpage2/'}>Test Page 2</Link>
+            <Route path={props.match.path + 'testpage1/'} component={() => (<TestPage number={1}/>)} />
+            <Route path={props.match.path + 'testpage2/'} component={() => (<TestPage number={2}/>)} />
+        </div>
+
+
+
     )
 }
 
-export default Welcome;
+export default withRouter(Welcome);
