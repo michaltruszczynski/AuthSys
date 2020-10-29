@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout';
 import Welcome from './pages/Welcome/Welcome';
 import Signup from './pages/Auth/Signup';
 import Signin from './pages/Auth/Signin';
+import TestPage from './pages/TestPage/TestPage';
 
 import Auth from './components/hoc/auth'
 
@@ -18,6 +19,7 @@ class App extends Component {
           <Switch>
             <Route path="/signup" component={Signup} />
             <Route path="/signin" component={Signin} />
+            <Route path="/test" component={Auth(() => <TestPage number={"Different route"} />)}/>
             <Route path="/" component={Auth(Welcome)} />
           </Switch>
         </Layout>
