@@ -13,7 +13,7 @@ const auth = (SpecificComponent, option) => {
 
 
         componentDidMount() {
-            this.props.onAuth();
+            // this.props.onAuth();
             console.log('[HOC auth] ComponentDid mount')
         }
 
