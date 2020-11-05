@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 
 import MainNavigation from '../Navigation/MainNavigation/MainNavigation';
 import Backdrop from '../UI/Backdrop/Backdrop';
+import Modal from '../UI/Modal/Modal';
 
 import './Layout'
 
@@ -22,6 +23,7 @@ const Layout = props => {
 
     return (
         <Fragment>
+            <Modal message={"test test"} show={false}/>
             <Backdrop show={showMobileNav} clicked={mobileNavHandler} />
             <header>
                 <MainNavigation mobileNavClicked={mobileNavHandler} mobileNavShow={showMobileNav} />

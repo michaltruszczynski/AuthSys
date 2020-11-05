@@ -1,31 +1,44 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { Route, Switch, withRouter } from 'react-router-dom';
 
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
-
 import Welcome from './pages/Welcome/Welcome';
-import Signup from './pages/Auth/Signup';
+import Shop from './pages/Shop/Shop';
+import Signup2 from './pages/Auth/Signup2';
 import Signin from './pages/Auth/Signin';
 import TestPage from './pages/TestPage/TestPage';
 
-import Auth from './components/hoc/auth'
+import Auth from './components/hoc/auth';
+import * as actions from './store/actions/index';
 
 class App extends Component {
 
+  componentDidMount() {
+    this.props.onTryAutoSignin();
+  }
+
   render() {
     return (
-      <Fragment>
+      <>
         <Layout>
           <Switch>
-            <Route path="/signup" component={Signup} />
+            <Route path="/signup" component={Signup2} />
             <Route path="/signin" component={Signin} />
-            <Route path="/test" component={Auth(() => <TestPage number={"Different route"} />)}/>
+            <Route path="/test" component={Auth(() => <TestPage number={"Different route"} />)} />
+            <Route path="/shop" component={Auth(Shop)} />
             <Route path="/" component={Auth(Welcome)} />
           </Switch>
         </Layout>
-      </Fragment>
+      </>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignin: () => dispatch( actions.authCheckState() )
+  };
+};
+
+export default withRouter(connect(null, mapDispatchToProps)(App));

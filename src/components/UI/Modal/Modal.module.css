@@ -1,0 +1,43 @@
+.Backdrop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 300;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Modal__wrapper {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    margin: 4rem 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Modal__header {
+    padding: 1rem;
+    align-self: flex-end;
+}
+
+.Modal__content {
+    padding: 1.5rem 3rem;
+}
+
+.Modal__text {
+    font-size: 1.2rem;
+}
+
+.Modal__close-button {
+    padding: 0.5rem;
+}
+
+.Modal__close-button:hover {
+    cursor: pointer;
+}

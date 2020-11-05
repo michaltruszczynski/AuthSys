@@ -28,8 +28,7 @@ export const authSignup = (authData) => {
             .then(response => {
                 console.log(response.data);
                 dispatch(authSignupSuccess());
-                dispatch(setAuthRedirectPath('/signin'))
-                // return Promise.resolve();
+                dispatch(setAuthRedirectPath('/signin'));
             })
             .catch(err => {
                 console.log(err.response.data);
@@ -74,11 +73,11 @@ export const authSignin = (authData) => {
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', response.data.userId);
-                dispatch(authSigninSuccess(response.data.token, response.data.userId))
+                dispatch(authSigninSuccess(response.data.token, response.data.userId));
+                dispatch(checkAuthTimeout(response.data.expiresIn));
                 dispatch(setAuthRedirectPath('/'))
             }).catch(err => {
-                console.log(err);
-                dispatch(authSigninFail(err.response.data.error));
+                dispatch(authSigninFail(err.response.data.message));
             })
     }
 }
@@ -92,30 +91,39 @@ export const logout = () => {
     }
 }
 
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime * 1000);
+    };
+};
+
 
 export const authCheckState = () => {
     return dispatch => {
         const token = localStorage.getItem('token')
         if (!token) {
-            dispatch(logout())
+            dispatch(logout());
         } else {
             const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            // if (expirationDate <= new Date()) {
-                // dispatch(logout());
-                // console.log(new Date())
-                // console.log('test logout')
-            // } else {
-                const userId = localStorage.getItem('userId');
-                // dispatch(authSigninSuccess(token, userId));
-                console.log('token: ', token)
+            if (expirationDate <= new Date()) {
+                dispatch(logout());
+            } else {
+                dispatch(authSigninStart());
                 const authHeader = { 'x-access-token': token };
                 axios.get('http://localhost:5000/api/auth/authUserCheck', { headers: authHeader })
                     .then(response => {
-                        console.log(response.data)
+                        console.log(response.data.token, response.data.userId);
+                        dispatch(authSigninSuccess(response.data.token, response.data.userId));
+                        dispatch(checkAuthTimeout(response.data.expiresIn));
                     })
-            // }
+                    .catch(err => {
+                        dispatch(authSigninFail(err.response.data.message));
+                        dispatch(logout());
+                    })
+            }
         }
-
     }
 }
 
@@ -124,8 +132,4 @@ export const setAuthRedirectPath = (path) => {
         type: actionTypes.AUTH_SET_AUTH_REDIRECT_PATH,
         path: path
     }
-}
-
-export const authUserCheck = (userDta) => {
-
 }

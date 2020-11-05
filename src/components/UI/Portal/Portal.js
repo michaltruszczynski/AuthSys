@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import {createPortal} from 'react-dom';
 
-const Portal = (props) => {
-    const { children } = props;
+const Portal = ({children, targetContainer}) => {
 
-    const mount = document.getElementById('portal');
+    const mount = document.getElementById(targetContainer);
     const element = document.createElement('div');
 
     useEffect(() => {
@@ -16,5 +15,7 @@ const Portal = (props) => {
         createPortal(children, element)
     )
 }
+
+
 
 export default Portal;

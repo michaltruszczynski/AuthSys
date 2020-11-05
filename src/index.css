@@ -7,11 +7,22 @@
 
   --clr-grey-border: #333333;
 
+  /* colors below are ok */
+
   --clr-blue-main: #0088ff;
   --clr-blue-dark: #006dcc;
 
-  --clr-red-error: #d50000;
-  --clr-green: hsl(135, 64%, 50%);
+  /* --clr-red: #e50007; */
+  --clr-red: #d50000;
+
+
+  --clr-red-main: #ff3339;
+  --clr-red-dark: #b22327;
+
+  --clr-green: #24b768;
+
+  --clr-green-main: #2de583;
+  --clr-green-dark: #23b266;
 
   --ff-general: "Poppins", sans-serif;
   --fw-small: 300;

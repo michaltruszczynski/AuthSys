@@ -66,6 +66,7 @@ const authSigninSuccess = (state, action) => {
 }
 
 const authSigninFail = (state, action) => {
+    console.log(action.error)
     return updateObject(state, {
         error: action.error,
         loading: false

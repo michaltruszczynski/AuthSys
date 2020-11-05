@@ -24,7 +24,7 @@ export const containSpecialChar = value => {
     return regex.test(value);
 }
 
-export const containCapitalLetter = (value) => {
+export const containCapitalLetter = value => {
     if (!value) return false;
     const regex = new RegExp(/[A-Z]/);
     return regex.test(value);
@@ -36,9 +36,18 @@ export const email = value => {
     return regex.test(value);
 }
 
-export const passwordMatch = (password, confirmPassword) => {
-    if (!password && !confirmPassword) return false;
-    return password === confirmPassword;
+export const passwordMatch = (refValue) => {
+    console.log('refvalue', refValue)
+    return value => {
+        if (!value) return false;
+        return value === refValue;
+    }
+
 }
+
+// export const passwordMatch = (password, confirmPassword) => {
+//     if (!password && !confirmPassword) return false;
+//     return password === confirmPassword;
+// }
 
 // znajdz wartosc w obiekcie i porownaj

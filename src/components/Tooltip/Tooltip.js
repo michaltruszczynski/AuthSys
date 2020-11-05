@@ -7,7 +7,7 @@ import styles from './Tooltip.module.css';
 const Tooltip = React.forwardRef(({ children, show }, ref) => {
 
     return (
-        <Portal>
+        <Portal targetContainer={'tooltip'}>
             {<div className={styles.tooltip} ref={ref} >
                 {children}
             </div>}

@@ -1,0 +1,55 @@
+.Button {
+    display: block;
+    box-sizing: border-box;
+    padding: 1rem 2rem;
+    margin: 1.4rem 1rem;
+    font-family: var(--ff-general);
+    font-weight: var(--fw-bold);
+    font-size: 1rem;
+    color: var(--white-font-color);
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    min-width: 12rem;
+    max-width: 16rem;
+}
+
+.Button--primary {
+    background: var(--clr-blue-main);
+    border: 2px solid var(--clr-blue-dark);
+}
+
+.Button--primary:hover,
+.Button--primary:active {
+    border: 2px solid var(--clr-blue-main);
+}
+
+.Button--success {
+    background: var(--clr-green-main);
+    border: 2px solid var(--clr-green-dark);
+}
+
+.Button--success:hover,
+.Button--success:active {
+    background: var(--clr-green-dark);
+}
+
+.Button--danger {
+    background: var(--clr-red-main);
+    border: 2px solid var(--clr-red-dark);
+}
+
+.Button--danger:hover,
+.Button--danger:active {
+    background: var(--clr-red-dark);
+}
+
+.Button:active {
+    background: var(--clr-blue-dark);
+}
+
+.Button:disabled {
+    background: #c7cbcf;
+    border: 2px solid #c7cbcf;
+    color: #f1f2f3;
+}
