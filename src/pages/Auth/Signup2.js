@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import styles from './Signin2.module.css';
+import styles from './Signup2.module.css';
 import Input2 from '../../components/Form/Input/Input2';
 
 // import { updateObject } from '../../utility/utility';
@@ -17,7 +17,7 @@ const signupForm = {
             placeholder: 'Name',
             label: 'Name'
         },
-        validators: [required, length({ min: 4 }), length({ max: 5 })],
+        validators: [required, length({ min: 4 }), length({ max: 8 })],
         validationErrMsg: 'Please enter name.',
         customValidation: false,
         refInputValue: false
@@ -71,14 +71,44 @@ class Signup2 extends Component {
         formIsValid: false
     }
 
-    inputUpdate = (name,value) => {
+    inputUpdate = (name, value) => {
         this.setState({
             [name]: value
         });
     }
 
+    isFormValid = () => {
+        if (this.state.name && this.state.email && this.state.password && this.state.passwordConfirm) {
+            this.setState({
+                formIsValid: true
+            });
+        } else {
+            this.setState({
+                formIsValid: false
+            });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if ((this.state.name !== prevState.name) || (this.state.email !== prevState.email) || (this.state.password !== prevState.password) || (this.state.passwordConfirm !== prevState.passwordConfirm)) {
+            this.isFormValid();
+        }
+    }
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log('[Signup2] Submit clicked')
+        const authData = {
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password
+        };
+
+        this.props.onAuthSignup(authData);
+    }
+
     render() {
-        console.log('rendering');
+        console.log('[Signup2] rendering');
         const formElementKeys = Object.keys(signupForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,
@@ -86,7 +116,6 @@ class Signup2 extends Component {
         }));
 
         console.log(formElementArray);
-        console.log('rendering', )
 
         let form = formElementArray.map(formElement => (
             <Input2
@@ -98,7 +127,6 @@ class Signup2 extends Component {
                 validationErrMsg={formElement.config.validationErrMsg}
                 customValidation={formElement.config.customValidation}
                 inputUpdate={this.inputUpdate}
-                // refInputValue={formElement.refInputValue ? this.state[formElement.refInputValue] : null}
                 refInputValidator={formElement.config.refInputValue ? formElement.config.refInputValidator(this.state[formElement.config.refInputValue]) : null}
             />
         ));
@@ -120,8 +148,8 @@ class Signup2 extends Component {
         return (
             <>
                 <div className={styles.Form__container}>
-                    <form onSubmit={this.submitHandler}>
-                        <div className={styles.form__title}>
+                    <form className={styles.Form} onSubmit={this.submitHandler}>
+                        <div className={styles.Form__title}>
                             Sign Up
                         </div>
                         <p className={errorMsgClasses.join(' ')}>Backend validation error</p>
@@ -133,7 +161,7 @@ class Signup2 extends Component {
                         <div className={styles.Form__item}>
                             <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
                         </div>
-                        <div className={styles["Form__info-message"]}>
+                        <div>
                             <p>Already have an account? <a href="3">Log in</a></p>
                         </div>
                     </form>

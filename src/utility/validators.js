@@ -37,17 +37,13 @@ export const email = value => {
 }
 
 export const passwordMatch = (refValue) => {
-    console.log('refvalue', refValue)
     return value => {
         if (!value) return false;
         return value === refValue;
     }
-
 }
 
-// export const passwordMatch = (password, confirmPassword) => {
-//     if (!password && !confirmPassword) return false;
-//     return password === confirmPassword;
-// }
-
-// znajdz wartosc w obiekcie i porownaj
+export const passwordMatchDirect = (password, confirmPassword) => {
+    if (!password && !confirmPassword) return false;
+    return password === confirmPassword;
+}

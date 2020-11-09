@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PasswordValidator from '../../PasswordValidator/PasswordValidator';
 
 import styles from './Input.module.css';
 
@@ -6,8 +7,9 @@ class Input2 extends Component {
     state = {
         value: '',
         touched: false,
-        valid: false
-    }
+        valid: false,
+        isInputActive: false
+    };
 
     inputChangeHandler = (event) => {
         const { value } = event.target;
@@ -20,16 +22,16 @@ class Input2 extends Component {
         }
 
         if (this.props.refInputValidator) {
-            isValid = this.props.refInputValidator(value)
-            console.log('pswd match validator', isValid)
+            isValid = this.props.refInputValidator(value);
+            console.log('pswd match validator', isValid);
         }
 
         if (isValid) {
-            this.props.inputUpdate(this.props.id, value)
+            this.props.inputUpdate(this.props.id, value);
         }
 
         if (this.state.valid && (this.state.valid !== isValid)) {
-            this.props.inputUpdate(this.props.id, '')
+            this.props.inputUpdate(this.props.id, '');
         }
 
         this.setState({
@@ -37,16 +39,29 @@ class Input2 extends Component {
             touched: true,
             valid: isValid
         });
-
     }
 
-    componentDidUpdate(prevProps) {
+    focusHandler = () => {
+        this.setState(prevState => ({
+            isInputActive: !prevState.isInputActive
+        }));
+    };
+
+    componentDidUpdate(prevProps, prevState) {
         if (!this.props.refInputValidator) return;
-        if (prevProps.refInputValidator !== this.props.refInputValidator) {
+
+        if (this.props.refInputValidator !== prevProps.refInputValidator) {
             let isValid = this.props.refInputValidator(this.state.value);
-            this.setState({
-                valid: isValid
-            });
+
+            if (prevState.valid !== isValid) {
+                this.setState({
+                    valid: isValid
+                });
+
+                if (prevState.valid === true) {
+                    this.props.inputUpdate(this.props.id, '');
+                }
+            }
         }
     }
 
@@ -58,7 +73,7 @@ class Input2 extends Component {
 
         let inputClasses = [styles.Form__input];
         if (!this.state.valid && this.state.touched) {
-            inputClasses.push(styles['Form__input--error'])
+            inputClasses.push(styles['Form__input--error']);
         }
 
         switch (elementType) {
@@ -71,7 +86,9 @@ class Input2 extends Component {
                     placeholder={config.placeholder}
                     value={this.state.value}
                     onChange={this.inputChangeHandler}
-                />
+                    onFocus={this.focusHandler}
+                    onBlur={this.focusHandler}
+                />;
         }
 
         return (
@@ -79,10 +96,10 @@ class Input2 extends Component {
                 <label htmlFor={id} className={styles.Form__label}>{config.label}: </label>
                 {inputElement}
                 <span className={styles['Form__input-error']}>{validationErrMsg}</span>
+                {customValidation ? <PasswordValidator value={this.state.value} valid={this.state.valid} isInputActive={this.state.isInputActive} /> : null}
             </div>
-        )
+        );
     }
-
 }
 
 export default Input2;

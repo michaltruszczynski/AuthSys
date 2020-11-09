@@ -43,6 +43,11 @@
     text-align: justify;
 }
 
+.Form__item {
+    display: flex;
+    flex-direction: column;
+}
+
 .Form__btn {
     font-family: var(--ff-general);
     font-weight: var(--fw-bold);

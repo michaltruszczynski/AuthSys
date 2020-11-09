@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { length, containCapitalLetter, containNumber, containSpecialChar } from '../../utility/validators';
 
-import styles from './Validator.module.css';
+import ToggleContent from '../ToggleContent/ToggleContent';
+
+import styles from './PasswordValidator.module.css';
 
 class PasswordValidator extends Component {
     state = {
@@ -29,9 +31,9 @@ class PasswordValidator extends Component {
         validatorTitle: 'Password rules.'
     }
 
+
     render() {
-        const { value, active, large } = this.props;
-        console.log('[PasswordValidator] rendering')
+        const { value, valid, isInputActive } = this.props;
         let validatorRulesMsg;
 
         const rules = Object.keys(this.state.validators);
@@ -43,17 +45,15 @@ class PasswordValidator extends Component {
             </li>
         ))
 
-        const validator = (
-            <>
-                <h3 className={`${!large ? styles['tooltip__list--small'] : null }`}>Password rules</h3>
-                <ul className={`${styles.tooltip__list} ${!large ? styles["tooltip__list--small"] : null}`}>
-                    {validatorRulesMsg}
-                </ul>
-            </>
-        )
+        let show = !valid && isInputActive
 
         return (
-            validator
+            <ToggleContent show={show}>
+                <h3>Password rules</h3>
+                <ul className={`${styles.tooltip__list}`}>
+                    {validatorRulesMsg}
+                </ul>
+            </ToggleContent>
         )
     }
 }

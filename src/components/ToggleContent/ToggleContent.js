@@ -22,10 +22,9 @@ const ToggleContent = ({ show, children }) => {
 
                 const coordsRefEl = contentContainerRef.current.getBoundingClientRect();
 
-                const { heighte } = coordsRefEl;
-                height = heighte
-                console.log(height)
-                contentContainerRef.current.style.height = heighte + 'px';
+                const { height } = coordsRefEl;
+
+                contentContainerRef.current.style.height = height + 'px';
             } else {
                 contentContainerRef.current.style.height = height + 'px';
             }
