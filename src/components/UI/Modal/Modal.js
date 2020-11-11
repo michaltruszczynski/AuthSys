@@ -4,10 +4,10 @@ import Portal from '../Portal/Portal';
 import Button from '../../Button/Button';
 import styles from './Modal.module.css';
 
-const Modal = ({ message, show }) => {
+const Modal = ({ successMessage, errorMessage, modalClicked }) => {
 
     return (
-        show ? (
+        (successMessage || errorMessage) ? (
             <Portal targetContainer={'modal'}>
                 <div className={styles.Backdrop}>
                     <div className={styles.Modal__wrapper}>
@@ -17,10 +17,11 @@ const Modal = ({ message, show }) => {
                         <div className={styles.Modal__content}>
     
                             <p className={styles.Modal__text}>
-                                {message}
+                                {errorMessage && errorMessage}
+                                {successMessage && successMessage}
                             </p>
                         </div>
-                        <Button disabled={false} btnStyle={"primary"}>Close</Button>
+                        <Button disabled={false} btnStyle={"primary"} onClick={modalClicked}>Close</Button>
                     </div>
                 </div>
             </Portal>

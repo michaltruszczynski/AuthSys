@@ -1,5 +1,25 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import * as actionMessage from './message';
+
+export const authSignup = (authData) => {
+    return dispatch => {
+        dispatch(authSignupStart());
+        console.log(authData);
+        axios.post('http://localhost:5000/api/auth/signup', authData)
+            .then(response => {
+                console.log(response.data);
+                dispatch(authSignupSuccess());
+                // dispatch(setAuthRedirectPath('/signin'));
+            })
+            .catch(err => {
+                console.log(err.response.data);
+                dispatch(authSignupFail(err.response.data));
+                dispatch(actionMessage.setErrorMessage(err.response.data.data))
+            })
+    }
+}
+
 
 export const authSignupStart = () => {
     return {
@@ -20,22 +40,6 @@ export const authSignupFail = (error) => {
     }
 }
 
-export const authSignup = (authData) => {
-    return dispatch => {
-        dispatch(authSignupStart());
-        console.log(authData);
-        axios.post('http://localhost:5000/api/auth/signup', authData)
-            .then(response => {
-                console.log(response.data);
-                dispatch(authSignupSuccess());
-                dispatch(setAuthRedirectPath('/signin'));
-            })
-            .catch(err => {
-                console.log(err.response.data);
-                dispatch(authSignupFail(err.response.data));
-            })
-    }
-}
 
 
 

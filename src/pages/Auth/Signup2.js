@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import styles from './Signup2.module.css';
-import Input2 from '../../components/Form/Input/Input2';
 
-// import { updateObject } from '../../utility/utility';
+import Input2 from '../../components/Form/Input/Input2';
+import Spinner from '../../components/UI/Spinner/Spinner';
+
 import { required, length, containSpecialChar, containCapitalLetter, containNumber, email, passwordMatch } from '../../utility/validators';
 
 import * as actions from '../../store/actions/index';
@@ -41,7 +42,7 @@ const signupForm = {
             placeholder: 'Password',
             label: 'Password'
         },
-        validators: [required, containSpecialChar, containNumber, length({ min: 4 }), containCapitalLetter],
+        validators: [required, containNumber, length({ min: 4 }), containCapitalLetter],
         validationErrMsg: 'Please enter a valid password.',
         customValidation: true,
         refInputValue: false
@@ -58,7 +59,6 @@ const signupForm = {
         customValidation: false,
         refInputValue: 'password',
         refInputValidator: passwordMatch
-
     }
 }
 
@@ -72,6 +72,7 @@ class Signup2 extends Component {
     }
 
     inputUpdate = (name, value) => {
+        console.log('sfhsjfh')
         this.setState({
             [name]: value
         });
@@ -115,7 +116,7 @@ class Signup2 extends Component {
             config: signupForm[key]
         }));
 
-        console.log(formElementArray);
+        // console.log(formElementArray);
 
         let form = formElementArray.map(formElement => (
             <Input2
@@ -127,55 +128,46 @@ class Signup2 extends Component {
                 validationErrMsg={formElement.config.validationErrMsg}
                 customValidation={formElement.config.customValidation}
                 inputUpdate={this.inputUpdate}
-                refInputValidator={formElement.config.refInputValue ? formElement.config.refInputValidator(this.state[formElement.config.refInputValue]) : null}
+                refInputValue={formElement.config.refInputValue ? this.state[formElement.config.refInputValue] : null}
+                refInputValidator={formElement.config.refInputValue ? formElement.config.refInputValidator : null}
             />
         ));
 
-        //add err message if form send but invalid and does not pass backend validation <p className={errorMsgClasses.join(' ')}>{errorMsg}</p>
-        let errorMsgClasses = [styles["Form__message"], styles["Form__message-error"], styles["Form__message-hidden"]];
-        let errorMsg = 'Please provide correct data.';
-        if (this.props.error) {
-            errorMsgClasses = [styles["Form__message"], styles["Form__message-error"]];
-            console.log(this.props.error);
-            const errorMsgDetails = this.props.error.data;
-            console.log(errorMsgDetails)
-            const emailErrDetails = errorMsgDetails.filter(item => item.param === 'email');
 
-            if (emailErrDetails.length) {
-                errorMsg = 'Email already exists. Please choose different one.'
-            }
-        }
         return (
-            <>
-                <div className={styles.Form__container}>
-                    <form className={styles.Form} onSubmit={this.submitHandler}>
-                        <div className={styles.Form__title}>
-                            Sign Up
+            this.props.loading ? (
+                <Spinner />
+            ) : (
+                    <>
+                        <div className={styles.Form__container}>
+                            <form className={styles.Form} onSubmit={this.submitHandler}>
+                                <div className={styles.Form__title}>
+                                    Sign Up
                         </div>
-                        <p className={errorMsgClasses.join(' ')}>Backend validation error</p>
-                        <p className={styles.Form__description}>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                            impedit odit?
-                    </p>
-                        {form}
-                        <div className={styles.Form__item}>
-                            <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
+                                <p className={styles.Form__description}>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
+                                    impedit odit?
+                        </p>
+                                {form}
+                                <div className={styles.Form__item}>
+                                    <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
+                                </div>
+                                <div>
+                                    <p>Already have an account? <a href="3">Log in</a></p>
+                                </div>
+                            </form>
                         </div>
-                        <div>
-                            <p>Already have an account? <a href="3">Log in</a></p>
-                        </div>
-                    </form>
-                </div>
-            </>
+                    </>
+                )
         )
     }
 }
 
 const mapStateToProps = state => {
     return {
-        loading: state.loading,
-        error: state.error,
-        authRedirectPath: state.authRedirectPath
+        loading: state.auth.loading,
+        error: state.auth.error,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 

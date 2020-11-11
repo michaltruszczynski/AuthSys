@@ -11,8 +11,7 @@ class Input2 extends Component {
         isInputActive: false
     };
 
-    inputChangeHandler = (event) => {
-        const { value } = event.target;
+    inputValidationCheck = (value) => {
         let isValid = true;
 
         if (this.props.validators.length) {
@@ -22,8 +21,8 @@ class Input2 extends Component {
         }
 
         if (this.props.refInputValidator) {
-            isValid = this.props.refInputValidator(value);
-            console.log('pswd match validator', isValid);
+            const validator = this.props.refInputValidator(this.props.refInputValue)
+            isValid = validator(value);
         }
 
         if (isValid) {
@@ -34,10 +33,17 @@ class Input2 extends Component {
             this.props.inputUpdate(this.props.id, '');
         }
 
+        return isValid;
+    }
+
+
+    inputChangeHandler = (event) => {
+        const { value } = event.target;
+
         this.setState({
             value: value,
             touched: true,
-            valid: isValid
+            valid: this.inputValidationCheck(value)
         });
     }
 
@@ -48,19 +54,13 @@ class Input2 extends Component {
     };
 
     componentDidUpdate(prevProps, prevState) {
-        if (!this.props.refInputValidator) return;
-
-        if (this.props.refInputValidator !== prevProps.refInputValidator) {
-            let isValid = this.props.refInputValidator(this.state.value);
-
-            if (prevState.valid !== isValid) {
+        if (this.props.refInputValue !== prevProps.refInputValue) {
+            let isValid = this.inputValidationCheck(this.state.value);
+            console.log(this.state.value, 'valid', isValid )
+            if (this.state.valid !== isValid) {
                 this.setState({
                     valid: isValid
                 });
-
-                if (prevState.valid === true) {
-                    this.props.inputUpdate(this.props.id, '');
-                }
             }
         }
     }

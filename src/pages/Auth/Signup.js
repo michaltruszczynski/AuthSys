@@ -135,10 +135,7 @@ class Signup extends Component {
             email: this.state.signupForm.email.value,
             password: this.state.signupForm.password.value
         }
-        this.props.onAuthSignup(authData)
-            // .then(() => {
-            //     this.props.history.push('/signin')
-            // })
+        this.props.onAuthSignup(authData);
     }
 
     shouldComponentUpdate(nextProps, nextState) {

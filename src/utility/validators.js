@@ -37,9 +37,15 @@ export const email = value => {
 }
 
 export const passwordMatch = (refValue) => {
-    return value => {
-        if (!value) return false;
-        return value === refValue;
+    if (!refValue) {
+        return value => {
+            return false;
+        }
+    } else {
+        return value => {
+            if (!value) return false;
+            return value === refValue;
+        }
     }
 }
 

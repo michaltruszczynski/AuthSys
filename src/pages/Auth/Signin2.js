@@ -116,11 +116,10 @@ class Signin2 extends Component {
 
 const mapStateToProps = state => {
     return {
-        loading: state.loading,
-        error: state.error,
-        authRedirectPath: state.authRedirectPath,
-        authSignupSuccess: state.authSignupSuccess
-
+        loading: state.auth.loading,
+        error: state.auth.error,
+        authRedirectPath: state.auth.authRedirectPath,
+        authSignupSuccess: state.auth.authSignupSuccess
     }
 }
 

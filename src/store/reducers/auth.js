@@ -24,7 +24,7 @@ const authSignupSuccess = (state, action) => {
     return updateObject(state, {
         error: null,
         loading: false,
-        authRedirectPath: action.path,
+        // authRedirectPath: action.path,
         // authSuccess: true,
         authSignupSuccess: true
     });

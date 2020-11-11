@@ -1,13 +1,13 @@
 import * as actionTypes from '../actions/actionTypes';
 
-export const setSuccessMessgae = (message) => {
+export const setSuccessMessage = (message) => {
     return {
         type: actionTypes.SET_SUCCESS_MESSAGE,
         message: message
     }
 }
 
-export const setErrorMessgae = (error) => {
+export const setErrorMessage = (error) => {
     return {
         type: actionTypes.SET_ERROR_MESSAGE,
         error: error
