@@ -1,32 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Portal from '../Portal/Portal';
 import Button from '../../Button/Button';
 import styles from './Modal.module.css';
 
-const Modal = ({ successMessage, errorMessage, modalClicked }) => {
+import * as actions from '../../../store/actions';
 
-    return (
-        (successMessage || errorMessage) ? (
-            <Portal targetContainer={'modal'}>
-                <div className={styles.Backdrop}>
-                    <div className={styles.Modal__wrapper}>
-                        <div className={styles.Modal__header}>
-                        <i className={`far fa-window-close ${styles["Modal__close-button"]}`}></i>
+class Modal extends Component {
+
+    modalCloseHandler = () => {
+        this.props.onClearMessage();
+    }
+
+    render() {
+        const { message, messageTitle } = this.props;
+        return (
+            (message.length || messageTitle) ? (
+                <Portal targetContainer={'modal'}>
+                    <div className={styles.Backdrop}>
+                        <div className={styles.Modal__wrapper}>
+                            <div className={styles.Modal__header}>
+                                <i className={`far fa-window-close ${styles["Modal__close-button"]}`}></i>
+                            </div>
+                            <div className={styles.Modal__content}>
+                                <h1>{messageTitle}</h1>
+                                {message.map((msg, index) => (
+                                    <p key={index} className={styles.Modal__text}>
+                                        {msg}
+                                    </p>))
+                                }
+                            </div>
+                            <Button disabled={false} btnStyle={"primary"} type={"button"} clickHandler={this.modalCloseHandler}>Close</Button>
                         </div>
-                        <div className={styles.Modal__content}>
-    
-                            <p className={styles.Modal__text}>
-                                {errorMessage && errorMessage}
-                                {successMessage && successMessage}
-                            </p>
-                        </div>
-                        <Button disabled={false} btnStyle={"primary"} onClick={modalClicked}>Close</Button>
                     </div>
-                </div>
-            </Portal>
-        ) : null
-    )
+                </Portal >
+            ) : null
+        )
+    }
 }
 
-export default Modal;
+const mapStateToProps = state => {
+    return {
+        messageTitle: state.message.messageTitle,
+        message: state.message.message
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onClearMessage: () => dispatch(actions.clearMessage())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);

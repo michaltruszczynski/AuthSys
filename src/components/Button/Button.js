@@ -8,7 +8,7 @@ const butonStyles = {
     danger: 'danger'
 }
 
-const Button = ({ disabled, children, type, btnStyle }) => {
+const Button = ({ disabled, children, type, btnStyle, clickHandler }) => {
     let classList;
 
     switch (btnStyle) {
@@ -31,7 +31,8 @@ const Button = ({ disabled, children, type, btnStyle }) => {
         <button
             className={classList.join(' ')}
             disabled={disabled}
-            type={type}>
+            type={type}
+            onClick={clickHandler}>
             {children}
         </button>
     )

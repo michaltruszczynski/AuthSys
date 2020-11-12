@@ -5,7 +5,6 @@ export {
     authCheckState
 } from './auth';
 export {
-    setSuccessMessage,
-    setErrorMessage,
+    setMessage,
     clearMessage
 } from './message';

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
-import * as actionMessage from './message';
+import * as messageActions from './message'
+import { MESSAGE_TYPES } from './messageTypes';
+import { convertErrMessageArray } from '../../utility/utility';
 
 export const authSignup = (authData) => {
     return dispatch => {
@@ -15,7 +17,14 @@ export const authSignup = (authData) => {
             .catch(err => {
                 console.log(err.response.data);
                 dispatch(authSignupFail(err.response.data));
-                dispatch(actionMessage.setErrorMessage(err.response.data.data))
+                const messageTitle = err.response.data.message;
+                const messageArr = convertErrMessageArray(err.response.data.data)
+                // const message = err.response.data.data.reduce((text, message, id) => {
+                //     return id === 0 ? message.msg : text + ' ' + message.msg;
+                // }, '')
+                console.log(err.response.data.data)
+                console.log(messageArr)
+                dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
             })
     }
 }
