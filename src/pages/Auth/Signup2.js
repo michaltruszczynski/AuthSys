@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import styles from './Signup2.module.css';
 
@@ -42,7 +43,7 @@ const signupForm = {
             placeholder: 'Password',
             label: 'Password'
         },
-        validators: [required, containNumber, length({ min: 4 }), containCapitalLetter],
+        validators: [required, containNumber, containSpecialChar, length({ min: 4 }), containCapitalLetter],
         validationErrMsg: 'Please enter a valid password.',
         customValidation: true,
         refInputValue: false
@@ -90,12 +91,6 @@ class Signup2 extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if ((this.state.name !== prevState.name) || (this.state.email !== prevState.email) || (this.state.password !== prevState.password) || (this.state.passwordConfirm !== prevState.passwordConfirm)) {
-            this.isFormValid();
-        }
-    }
-
     submitHandler = (event) => {
         event.preventDefault();
         console.log('[Signup2] Submit clicked')
@@ -108,6 +103,16 @@ class Signup2 extends Component {
         this.props.onAuthSignup(authData);
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if ((this.state.name !== prevState.name) || (this.state.email !== prevState.email) || (this.state.password !== prevState.password) || (this.state.passwordConfirm !== prevState.passwordConfirm)) {
+            this.isFormValid();
+        }
+    }
+
+    componentWillUnmount() {
+        this.props.onAuthStatusReset();
+    }
+
     render() {
         console.log('[Signup2] rendering');
         const formElementKeys = Object.keys(signupForm);
@@ -118,7 +123,7 @@ class Signup2 extends Component {
 
         // console.log(formElementArray);
 
-        let form = formElementArray.map(formElement => (
+        let formElements = formElementArray.map(formElement => (
             <Input2
                 key={formElement.id}
                 id={formElement.id}
@@ -133,32 +138,37 @@ class Signup2 extends Component {
             />
         ));
 
+        let form = (
+            <>
+                <div className={styles.Form__container}>
+                    <form className={styles.Form} onSubmit={this.submitHandler}>
+                        <div className={styles.Form__title}>
+                            Sign Up
+                        </div>
+                        <p className={styles.Form__description}>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
+                            impedit odit?
+                        </p>
+                        {formElements}
+                        <div className={styles.Form__item}>
+                            <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
+                        </div>
+                        <div>
+                            <p>Already have an account? <a href="3">Log in</a></p>
+                        </div>
+                    </form>
+                </div>
+            </>
+        )
+
+        if (this.props.signupSuccess) {
+            form = <Redirect to={"/signin"} />
+            // this.props.history.push('/signin')
+        }
+
 
         return (
-            this.props.loading ? (
-                <Spinner />
-            ) : (
-                    <>
-                        <div className={styles.Form__container}>
-                            <form className={styles.Form} onSubmit={this.submitHandler}>
-                                <div className={styles.Form__title}>
-                                    Sign Up
-                        </div>
-                                <p className={styles.Form__description}>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                                    impedit odit?
-                        </p>
-                                {form}
-                                <div className={styles.Form__item}>
-                                    <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
-                                </div>
-                                <div>
-                                    <p>Already have an account? <a href="3">Log in</a></p>
-                                </div>
-                            </form>
-                        </div>
-                    </>
-                )
+            this.props.loading ? <Spinner /> : form
         )
     }
 }
@@ -166,15 +176,14 @@ class Signup2 extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error,
-        authRedirectPath: state.auth.authRedirectPath
+        signupSuccess: state.auth.authSignupSuccess
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onAuthSignup: (userData) => dispatch(actions.authSignup(userData)),
-        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
+        onAuthStatusReset: () => dispatch(actions.authStatusReset())
     }
 }
 

@@ -15,15 +15,9 @@ export const authSignup = (authData) => {
                 // dispatch(setAuthRedirectPath('/signin'));
             })
             .catch(err => {
-                console.log(err.response.data);
                 dispatch(authSignupFail(err.response.data));
                 const messageTitle = err.response.data.message;
-                const messageArr = convertErrMessageArray(err.response.data.data)
-                // const message = err.response.data.data.reduce((text, message, id) => {
-                //     return id === 0 ? message.msg : text + ' ' + message.msg;
-                // }, '')
-                console.log(err.response.data.data)
-                console.log(messageArr)
+                const messageArr = convertErrMessageArray(err.response.data.data);
                 dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
             })
     }
@@ -49,6 +43,11 @@ export const authSignupFail = (error) => {
     }
 }
 
+export const authStatusReset = () => {
+    return {
+        type: actionTypes.AUTH_STATUS_RESET
+    }
+}
 
 
 

@@ -11,7 +11,10 @@ import * as serviceWorker from './serviceWorker';
 import authReducer from './store/reducers/auth';
 import messageReducer from './store/reducers/message'
 
-const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+  trace: true, // (action) => { return ‘trace as string’; }
+  traceLimit: 25,
+}) : null || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,

@@ -117,16 +117,13 @@ class Signin2 extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error,
-        authRedirectPath: state.auth.authRedirectPath,
-        authSignupSuccess: state.auth.authSignupSuccess
+        error: state.auth.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData)),
-        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
+        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData))
     }
 }
 
