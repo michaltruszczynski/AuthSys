@@ -26,6 +26,10 @@
     align-self: flex-end;
 }
 
+.Modal__heading {
+    font-size: 1.1rem;
+}
+
 .Modal__content {
     padding: 1.5rem 3rem;
 }

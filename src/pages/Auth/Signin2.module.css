@@ -66,6 +66,12 @@
     background: var(--clr-blue-dark);
 }
 
+.Form__btn:disabled {
+    background: var(--clr-grey-border);
+    border: 2px solid var(--clr-grey-border);
+    cursor: not-allowed;
+}
+
 /* .form__input--small {
     max-width: 250px;
 } */

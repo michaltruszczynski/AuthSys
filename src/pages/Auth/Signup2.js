@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import styles from './Signup2.module.css';
-
 import Input2 from '../../components/Form/Input/Input2';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import { required, length, containSpecialChar, containCapitalLetter, containNumber, email, passwordMatch } from '../../utility/validators';
 
 import * as actions from '../../store/actions/index';
+import styles from './Signup2.module.css';
 
 const signupForm = {
     name: {
@@ -121,8 +120,6 @@ class Signup2 extends Component {
             config: signupForm[key]
         }));
 
-        // console.log(formElementArray);
-
         let formElements = formElementArray.map(formElement => (
             <Input2
                 key={formElement.id}
@@ -139,7 +136,6 @@ class Signup2 extends Component {
         ));
 
         let form = (
-            <>
                 <div className={styles.Form__container}>
                     <form className={styles.Form} onSubmit={this.submitHandler}>
                         <div className={styles.Form__title}>
@@ -158,14 +154,11 @@ class Signup2 extends Component {
                         </div>
                     </form>
                 </div>
-            </>
         )
 
         if (this.props.signupSuccess) {
             form = <Redirect to={"/signin"} />
-            // this.props.history.push('/signin')
         }
-
 
         return (
             this.props.loading ? <Spinner /> : form

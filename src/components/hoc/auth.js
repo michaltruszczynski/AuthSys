@@ -17,7 +17,7 @@ const auth = (SpecificComponent, option) => {
 
 const mapStateToProps = state => {
     return {
-        token: state.token
+        token: state.auth.token
     }
 }
 

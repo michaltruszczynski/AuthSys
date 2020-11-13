@@ -24,7 +24,7 @@ class Modal extends Component {
                                 <i className={`far fa-window-close ${styles["Modal__close-button"]}`}></i>
                             </div>
                             <div className={styles.Modal__content}>
-                                <h1>{messageTitle}</h1>
+                                <h1 className={styles.Modal__heading}>{messageTitle}</h1>
                                 {message.map((msg, index) => (
                                     <p key={index} className={styles.Modal__text}>
                                         {msg}

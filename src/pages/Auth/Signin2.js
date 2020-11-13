@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Input2 from '../../components/Form/Input/Input2';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import { required, length, containSpecialChar, containCapitalLetter, containNumber, email, passwordMatch } from '../../utility/validators';
+import { required, email } from '../../utility/validators';
 
 import * as actions from '../../store/actions/index';
-
-
 import styles from './Signin2.module.css';
 
 const signinForm = {
@@ -40,10 +39,8 @@ const signinForm = {
 
 class Signin2 extends Component {
     state = {
-        name: '',
         email: '',
         password: '',
-        passwordConfirm: '',
         formIsValid: false
     }
 
@@ -53,6 +50,36 @@ class Signin2 extends Component {
         });
     }
 
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log('[Signin2] Submit clicked')
+        const authData = {
+            email: this.state.email,
+            password: this.state.password
+        };
+
+        this.props.onAuthSignin(authData);
+    }
+
+    isFormValid = () => {
+        if (this.state.email && this.state.password) {
+            this.setState({
+                formIsValid: true
+            });
+        } else {
+            this.setState({
+                formIsValid: false
+            });
+        }
+    }
+
+    // componentDidUpdate(prevProps, prevState) {
+    //     if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
+    //         this.isFormValid();
+    //     }
+    // }
+
+
     render() {
         console.log('[Signin2] rendering')
         const formElementKeys = Object.keys(signinForm);
@@ -61,9 +88,8 @@ class Signin2 extends Component {
             config: signinForm[key]
         }));
 
-        console.log(formElementArray);
 
-        let form = formElementArray.map(formElement => (
+        let formElements = formElementArray.map(formElement => (
             <Input2
                 key={formElement.id}
                 id={formElement.id}
@@ -77,47 +103,41 @@ class Signin2 extends Component {
             />
         ));
 
-        if (this.props.loading) {
-            form = <Spinner />
+        let form = (
+            <div className={styles.Form__container}>
+                <form className={styles.Form} onSubmit={this.submitHandler}>
+                    <div className={styles.Form__title}>
+                        Sign In
+                        </div>
+                    <p className={styles.Form__description}>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
+                        impedit odit?
+                        </p>
+                    {formElements}
+                    <div className={styles.Form__item}>
+                        <button disabled={false} className={styles.Form__btn} type="submit">Sign In</button>
+                    </div>
+                    <div className={styles.Form__item}>
+                        <p>Forgot password? <a href="3">Change password</a></p>
+                    </div>
+                </form>
+            </div>
+        )
+
+        if (this.props.token) {
+            form = <Redirect to={"/"} />
         }
 
-
-        let redirect = null;
-        // if (this.props.authRedirectPath) {
-        //     redirect = <Redirect to={this.props.authRedirectPath} />
-        // }
-
         return (
-            <>
-                <div className={styles.Form__container}>
-                    {redirect}
-                    <form className={styles.Form} onSubmit={this.submitHandler}>
-                        <div className={styles.Form__title}>
-                            Sign In
-                        </div>
-                        <p className={styles.Form__description}>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                            impedit odit?
-                        </p>
-                        {form}
-                        <div className={styles.Form__item}>
-                            <button className={styles.Form__btn} type="submit">Sign In</button>
-                        </div>
-                        <div className={styles.Form__item}>
-                            <p>Forgot password? <a href="3">Change password</a></p>
-                        </div>
-                    </form>
-                </div>
-            </>
+            this.props.loading ? <Spinner /> : form
         )
     }
 }
 
-
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        token: state.auth.token
     }
 }
 

@@ -11,10 +11,12 @@ export const convertErrMessageArray = (errorArray) => {
 
 export const addMessage = (msgArray, newMessage) => {
     const newMsgArray = [...msgArray]
-    return newMsgArray.push(newMessage);
+    newMsgArray.push(newMessage);
+    return newMsgArray;
 }
 
 export const convertErrMessageArrayToText = (errorArray) => {
+    if (!errorArray) return [];
     return errorArray.reduce((text, message, id) => {
         return id === 0 ? message.msg : text + ' ' + message.msg;
     }, '');

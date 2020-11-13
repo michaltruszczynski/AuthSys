@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as messageActions from './message'
 import { MESSAGE_TYPES } from './messageTypes';
-import { convertErrMessageArray } from '../../utility/utility';
+import { convertErrMessageArray, addMessage } from '../../utility/utility';
 
 export const authSignup = (authData) => {
     return dispatch => {
@@ -12,12 +12,16 @@ export const authSignup = (authData) => {
             .then(response => {
                 console.log(response.data);
                 dispatch(authSignupSuccess());
-                // dispatch(setAuthRedirectPath('/signin'));
+                const messageArr = addMessage([], 'You have been successfully registered. Please signin.')
+                dispatch(messageActions.setMessage(null, messageArr, MESSAGE_TYPES.success));
             })
             .catch(err => {
                 dispatch(authSignupFail(err.response.data));
                 const messageTitle = err.response.data.message;
-                const messageArr = convertErrMessageArray(err.response.data.data);
+                let messageArr = [];
+                if (err.response.data.data) {
+                    messageArr = convertErrMessageArray(err.response.data.data);
+                }
                 dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
             })
     }
@@ -49,6 +53,32 @@ export const authStatusReset = () => {
     }
 }
 
+export const authSignin = (authData) => {
+    return dispatch => {
+        dispatch(authSigninStart());
+        console.log(authData);
+        axios.post('http://localhost:5000/api/auth/signin', authData)
+            .then(response => {
+                console.log(response.data);
+                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn)
+                // localStorage.setItem('user', JSON.stringify(response.data))
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('expirationDate', expirationDate);
+                localStorage.setItem('userId', response.data.userId);
+                dispatch(authSigninSuccess(response.data.token, response.data.userId));
+                dispatch(checkAuthTimeout(response.data.expiresIn));
+            }).catch(err => {
+                dispatch(authSigninFail(err.response.data));
+                console.log(err.response.data)
+                const messageTitle = err.response.data.message;
+                let messageArr = [];
+                if (err.response.data.data) {
+                    messageArr = convertErrMessageArray(err.response.data.data);
+                }
+                dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
+            })
+    }
+}
 
 
 export const authSigninStart = () => {
@@ -69,28 +99,6 @@ export const authSigninFail = (error) => {
     return {
         type: actionTypes.AUTH_SIGNIN_FAIL,
         error: error
-    }
-}
-
-
-export const authSignin = (authData) => {
-    return dispatch => {
-        dispatch(authSigninStart());
-        console.log(authData);
-        axios.post('http://localhost:5000/api/auth/signin', authData)
-            .then(response => {
-                console.log(response.data);
-                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn)
-                // localStorage.setItem('user', JSON.stringify(response.data))
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('userId', response.data.userId);
-                dispatch(authSigninSuccess(response.data.token, response.data.userId));
-                dispatch(checkAuthTimeout(response.data.expiresIn));
-                dispatch(setAuthRedirectPath('/'))
-            }).catch(err => {
-                dispatch(authSigninFail(err.response.data.message));
-            })
     }
 }
 
@@ -131,17 +139,11 @@ export const authCheckState = () => {
                         dispatch(checkAuthTimeout(response.data.expiresIn));
                     })
                     .catch(err => {
-                        dispatch(authSigninFail(err.response.data.message));
+                        console.log(err)
                         dispatch(logout());
+                        dispatch(authSigninFail(err.response.data));
                     })
             }
         }
-    }
-}
-
-export const setAuthRedirectPath = (path) => {
-    return {
-        type: actionTypes.AUTH_SET_AUTH_REDIRECT_PATH,
-        path: path
     }
 }

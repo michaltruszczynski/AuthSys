@@ -9,7 +9,7 @@ const initialState = {
     loading: false,
     authRedirectPath: null,
     authSignupSuccess: false,
-    // authSigninSuccess: false
+    authSigninSuccess: false
 }
 
 const authSignupStart = (state, action) => {
@@ -44,7 +44,6 @@ const authSigninStart = (state, action) => {
     return updateObject(state, {
         error: null,
         loading: true,
-        authRedirectPath: null,
         authSignupSuccess: false
     });
 }
