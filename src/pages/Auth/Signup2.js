@@ -99,6 +99,14 @@ class Signup2 extends Component {
             password: this.state.password
         };
 
+        this.setState({
+            name: '',
+            email: '',
+            password: '',
+            passwordConfirm: '',
+            formIsValid: false
+        });
+
         this.props.onAuthSignup(authData);
     }
 
@@ -136,24 +144,24 @@ class Signup2 extends Component {
         ));
 
         let form = (
-                <div className={styles.Form__container}>
-                    <form className={styles.Form} onSubmit={this.submitHandler}>
-                        <div className={styles.Form__title}>
-                            Sign Up
+            <div className={styles.Form__container}>
+                <form className={styles.Form} onSubmit={this.submitHandler}>
+                    <div className={styles.Form__title}>
+                        Sign Up
                         </div>
-                        <p className={styles.Form__description}>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                            impedit odit?
+                    <p className={styles.Form__description}>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
+                        impedit odit?
                         </p>
-                        {formElements}
-                        <div className={styles.Form__item}>
-                            <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
-                        </div>
-                        <div>
-                            <p>Already have an account? <a href="3">Log in</a></p>
-                        </div>
-                    </form>
-                </div>
+                    {formElements}
+                    <div className={styles.Form__item}>
+                        <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
+                    </div>
+                    <div>
+                        <p>Already have an account? <a href="3">Log in</a></p>
+                    </div>
+                </form>
+            </div>
         )
 
         if (this.props.signupSuccess) {

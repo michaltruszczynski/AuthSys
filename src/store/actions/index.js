@@ -2,7 +2,8 @@ export {
     authSignup,
     authSignin,
     authStatusReset,
-    authCheckState
+    authCheckState,
+    logout
 } from './auth';
 export {
     setMessage,

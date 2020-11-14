@@ -58,6 +58,12 @@ class Signin2 extends Component {
             password: this.state.password
         };
 
+        this.setState({
+            email: '',
+            password: '',
+            formIsValid: false
+        })
+
         this.props.onAuthSignin(authData);
     }
 
@@ -73,11 +79,12 @@ class Signin2 extends Component {
         }
     }
 
-    // componentDidUpdate(prevProps, prevState) {
-    //     if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
-    //         this.isFormValid();
-    //     }
-    // }
+    componentDidUpdate(prevProps, prevState) {
+        console.log('[Signin2] componentDidUpdate')
+        if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
+            this.isFormValid();
+        }
+    }
 
 
     render() {
@@ -115,7 +122,7 @@ class Signin2 extends Component {
                         </p>
                     {formElements}
                     <div className={styles.Form__item}>
-                        <button disabled={false} className={styles.Form__btn} type="submit">Sign In</button>
+                        <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign In</button>
                     </div>
                     <div className={styles.Form__item}>
                         <p>Forgot password? <a href="3">Change password</a></p>

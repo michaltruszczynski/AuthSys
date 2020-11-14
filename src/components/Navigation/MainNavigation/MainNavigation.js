@@ -4,14 +4,14 @@ import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import MobileToggle from '../MobileToggle/MobileToggle';
 
-import './MainNavigation.css';
+import styles from  './MainNavigation.module.css';
 
-const MainNavigation = ({ mobileNavClicked, mobileNavShow }) => (
+const MainNavigation = ({ mobileNavClicked, mobileNavShow, isAuth }) => (
 
-    <nav className="menu">
-        <div className="menu__container">
+    <nav className={styles.Menu}>
+        <div className={styles.Menu__container}>
             <Logo />
-            <NavigationItems isAuth={false} role={1} showMobileNav={mobileNavShow} />
+            <NavigationItems isAuth={isAuth} role={1} showMobileNav={mobileNavShow} />
             <MobileToggle clicked={mobileNavClicked} />
         </div>
     </nav>

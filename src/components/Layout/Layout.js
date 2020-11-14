@@ -35,7 +35,7 @@ class Layout extends Component {
                 <Modal successMessage={this.props.successMessage} errorMessage={this.props.errorMessage} modalClicked={this.modalHandler}/>
                 <Backdrop show={this.state.showMobileNav} clicked={this.mobileNavHandler} />
                 <header>
-                    <MainNavigation mobileNavClicked={this.mobileNavHandler} mobileNavShow={this.state.showMobileNav} />
+                    <MainNavigation isAuth={this.props.isAuth} mobileNavClicked={this.mobileNavHandler} mobileNavShow={this.state.showMobileNav} />
                 </header>
                 <main>
                     <section className="section">
@@ -52,6 +52,7 @@ class Layout extends Component {
 
 const mapStateToProps = state => {
     return {
+        isAuth: state.auth.token !== null,
         successMessage: state.message.message,
         errorMessage: state.message.error
     }
@@ -59,7 +60,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onClearMesage: dispatch(actions.clearMessage())
+        onClearMesage: () => dispatch(actions.clearMessage())
     }
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './MobileToggle.css'
+import styles from './MobileToggle.module.css'
 
 const MobileToggle = ({clicked}) => (
-    <div className="menu__toggle" onClick={clicked}>
-        <i className="fas fa-bars menu__toggle-icon"></i>
+    <div className={styles.Menu__toggle} onClick={clicked}>
+        <i className={`fas fa-bars ${styles['Menu__toggle-icon']}`}></i>
     </div>
 )
 

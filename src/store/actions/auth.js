@@ -27,7 +27,6 @@ export const authSignup = (authData) => {
     }
 }
 
-
 export const authSignupStart = () => {
     return {
         type: actionTypes.AUTH_SIGNUP_START
@@ -80,7 +79,6 @@ export const authSignin = (authData) => {
     }
 }
 
-
 export const authSigninStart = () => {
     return {
         type: actionTypes.AUTH_SIGNIN_START
@@ -105,7 +103,7 @@ export const authSigninFail = (error) => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('expirationDate');
     return {
         type: actionTypes.AUTH_LOGOUT
     }

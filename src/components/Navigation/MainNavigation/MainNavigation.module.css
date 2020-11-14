@@ -1,4 +1,4 @@
-.menu {
+.Menu {
     background: var(--clr-white-custom-bg);
     border-bottom: 1px solid rgba(10, 22, 70, 0.06);
     box-shadow: 0 0 1px 0 rgba(10, 22, 70, 0.06), 0 3px 3px -1px rgba(10, 22, 70, 0.06);
@@ -8,7 +8,7 @@
     z-index: 200;
 }
 
-.menu__container {
+.Menu__container {
     max-width: 1280px;
     margin: 0 auto;
     display: flex;
@@ -18,7 +18,7 @@
 }
 
 @media (max-width: 969px) {
-    .menu__container {
+    .Menu__container {
         flex-direction: column;
     }
 }
