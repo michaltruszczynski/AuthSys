@@ -71,9 +71,9 @@ export const authSignin = (authData) => {
                 console.log(err.response.data)
                 const messageTitle = err.response.data.message;
                 let messageArr = [];
-                if (err.response.data.data) {
-                    messageArr = convertErrMessageArray(err.response.data.data);
-                }
+                // if (err.response.data.data) {
+                //     messageArr = convertErrMessageArray(err.response.data.data);
+                // }
                 dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
             })
     }

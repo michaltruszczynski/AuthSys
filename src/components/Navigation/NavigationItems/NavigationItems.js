@@ -11,7 +11,7 @@ const navItems = [
     { id: 'shop', text: 'Shop', link: '/shop', auth: false, role: [1, 2, 3] },
     { id: 'login', text: 'Login', link: '/signin', auth: false, role: [1, 2, 3] },
     { id: 'logup', text: 'Signup', link: '/signup', auth: false, role: [1, 2, 3] },
-    { id: 'logout', text: 'Logout', link: '/', auth: true, role: [1, 2, 3] }
+    { id: 'logout', text: 'Logout', link: '/logout', auth: true, role: [1, 2, 3] }
 ];
 
 const NavigationItems = ({ isAuth, role, showMobileNav }) => {

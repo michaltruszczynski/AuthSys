@@ -18,7 +18,7 @@ const signinForm = {
             placeholder: 'Email address',
             label: 'E-mail'
         },
-        validators: [required, email],
+        validators: [required],
         validationErrMsg: 'Please enter a valid email.',
         customValidation: false,
         refInputValue: false
