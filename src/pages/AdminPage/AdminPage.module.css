@@ -1,0 +1,25 @@
+.table-container {
+    max-width: 60rem;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    background-color: azure;
+    overflow: hidden;
+}
+
+.table__heading {
+    color: var(--clr-white-custom-bg);
+    background: var(--clr-blue-bright);
+    /* padding: 0.5rem; */
+    box-sizing: border-box;
+}
+
+.attribute-container {
+    display: grid;
+    grid-template-columns: 2rem 1fr 1fr 1fr 1fr;
+}
+
+.attribute {
+    padding: 0.5rem
+}
+
+
