@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './Button.module.css';
 
-const butonStyles = {
-    prmimary: 'primary',
+const buttonStyles = {
+    primary: 'primary',
     success: 'success',
     danger: 'danger'
 }
@@ -12,13 +12,13 @@ const Button = ({ disabled, children, type, btnStyle, clickHandler }) => {
     let classList;
 
     switch (btnStyle) {
-        case butonStyles.prmimary:
+        case buttonStyles.primary:
             classList = [styles["Button"], styles["Button--primary"]];
             break;
-        case butonStyles.success:
+        case buttonStyles.success:
             classList = [styles["Button"], styles["Button--success"]];
             break;
-        case butonStyles.danger:
+        case buttonStyles.danger:
             classList = [styles["Button"], styles["Button--danger"]];
             break;
         default:
@@ -41,7 +41,7 @@ const Button = ({ disabled, children, type, btnStyle, clickHandler }) => {
 Button.defaultProps = {
     type: "button",
     disabled: false,
-    btnStyle: butonStyles.prmimary
+    btnStyle: buttonStyles.prmimary
 }
 
 export default Button;

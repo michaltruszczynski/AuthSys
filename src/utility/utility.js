@@ -21,3 +21,7 @@ export const convertErrMessageArrayToText = (errorArray) => {
         return id === 0 ? message.msg : text + ' ' + message.msg;
     }, '');
 }
+
+export const uppercaseFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

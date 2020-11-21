@@ -1,6 +1,7 @@
 :root {
   --black-font-color: #06171e;
-  --white-font-color: #edecec;
+  /* --white-font-color: #edecec; */
+  --white-font-color: #f9f9f9;
 
   --clr-white-custom-bg: #ffffff;
   --clr-blue-light-bg: #f3f6f5;
@@ -16,7 +17,6 @@
   /* --clr-red: #e50007; */
   --clr-red: #d50000;
 
-
   --clr-red-main: #ff3339;
   --clr-red-dark: #b22327;
 
@@ -28,6 +28,7 @@
   --ff-general: "Poppins", sans-serif;
   --fw-small: 300;
   --fw-normal: 400;
+  --fw-bold-slim: 500;
   --fw-bold: 600;
   --fw-bold-plus: 700;
 }
