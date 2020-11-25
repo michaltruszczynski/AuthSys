@@ -19,7 +19,8 @@
 
 .attribute-container {
     display: grid;
-    grid-template-columns: 2rem 1fr 1fr 1fr 1fr;
+    /* grid-template-columns: 2rem 1fr 1fr 1fr 1fr; */
+    grid-template-columns: 2rem minmax(max-content, 2fr) minmax(max-content, 4fr) 3rem minmax(max-content, 2fr);
 }
 
 .attribute-container--center {

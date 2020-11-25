@@ -51,9 +51,15 @@ class AdminPage extends Component {
         console.log('did update')
     }
 
-    resetPswdHandler = (userId) => {
+    resetPswdHandler = (userEmail) => {
         console.log('test');
-        axios.get('http://localhost:5000/api/admin/resetpswd/' + userId)
+        axios.get('http://localhost:5000/api/admin/resetpswd/' + userEmail)
+        .then(response => {
+            console.log(response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     render() {
@@ -83,7 +89,7 @@ class AdminPage extends Component {
                                     disabled={false}
                                     type="button"
                                     btnStyle="primary"
-                                    clickHandler={() => this.resetPswdHandler(user._id)}>
+                                    clickHandler={() => this.resetPswdHandler(user.email)}>
                                     Reset Password
                                 </Button>
                             </div>
