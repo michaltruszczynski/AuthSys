@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 import Input2 from '../../components/Form/Input/Input2';
@@ -41,7 +43,10 @@ class ChangePassword extends Component {
         newPassword: '',
         newPasswordConfirm: '',
         formIsValid: false,
-        redirect: false
+        redirect: false,
+        isLoding: false,
+        tokenError: false,
+
     }
 
     inputUpdate = (name, value) => {
@@ -52,14 +57,26 @@ class ChangePassword extends Component {
 
     componentDidMount() {
         console.log(this.props.match.params);
-        const {userId, token} = this.props.match.params;
+        const { userId, token } = this.props.match.params;
+        this.setState(prevState => ({
+            isLoding: !prevState.isLoding
+        }))
         axios.get(`http://localhost:5000/api/admin/changepswdusercheck/${userId}/${token}`)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(response => {
+                console.log(response.data);
+                this.setState(prevState => ({
+                    isLoding: !prevState.isLoding
+                }))
+            })
+            .catch(error => {
+                let err = true;
+                if (!error.response.data) err = error.response.data;
+                this.setState(prevState => ({
+                    isLoding: !prevState.isLoding,
+                    error: err,
+                    redirect: '/signup'
+                }));
+            })
     }
 
     render() {
@@ -102,12 +119,21 @@ class ChangePassword extends Component {
             </div>
         )
 
+        if (this.state.redirect) {
+            form = <Redirect to={this.state.redirect} />
+        }
 
         return (
-           form
+            this.state.isLoding ? <Spinner /> : form
         )
     }
 
 }
 
-export default ChangePassword;
+const mapDispatchToProps = dispatch => {
+    return {
+
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ChangePassword);
