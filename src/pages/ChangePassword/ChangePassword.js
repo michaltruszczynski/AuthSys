@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -45,7 +45,7 @@ class ChangePassword extends Component {
         formIsValid: false,
         redirect: false,
         isLoding: false,
-        tokenError: false,
+        error: false,
 
     }
 
@@ -53,6 +53,18 @@ class ChangePassword extends Component {
         this.setState({
             [name]: value
         });
+    }
+
+    isFormValid = () => {
+        if (this.state.newPassword && this.state.newPasswordConfirm) {
+            this.setState({
+                formIsValid: true
+            })
+        } else {
+            this.setState({
+                formIsValid: false
+            })
+        }
     }
 
     componentDidMount() {
@@ -77,6 +89,19 @@ class ChangePassword extends Component {
                     redirect: '/signup'
                 }));
             })
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('[Change Password] componentDidUpdate');
+        if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
+            this.isFormValid();
+        }
+    }
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log('[ChangePassword] Dubmit clicked');
+        
     }
 
     render() {

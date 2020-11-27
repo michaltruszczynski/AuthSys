@@ -48,18 +48,18 @@ class AdminPage extends Component {
     }
 
     componentDidUpdate() {
-        console.log('did update')
+        console.log('[AdminPage] componentDidMount');
     }
 
     resetPswdHandler = (userEmail) => {
         console.log('test');
         axios.get('http://localhost:5000/api/admin/resetpswd/' + userEmail)
-        .then(response => {
-            console.log(response);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     render() {
