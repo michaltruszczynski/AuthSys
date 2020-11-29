@@ -6,6 +6,8 @@ import axios from 'axios';
 import Input2 from '../../components/Form/Input/Input2';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
+import * as actions from '../../store/actions';
+
 import { required, length, containSpecialChar, containCapitalLetter, containNumber, passwordMatch } from '../../utility/validators';
 
 import styles from './ChangePassword.module.css';
@@ -101,7 +103,7 @@ class ChangePassword extends Component {
     submitHandler = (event) => {
         event.preventDefault();
         console.log('[ChangePassword] Dubmit clicked');
-        
+
     }
 
     render() {
@@ -157,7 +159,7 @@ class ChangePassword extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        onSetMessage: () => dispatch(actions.setMessage)
     }
 }
 
