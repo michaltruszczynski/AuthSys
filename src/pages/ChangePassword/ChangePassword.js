@@ -44,6 +44,7 @@ class ChangePassword extends Component {
     state = {
         newPassword: '',
         newPasswordConfirm: '',
+        userId: null,
         formIsValid: false,
         redirect: false,
         isLoding: false,
@@ -73,29 +74,31 @@ class ChangePassword extends Component {
         console.log(this.props.match.params);
         const { userId, token } = this.props.match.params;
         this.setState(prevState => ({
-            isLoding: !prevState.isLoding
+            userId: userId
+            // isLoding: !prevState.isLoding
         }))
-        axios.get(`http://localhost:5000/api/admin/changepswdusercheck/${userId}/${token}`)
-            .then(response => {
-                console.log(response.data);
-                this.setState(prevState => ({
-                    isLoding: !prevState.isLoding
-                }))
-            })
-            .catch(error => {
-                let err = true;
-                if (!error.response.data) err = error.response.data;
-                this.setState(prevState => ({
-                    isLoding: !prevState.isLoding,
-                    error: err,
-                    redirect: '/signup'
-                }));
-            })
+        // axios.get(`http://localhost:5000/api/admin/resetpswdusercheck/${userId}/${token}`)
+        //     .then(response => {
+        //         console.log(response.data);
+        //         this.setState(prevState => ({
+        //             isLoding: !prevState.isLoding
+        //         }))
+        //     })
+        //     .catch(error => {
+        //         let err = true;
+        //         console.log(error.response)
+        //         if (!error.response) err = error.response.data;
+        //         this.setState(prevState => ({
+        //             isLoding: !prevState.isLoding,
+        //             error: err,
+        //             redirect: '/signup'
+        //         }));
+        //     })
     }
 
     componentDidUpdate(prevProps, prevState) {
         console.log('[Change Password] componentDidUpdate');
-        if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
+        if ((this.state.newPasswordConfirm !== prevState.newPasswordConfirm) || (this.state.newPassword !== prevState.newPassword)) {
             this.isFormValid();
         }
     }
@@ -103,6 +106,21 @@ class ChangePassword extends Component {
     submitHandler = (event) => {
         event.preventDefault();
         console.log('[ChangePassword] Dubmit clicked');
+        const passwordData = {
+            userId: this.state.userId,
+            newPassword: this.state.newPassword
+        };
+        this.setState({
+            userId: null,
+
+        })
+        axios.post('http://localhost:5000/api/admin/resetpswdnewpswd', passwordData)
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
 
     }
 
@@ -132,7 +150,7 @@ class ChangePassword extends Component {
             <div className={styles.Form__container}>
                 <form className={styles.Form} onSubmit={this.submitHandler}>
                     <div className={styles.Form__title}>
-                        Reset Password
+                        Change Password
                         </div>
                     <p className={styles.Form__description}>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
