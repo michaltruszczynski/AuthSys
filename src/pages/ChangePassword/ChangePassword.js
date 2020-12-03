@@ -45,6 +45,7 @@ class ChangePassword extends Component {
         newPassword: '',
         newPasswordConfirm: '',
         userId: null,
+        token: null,
         formIsValid: false,
         redirect: false,
         isLoding: false,
@@ -73,27 +74,31 @@ class ChangePassword extends Component {
     componentDidMount() {
         console.log(this.props.match.params);
         const { userId, token } = this.props.match.params;
+        if (!token || !userId) return;
+
         this.setState(prevState => ({
-            userId: userId
-            // isLoding: !prevState.isLoding
-        }))
-        // axios.get(`http://localhost:5000/api/admin/resetpswdusercheck/${userId}/${token}`)
-        //     .then(response => {
-        //         console.log(response.data);
-        //         this.setState(prevState => ({
-        //             isLoding: !prevState.isLoding
-        //         }))
-        //     })
-        //     .catch(error => {
-        //         let err = true;
-        //         console.log(error.response)
-        //         if (!error.response) err = error.response.data;
-        //         this.setState(prevState => ({
-        //             isLoding: !prevState.isLoding,
-        //             error: err,
-        //             redirect: '/signup'
-        //         }));
-        //     })
+            userId: userId,
+            token: token,
+            isLoding: !prevState.isLoding
+        }));
+
+        axios.get(`http://localhost:5000/api/admin/resetpswdusercheck/${userId}/${token}`)
+            .then(response => {
+                console.log(response.data);
+                this.setState(prevState => ({
+                    isLoding: !prevState.isLoding
+                }));
+            })
+            .catch(error => {
+                let err = true;
+                console.log(error.response)
+                if (!error.response) err = error.response.data;
+                this.setState(prevState => ({
+                    isLoding: !prevState.isLoding,
+                    error: err,
+                    redirect: '/signup'
+                }));
+            })
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -110,17 +115,19 @@ class ChangePassword extends Component {
             userId: this.state.userId,
             newPassword: this.state.newPassword
         };
+
         this.setState({
             userId: null,
 
         })
+
         axios.post('http://localhost:5000/api/admin/resetpswdnewpswd', passwordData)
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
 
     }
 
