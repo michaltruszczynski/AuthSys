@@ -1,10 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 
-export const setMessage = (messageTitle, messageArr, type) => {
+export const setMessage = (message, messageArr, type) => {
     return {
         type: actionTypes.SET_MESSAGE,
-        messageTitle: messageTitle,
-        message: messageArr,
+        message: message,
+        messageDetails: messageArr,
         messageType: type
 
     }

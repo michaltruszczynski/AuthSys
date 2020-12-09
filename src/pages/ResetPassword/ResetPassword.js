@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -7,8 +7,10 @@ import Input2 from '../../components/Form/Input/Input2';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import { required, email } from '../../utility/validators';
+import { ErrorMessage } from '../../utility/utility';
 
-
+import * as actions from '../../store/actions/index';
+import { MESSAGE_TYPES } from '../../store/actions/messageTypes';
 import styles from './ResetPassword.module.css';
 
 
@@ -32,8 +34,7 @@ class ResetPassword extends Component {
         email: '',
         formIsValid: false,
         isLoading: false,
-        redirect: false,
-        error: false
+        redirect: false
     }
 
     inputUpdate = (name, value) => {
@@ -52,6 +53,32 @@ class ResetPassword extends Component {
                 formIsValid: false
             });
         }
+    }
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log('[ResetPassword] submit email');
+        this.setState({
+            email: '',
+            isLoading: true,
+            formIsValid: false
+        })
+        axios.get('http://localhost:5000/api/admin/reset-password/' + this.state.email)
+            .then(() => {
+                this.setState({
+                    isLoading: false,
+                    redirect: '/'
+                })
+            })
+            .catch(error => {
+                console.log(error.response)
+                this.setState({
+                    isLoading: false
+                });
+                const errorMsg = new ErrorMessage(error.response);
+                const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData()
+                this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error)
+            })
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -88,28 +115,37 @@ class ResetPassword extends Component {
             <div className={styles.Form__container}>
                 <form className={styles.Form} onSubmit={this.submitHandler}>
                     <div className={styles.Form__title}>
-                        Sign In
+                        Reset password
                         </div>
                     <p className={styles.Form__description}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                        impedit odit?
+                        Please enter email address used for logging in. You will receive link to access change password form.
                         </p>
                     {formElements}
                     <div className={styles.Form__item}>
-                        <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign In</button>
+                        <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Send</button>
                     </div>
                     <div className={styles.Form__item}>
-                        <p>Forgot password? <a href="3">Change password</a></p>
+                        <p>Return to <Link to="/siginin">Sign in</Link></p>
                     </div>
                 </form>
             </div>
         )
 
+        if (this.state.redirect) {
+            form = <Redirect to={this.state.redirect} />
+        }
+
         return (
-            this.props.loading ? <Spinner /> : form
+            this.state.isLoading ? <Spinner /> : form
         )
     }
 
 }
 
-export default ResetPassword
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetMessage: (msgTitle, message, type) => dispatch(actions.setMessage(msgTitle, message, type))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ResetPassword);

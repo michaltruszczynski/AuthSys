@@ -30,7 +30,7 @@ class AdminPage extends Component {
         this.setState({
             loading: true
         })
-        axios.get('http://localhost:5000/api/admin/getusers')
+        axios.get('http://localhost:5000/api/admin/users')
             .then(response => {
                 console.log(response.data)
                 const { users } = response.data;
@@ -38,8 +38,8 @@ class AdminPage extends Component {
                     users: users,
                     loading: false
                 })
-            }).catch(err => {
-                console.log(err);
+            }).catch(error => {
+                console.log(error.response);
                 this.setState({
                     loading: false
                 });
@@ -48,7 +48,7 @@ class AdminPage extends Component {
     }
 
     componentDidUpdate() {
-        console.log('[AdminPage] componentDidMount');
+        console.log('[AdminPage] componentDidUpdate');
     }
 
     resetPswdHandler = (userEmail) => {

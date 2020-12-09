@@ -3,24 +3,24 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utility/utility';
 
 const initialState = {
-    messageTitle: '',
     message: '',
+    messageDetails: [],
     type: null
 
 }
 
 const setMessage = (state, action) => {
     return updateObject(state, {
-        messageTitle: action.messageTitle,
         message: action.message,
+        messageDetails: action.messageDetails,
         type: action.messageType
     })
 }
 
 const clearMessgae = (state, action) => {
     return updateObject(state, {
-        messageTitle: '',
         message: '',
+        messageDetails: [],
         type: null
     });
 }

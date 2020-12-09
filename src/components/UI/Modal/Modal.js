@@ -14,9 +14,9 @@ class Modal extends Component {
     }
 
     render() {
-        const { message, messageTitle } = this.props;
+        const { message, messageDetails } = this.props;
         return (
-            (message.length || messageTitle) ? (
+            (messageDetails.length || message) ? (
                 <Portal targetContainer={'modal'}>
                     <div className={styles.Backdrop}>
                         <div className={styles.Modal__wrapper}>
@@ -24,8 +24,8 @@ class Modal extends Component {
                                 <i className={`far fa-window-close ${styles["Modal__close-button"]}`}></i>
                             </div>
                             <div className={styles.Modal__content}>
-                                <h1 className={styles.Modal__heading}>{messageTitle}</h1>
-                                {message.map((msg, index) => (
+                                <h1 className={styles.Modal__heading}>{message}</h1>
+                                {messageDetails.map((msg, index) => (
                                     <p key={index} className={styles.Modal__text}>
                                         {msg}
                                     </p>))
@@ -42,8 +42,8 @@ class Modal extends Component {
 
 const mapStateToProps = state => {
     return {
-        messageTitle: state.message.messageTitle,
-        message: state.message.message
+        message: state.message.message,
+        messageDetails: state.message.messageDetails
     }
 }
 

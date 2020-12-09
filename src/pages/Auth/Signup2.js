@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import Input2 from '../../components/Form/Input/Input2';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -42,7 +42,7 @@ const signupForm = {
             placeholder: 'Password',
             label: 'Password'
         },
-        validators: [required, containNumber, containSpecialChar, length({ min: 4 }), containCapitalLetter],
+        validators: [required, containNumber, length({ min: 4 })],
         validationErrMsg: 'Please enter a valid password.',
         customValidation: true,
         refInputValue: false
@@ -158,7 +158,7 @@ class Signup2 extends Component {
                         <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign Up</button>
                     </div>
                     <div>
-                        <p>Already have an account? <a href="3">Log in</a></p>
+                        <p>Already have an account? <Link to="/signin">Sign in</Link></p>
                     </div>
                 </form>
             </div>

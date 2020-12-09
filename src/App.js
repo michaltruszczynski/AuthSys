@@ -10,6 +10,7 @@ import Signin2 from './pages/Auth/Signin2';
 import Logout from './pages/Auth/Logout';
 import TestPage from './pages/TestPage/TestPage';
 import AdminPage from './pages/AdminPage/AdminPage';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 import ChangePassword from './pages/ChangePassword/ChangePassword';
 
 import Auth from './components/hoc/auth';
@@ -29,6 +30,7 @@ class App extends Component {
           <Switch>
             <Route path="/signup" component={Signup2} />
             <Route path="/signin" component={Signin2} />
+            <Route path="/resetpassword" component={ResetPassword}/>
             <Route path="/test" component={Auth(() => <TestPage number={"Different route"} />)} />
             <Route path="/adminpage" component={AdminPage} />
             <Route path="/logout" component={Logout} />

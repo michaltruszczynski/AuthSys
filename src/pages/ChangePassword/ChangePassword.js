@@ -82,7 +82,7 @@ class ChangePassword extends Component {
             isLoding: !prevState.isLoding
         }));
 
-        axios.get(`http://localhost:5000/api/admin/resetpswdusercheck/${userId}/${token}`)
+        axios.get(`http://localhost:5000/api/admin/reset-password/usercheck/${userId}/${token}`)
             .then(response => {
                 console.log(response.data);
                 this.setState(prevState => ({
@@ -121,7 +121,7 @@ class ChangePassword extends Component {
 
         })
 
-        axios.post('http://localhost:5000/api/admin/resetpswdnewpswd', passwordData)
+        axios.post('http://localhost:5000/api/admin/reset-password/newpassword', passwordData)
             .then(response => {
                 console.log(response.data)
             })

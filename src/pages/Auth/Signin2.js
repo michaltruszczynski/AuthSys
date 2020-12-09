@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import Input2 from '../../components/Form/Input/Input2';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -125,7 +125,7 @@ class Signin2 extends Component {
                         <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign In</button>
                     </div>
                     <div className={styles.Form__item}>
-                        <p>Forgot password? <a href="3">Change password</a></p>
+                        <p>Forgot password? <Link to="/resetpassword">Reset password</Link></p>
                     </div>
                 </form>
             </div>
