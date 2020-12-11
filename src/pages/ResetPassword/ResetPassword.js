@@ -13,7 +13,6 @@ import * as actions from '../../store/actions/index';
 import { MESSAGE_TYPES } from '../../store/actions/messageTypes';
 import styles from './ResetPassword.module.css';
 
-
 const resetPasswordForm = {
     email: {
         elementType: 'input',
@@ -57,7 +56,6 @@ class ResetPassword extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        console.log('[ResetPassword] submit email');
         this.setState({
             email: '',
             isLoading: true,
@@ -76,8 +74,8 @@ class ResetPassword extends Component {
                     isLoading: false
                 });
                 const errorMsg = new ErrorMessage(error.response);
-                const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData()
-                this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error)
+                const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
+                this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
             })
     }
 
@@ -144,7 +142,7 @@ class ResetPassword extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetMessage: (msgTitle, message, type) => dispatch(actions.setMessage(msgTitle, message, type))
+        onSetMessage: (message, messageDetails, type) => dispatch(actions.setMessage(message, messageDetails, type))
     }
 }
 

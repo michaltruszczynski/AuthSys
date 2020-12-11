@@ -9,6 +9,9 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions';
 
 import { required, length, containSpecialChar, containCapitalLetter, containNumber, passwordMatch } from '../../utility/validators';
+import { ErrorMessage } from '../../utility/utility';
+
+import { MESSAGE_TYPES } from '../../store/actions/messageTypes';
 
 import styles from './ChangePassword.module.css';
 
@@ -33,7 +36,7 @@ const changePswdForm = {
             label: 'Confirm password'
         },
         validators: [],
-        validationErrMsg: 'Passwords don \'t match.',
+        validationErrMsg: 'Password don\'t match.',
         customValidation: false,
         refInputValue: 'newPassword',
         refInputValidator: passwordMatch
@@ -48,9 +51,7 @@ class ChangePassword extends Component {
         token: null,
         formIsValid: false,
         redirect: false,
-        isLoding: false,
-        error: false,
-
+        isLoding: false
     }
 
     inputUpdate = (name, value) => {
@@ -74,31 +75,30 @@ class ChangePassword extends Component {
     componentDidMount() {
         console.log(this.props.match.params);
         const { userId, token } = this.props.match.params;
-        if (!token || !userId) return;
 
-        this.setState(prevState => ({
+        this.setState({
             userId: userId,
             token: token,
-            isLoding: !prevState.isLoding
-        }));
+            // isLoding: true
+        });
 
-        axios.get(`http://localhost:5000/api/admin/reset-password/usercheck/${userId}/${token}`)
-            .then(response => {
-                console.log(response.data);
-                this.setState(prevState => ({
-                    isLoding: !prevState.isLoding
-                }));
-            })
-            .catch(error => {
-                let err = true;
-                console.log(error.response)
-                if (!error.response) err = error.response.data;
-                this.setState(prevState => ({
-                    isLoding: !prevState.isLoding,
-                    error: err,
-                    redirect: '/signup'
-                }));
-            })
+        //     axios.get(`http://localhost:5000/api/admin/reset-password/usercheck/${userId}/${token}`)
+        //         .then(response => {
+        //             console.log(response.data);
+        //             this.setState({
+        //                 isLoding: false,
+        //                 redirect: '/signin'
+        //             });
+        //         })
+        //         .catch(error => {
+        //             this.setState({
+        //                 isLoding: false,
+        //                 redirect: '/resetpassword'
+        //             });
+        //             const errorMsg = new ErrorMessage(error.response);
+        //             const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
+        //             this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
+        //         })
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -118,15 +118,36 @@ class ChangePassword extends Component {
 
         this.setState({
             userId: null,
-
+            isLoding: true
         })
 
-        axios.post('http://localhost:5000/api/admin/reset-password/newpassword', passwordData)
+        axios.post(`http://localhost:5000/api/admin/reset-password/newpassword/${this.state.userId}/${this.state.token}`, passwordData)
             .then(response => {
-                console.log(response.data)
+                console.log(response)
+                this.setState({
+                    newPassword: '',
+                    newPasswordConfirm: '',
+                    userId: null,
+                    token: null,
+                    formIsValid: false,
+                    redirect: '/siginin',
+                    isLoding: false
+                });
             })
             .catch(error => {
                 console.log(error.response)
+                this.setState({
+                    newPassword: '',
+                    newPasswordConfirm: '',
+                    userId: null,
+                    token: null,
+                    formIsValid: false,
+                    redirect: '/resetpassword',
+                    isLoding: false
+                });
+                const errorMsg = new ErrorMessage(error.response);
+                const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
+                this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
             });
 
     }
@@ -184,7 +205,7 @@ class ChangePassword extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetMessage: () => dispatch(actions.setMessage)
+        onSetMessage: (message, messageDetails, type) => dispatch(actions.setMessage(message, messageDetails, type))
     }
 }
 

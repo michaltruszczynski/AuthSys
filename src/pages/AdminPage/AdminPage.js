@@ -53,7 +53,7 @@ class AdminPage extends Component {
 
     resetPswdHandler = (userEmail) => {
         console.log('test');
-        axios.get('http://localhost:5000/api/admin/resetpswd/' + userEmail)
+        axios.get('http://localhost:5000/api/admin/reset-password/' + userEmail)
             .then(response => {
                 console.log(response);
             })
