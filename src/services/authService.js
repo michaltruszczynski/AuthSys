@@ -33,10 +33,34 @@ const signup = (username, email, password) => {
 }
 
 const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('expirationDate');
+}
+
+const authcheck = () => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (!token) {
+        logout();
+        // return new Promise(() => {
+        //     throw new Error('Token validation failed. Invalid token.');
+        // });
+        return Promise.reject(new Error('Token validation failed. Invalid token.'))
+    }
+
+    const expirationDate = new Date(JSON.parse(localStorage.getItem('expirationDate')));
+    if (expirationDate <= new Date()) {
+        logout();
+        return Promise.reject(new Error('Token validation failed. Invalid token.'))
+    }
+
+    const authHeader = { 'x-access-token': token };
+    
 
 }
 
 export default {
     signin,
-    signup
+    signup,
+    logout
 }
