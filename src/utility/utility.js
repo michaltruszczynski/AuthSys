@@ -36,12 +36,12 @@ export class ErrorMessage {
     }
 
     getErrorMessage() {
-        const errorObjectCopy = cloneDeep(this.errorObject)
+        const errorObjectCopy = cloneDeep(this.errorObject);
         return errorObjectCopy.data.message;
     }
 
     getErrorDataArr() {
-        const errorObjectCopy = cloneDeep(this.errorObject)
+        const errorObjectCopy = cloneDeep(this.errorObject);
         return errorObjectCopy.data.data;
     }
 
@@ -52,8 +52,8 @@ export class ErrorMessage {
         }, '');
     }
 
-    convertErrMessageArray = () => {
-        const errorObjectCopy = cloneDeep(this.errorObject)
+    convertErrMessageArray() {
+        const errorObjectCopy = cloneDeep(this.errorObject);
         return errorObjectCopy.data.data.map(message => message.msg);
     }
 
@@ -64,6 +64,28 @@ export class ErrorMessage {
     getErrorMessageData() {
         const errorMessage = this.getErrorMessage();
         const errorDataArr = this.convertErrMessageArray();
-        return {errorMessage, errorDataArr}
+        return { errorMessage, errorDataArr };
+    }
+}
+
+export class Message {
+    constructor(message = '') {
+        this.message = message;
+        this.dataMessageArray = [];
+    }
+
+    addDataMessage(newDataMessage) {
+        this.dataMessageArray.push({ msg: newDataMessage });
+    }
+
+    convertDataMessageArray() {
+        const dataMessageArrayCopy = cloneDeep(this.dataMessageArray);
+        return dataMessageArrayCopy.map(message => message.msg);
+    }
+
+    getMessageData() {
+        const dataMessageArr = this.convertDataMessageArray();
+        const message = this.message;
+        return { message, dataMessageArr };
     }
 }

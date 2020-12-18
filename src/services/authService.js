@@ -1,4 +1,4 @@
-import axios from 'axois';
+import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/';
 
@@ -20,16 +20,13 @@ const signin = (email, password) => {
         });
 }
 
-const signup = (username, email, password) => {
+const signup = (name, email, password) => {
     const authData = {
-        username,
+        name,
         email,
         password
     };
     return axios.post(API_URL + 'auth/signup', authData)
-        .ther(response => {
-            return response.data
-        })
 }
 
 const logout = () => {
@@ -38,7 +35,7 @@ const logout = () => {
     localStorage.removeItem('expirationDate');
 }
 
-const authcheck = () => {
+const authCheck = () => {
     const token = JSON.parse(localStorage.getItem('token'));
     if (!token) {
         logout();
@@ -55,11 +52,12 @@ const authcheck = () => {
     }
 
     const authHeader = { 'x-access-token': token };
-    
+    return axios.get(API_URL + 'auth/authUserCheck', { headers: authHeader })
 
 }
 
-export default {
+export const userService = {
+    authCheck,
     signin,
     signup,
     logout

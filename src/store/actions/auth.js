@@ -2,18 +2,20 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as messageActions from './message'
 import { MESSAGE_TYPES } from './messageTypes';
-import { convertErrMessageArray, addMessage } from '../../utility/utility';
+import { convertErrMessageArray, addMessage, Message } from '../../utility/utility';
+import { userService } from '../../services/authService';
 
-export const authSignup = (authData) => {
+export const authSignup = ({name, email, password }) => {
     return dispatch => {
         dispatch(authSignupStart());
-        console.log(authData);
-        axios.post('http://localhost:5000/api/auth/signup', authData)
+        userService.signup(name, email, password)
             .then(response => {
                 console.log(response.data);
                 dispatch(authSignupSuccess());
-                const messageArr = addMessage([], 'You have been successfully registered. Please signin.')
-                dispatch(messageActions.setMessage(null, messageArr, MESSAGE_TYPES.success));
+                const signupMessage = new Message('You have been successfully registered.');
+                signupMessage.addDataMessage('Please signin.');
+                const {message, dataMessageArr} = signupMessage.getMessageData()
+                dispatch(messageActions.setMessage(message, dataMessageArr, MESSAGE_TYPES.success));
             })
             .catch(err => {
                 dispatch(authSignupFail(err.response.data));
@@ -145,3 +147,83 @@ export const authCheckState = () => {
         }
     }
 }
+
+//  kopie
+
+// export const authSignup = (authData) => {
+//     return dispatch => {
+//         dispatch(authSignupStart());
+//         console.log(authData);
+//         axios.post('http://localhost:5000/api/auth/signup', authData)
+//             .then(response => {
+//                 console.log(response.data);
+//                 dispatch(authSignupSuccess());
+//                 const messageArr = addMessage([], 'You have been successfully registered. Please signin.')
+//                 dispatch(messageActions.setMessage(null, messageArr, MESSAGE_TYPES.success));
+//             })
+//             .catch(err => {
+//                 dispatch(authSignupFail(err.response.data));
+//                 const messageTitle = err.response.data.message;
+//                 let messageArr = [];
+//                 if (err.response.data.data) {
+//                     messageArr = convertErrMessageArray(err.response.data.data);
+//                 }
+//                 dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
+//             })
+//     }
+// }
+
+// export const authSignin = (authData) => {
+//     return dispatch => {
+//         dispatch(authSigninStart());
+//         console.log(authData);
+//         axios.post('http://localhost:5000/api/auth/signin', authData)
+//             .then(response => {
+//                 console.log(response.data);
+//                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn)
+//                 // localStorage.setItem('user', JSON.stringify(response.data))
+//                 localStorage.setItem('token', response.data.token);
+//                 localStorage.setItem('expirationDate', expirationDate);
+//                 localStorage.setItem('userId', response.data.userId);
+//                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
+//                 dispatch(checkAuthTimeout(response.data.expiresIn));
+//             }).catch(err => {
+//                 dispatch(authSigninFail(err.response.data));
+//                 console.log(err.response.data)
+//                 const messageTitle = err.response.data.message;
+//                 let messageArr = [];
+//                 // if (err.response.data.data) {
+//                 //     messageArr = convertErrMessageArray(err.response.data.data);
+//                 // }
+//                 dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
+//             })
+//     }
+// }
+
+// export const authCheckState = () => {
+//     return dispatch => {
+//         const token = localStorage.getItem('token')
+//         if (!token) {
+//             dispatch(logout());
+//         } else {
+//             const expirationDate = new Date(localStorage.getItem('expirationDate'));
+//             if (expirationDate <= new Date()) {
+//                 dispatch(logout());
+//             } else {
+//                 dispatch(authSigninStart());
+//                 const authHeader = { 'x-access-token': token };
+//                 axios.get('http://localhost:5000/api/auth/authUserCheck', { headers: authHeader })
+//                     .then(response => {
+//                         console.log(response.data.token, response.data.userId);
+//                         dispatch(authSigninSuccess(response.data.token, response.data.userId));
+//                         dispatch(checkAuthTimeout(response.data.expiresIn));
+//                     })
+//                     .catch(err => {
+//                         console.log(err)
+//                         dispatch(logout());
+//                         dispatch(authSigninFail(err.response.data));
+//                     })
+//             }
+//         }
+//     }
+// }
