@@ -30,8 +30,8 @@ export const uppercaseFirstLetter = (string) => {
 
 export class ErrorMessage {
     constructor(errorObject) {
-        if (!errorObject.data.message) errorObject.data.message = '';
-        if (!errorObject.data.data) errorObject.data.data = [];
+        if (!errorObject.data?.message) errorObject.data.message = '';
+        if (!errorObject.data?.data) errorObject.data.data = [];
         this.errorObject = errorObject;
     }
 
@@ -71,21 +71,21 @@ export class ErrorMessage {
 export class Message {
     constructor(message = '') {
         this.message = message;
-        this.dataMessageArray = [];
+        this.messageDetailsArray = [];
     }
 
-    addDataMessage(newDataMessage) {
-        this.dataMessageArray.push({ msg: newDataMessage });
+    addMessageDetails(newDataMessage) {
+        this.messageDetailsArray.push({ msg: newDataMessage });
     }
 
-    convertDataMessageArray() {
-        const dataMessageArrayCopy = cloneDeep(this.dataMessageArray);
-        return dataMessageArrayCopy.map(message => message.msg);
+    convertMessageDetailsArray() {
+        const messageDetailsArrayCopy = cloneDeep(this.messageDetailsArray);
+        return messageDetailsArrayCopy.map(message => message.msg);
     }
 
     getMessageData() {
-        const dataMessageArr = this.convertDataMessageArray();
+        const messageDetailsArr = this.convertMessageDetailsArray();
         const message = this.message;
-        return { message, dataMessageArr };
+        return { message, messageDetailsArr };
     }
 }

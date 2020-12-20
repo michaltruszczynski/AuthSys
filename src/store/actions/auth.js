@@ -13,9 +13,9 @@ export const authSignup = ({name, email, password }) => {
                 console.log(response.data);
                 dispatch(authSignupSuccess());
                 const signupMessage = new Message('You have been successfully registered.');
-                signupMessage.addDataMessage('Please signin.');
-                const {message, dataMessageArr} = signupMessage.getMessageData()
-                dispatch(messageActions.setMessage(message, dataMessageArr, MESSAGE_TYPES.success));
+                signupMessage.addMessageDetails('Please signin.');
+                const {message, messageDetailsArr} = signupMessage.getMessageData()
+                dispatch(messageActions.setMessage(message, messageDetailsArr, MESSAGE_TYPES.success));
             })
             .catch(err => {
                 dispatch(authSignupFail(err.response.data));
