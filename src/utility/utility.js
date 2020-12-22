@@ -30,41 +30,36 @@ export const uppercaseFirstLetter = (string) => {
 
 export class ErrorMessage {
     constructor(errorObject) {
-        if (!errorObject.data?.message) errorObject.data.message = '';
-        if (!errorObject.data?.data) errorObject.data.data = [];
         this.errorObject = errorObject;
+        // errorObject.data.data ?? 
     }
 
     getErrorMessage() {
         const errorObjectCopy = cloneDeep(this.errorObject);
-        return errorObjectCopy.data.message;
+        return errorObjectCopy.data.message
     }
 
-    getErrorDataArr() {
-        const errorObjectCopy = cloneDeep(this.errorObject);
-        return errorObjectCopy.data.data;
-    }
-
-    getErrorDataAsText() {
+    getErrorMessageDetailsText() {
         const errorObjectCopy = cloneDeep(this.errorObject)
         return errorObjectCopy.data.data.reduce((text, message, id) => {
             return id === 0 ? message.msg : text + ' ' + message.msg;
         }, '');
     }
 
-    convertErrMessageArray() {
+    getErrorMessageDetailsArray() {
         const errorObjectCopy = cloneDeep(this.errorObject);
         return errorObjectCopy.data.data.map(message => message.msg);
     }
 
-    addMessage(newMessage) {
+    addErrorMessageDetails(newMessage) {
         this.errorObject.data.data.push({ msg: newMessage });
     }
 
     getErrorMessageData() {
         const errorMessage = this.getErrorMessage();
-        const errorDataArr = this.convertErrMessageArray();
-        return { errorMessage, errorDataArr };
+        const errorMessageDetailsArray = this.getErrorMessageDetailsArray();
+        const errorMessageDetailsText = this.getErrorMessageDetailsText();
+        return { errorMessage, errorMessageDetailsArray, errorMessageDetailsText };
     }
 }
 
@@ -78,14 +73,22 @@ export class Message {
         this.messageDetailsArray.push({ msg: newDataMessage });
     }
 
-    convertMessageDetailsArray() {
+    getMessageDetailsArray() {
         const messageDetailsArrayCopy = cloneDeep(this.messageDetailsArray);
         return messageDetailsArrayCopy.map(message => message.msg);
     }
 
+    getMessageDetailsText() {
+        return this.messageDetailsArr.reduce((text, message, id) => {
+            return id === 0 ? message.msg : text + ' ' + message.msg;
+        }, '');
+    }
+
+
     getMessageData() {
-        const messageDetailsArr = this.convertMessageDetailsArray();
         const message = this.message;
-        return { message, messageDetailsArr };
+        const messageDetailsArray = this.getMessageDetailsArray();
+        const messageDetails = this.getMessageDetailsText();
+        return { message, messageDetailsArray, messageDetails };
     }
 }

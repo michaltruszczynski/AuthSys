@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as messageActions from './message'
 import { MESSAGE_TYPES } from './messageTypes';
-import { convertErrMessageArray, addMessage, Message } from '../../utility/utility';
+import { Message, ErrorMessage } from '../../utility/utility';
 import { userService } from '../../services/authService';
 
 export const authSignup = ({name, email, password }) => {
@@ -14,17 +14,14 @@ export const authSignup = ({name, email, password }) => {
                 dispatch(authSignupSuccess());
                 const signupMessage = new Message('You have been successfully registered.');
                 signupMessage.addMessageDetails('Please signin.');
-                const {message, messageDetailsArr} = signupMessage.getMessageData()
-                dispatch(messageActions.setMessage(message, messageDetailsArr, MESSAGE_TYPES.success));
+                const {message, messageDetailsArray} = signupMessage.getMessageData()
+                dispatch(messageActions.setMessage(message, messageDetailsArray, MESSAGE_TYPES.success));
             })
-            .catch(err => {
-                dispatch(authSignupFail(err.response.data));
-                const messageTitle = err.response.data.message;
-                let messageArr = [];
-                if (err.response.data.data) {
-                    messageArr = convertErrMessageArray(err.response.data.data);
-                }
-                dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
+            .catch(error => {
+                dispatch(authSignupFail(error.response.data));
+                const errroMessage = new ErrorMessage(error.response);
+                const {errorMessage, errorMessageDetailsArray} = errroMessage.getErrorMessageData();
+                dispatch(messageActions.setMessage(errorMessage, errorMessageDetailsArray, MESSAGE_TYPES.success));
             })
     }
 }
@@ -54,29 +51,20 @@ export const authStatusReset = () => {
     }
 }
 
-export const authSignin = (authData) => {
+export const authSignin = ({email, password}) => {
     return dispatch => {
         dispatch(authSigninStart());
-        console.log(authData);
-        axios.post('http://localhost:5000/api/auth/signin', authData)
+        userService.signin(email, password)
             .then(response => {
-                console.log(response.data);
-                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn)
-                // localStorage.setItem('user', JSON.stringify(response.data))
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('expirationDate', expirationDate);
-                localStorage.setItem('userId', response.data.userId);
                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
-            }).catch(err => {
-                dispatch(authSigninFail(err.response.data));
-                console.log(err.response.data)
-                const messageTitle = err.response.data.message;
-                let messageArr = [];
-                // if (err.response.data.data) {
-                //     messageArr = convertErrMessageArray(err.response.data.data);
-                // }
-                dispatch(messageActions.setMessage(messageTitle, messageArr, MESSAGE_TYPES.success));
+            }).catch(error => {
+                dispatch(authSigninFail(error.response.data));
+                console.log(error.response);
+                const errroMessage = new ErrorMessage(error.response);
+                const {errorMessage, errorMessageDetailsArray} = errroMessage.getErrorMessageData();
+                dispatch(messageActions.setMessage(errorMessage, errorMessageDetailsArray, MESSAGE_TYPES.success));
+
             })
     }
 }
@@ -103,9 +91,7 @@ export const authSigninFail = (error) => {
 }
 
 export const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('expirationDate');
+    userService.logout();
     return {
         type: actionTypes.AUTH_LOGOUT
     }

@@ -72,7 +72,6 @@ class Signup2 extends Component {
     }
 
     inputUpdate = (name, value) => {
-        console.log('sfhsjfh')
         this.setState({
             [name]: value
         });

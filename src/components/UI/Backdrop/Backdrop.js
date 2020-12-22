@@ -4,7 +4,9 @@ import './Backdrop.css';
 
 const Backdrop = ({ show, clicked }) => {
     return (
-        <div className={['backdrop', show ? 'backdrop--visible' : ''].join(' ')} onClick={clicked}></div>
+        <div className={['backdrop', show ? 'backdrop--visible' : ''].join(' ')} onClick={clicked}>
+
+        </div>
     );
 }
 

@@ -135,7 +135,8 @@ class ChangePassword extends Component {
                 });
             })
             .catch(error => {
-                console.log(error.response)
+                console.dir(error.response)
+                console.log(error.request)
                 this.setState({
                     newPassword: '',
                     newPasswordConfirm: '',

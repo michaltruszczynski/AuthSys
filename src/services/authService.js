@@ -16,7 +16,7 @@ const signin = (email, password) => {
                 localStorage.setItem('expirationDate', JSON.stringify(expirationDate));
                 localStorage.setItem('userId', JSON.stringify(response.data.userId));
             }
-            return response.data;
+            return response;
         });
 }
 
@@ -26,7 +26,7 @@ const signup = (name, email, password) => {
         email,
         password
     };
-    return axios.post(API_URL + 'auth/signup', authData)
+    return axios.post(API_URL + 'auth/signup', authData);
 }
 
 const logout = () => {
@@ -39,21 +39,17 @@ const authCheck = () => {
     const token = JSON.parse(localStorage.getItem('token'));
     if (!token) {
         logout();
-        // return new Promise(() => {
-        //     throw new Error('Token validation failed. Invalid token.');
-        // });
-        return Promise.reject(new Error('Token validation failed. Invalid token.'))
+        return Promise.reject(new Error('Token validation failed. Invalid token.'));
     }
 
     const expirationDate = new Date(JSON.parse(localStorage.getItem('expirationDate')));
     if (expirationDate <= new Date()) {
         logout();
-        return Promise.reject(new Error('Token validation failed. Invalid token.'))
+        return Promise.reject(new Error('Token validation failed. Invalid token.'));
     }
 
     const authHeader = { 'x-access-token': token };
-    return axios.get(API_URL + 'auth/authUserCheck', { headers: authHeader })
-
+    return axios.get(API_URL + 'auth/authUserCheck', { headers: authHeader });
 }
 
 export const userService = {
