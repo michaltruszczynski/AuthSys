@@ -28,6 +28,14 @@ export const uppercaseFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export const getExpirationTimeMilliseconds = () => {
+    const tokenEpirationDate = new Date (JSON.parse(localStorage.getItem('expirationDate')));
+    const nowDateInMiliseconds = new Date().getTime();
+    const tokenExpiresMilliseconds = tokenEpirationDate.getTime();
+    const expirationTimeMilliseconds = tokenExpiresMilliseconds - nowDateInMiliseconds;
+    return expirationTimeMilliseconds;
+}
+
 export class ErrorMessage {
     constructor(errorObject) {
         this.errorObject = errorObject;

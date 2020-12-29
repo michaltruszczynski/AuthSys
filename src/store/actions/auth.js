@@ -2,10 +2,10 @@ import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as messageActions from './message'
 import { MESSAGE_TYPES } from './messageTypes';
-import { Message, ErrorMessage } from '../../utility/utility';
+import { Message, ErrorMessage, getExpirationTimeMilliseconds } from '../../utility/utility';
 import { userService } from '../../services/authService';
 
-export const authSignup = ({name, email, password }) => {
+export const authSignup = ({ name, email, password }) => {
     return dispatch => {
         dispatch(authSignupStart());
         userService.signup(name, email, password)
@@ -14,13 +14,13 @@ export const authSignup = ({name, email, password }) => {
                 dispatch(authSignupSuccess());
                 const signupMessage = new Message('You have been successfully registered.');
                 signupMessage.addMessageDetails('Please signin.');
-                const {message, messageDetailsArray} = signupMessage.getMessageData()
+                const { message, messageDetailsArray } = signupMessage.getMessageData()
                 dispatch(messageActions.setMessage(message, messageDetailsArray, MESSAGE_TYPES.success));
             })
             .catch(error => {
                 dispatch(authSignupFail(error.response.data));
                 const errroMessage = new ErrorMessage(error.response);
-                const {errorMessage, errorMessageDetailsArray} = errroMessage.getErrorMessageData();
+                const { errorMessage, errorMessageDetailsArray } = errroMessage.getErrorMessageData();
                 dispatch(messageActions.setMessage(errorMessage, errorMessageDetailsArray, MESSAGE_TYPES.success));
             })
     }
@@ -51,18 +51,20 @@ export const authStatusReset = () => {
     }
 }
 
-export const authSignin = ({email, password}) => {
+export const authSignin = ({ email, password }) => {
     return dispatch => {
         dispatch(authSigninStart());
         userService.signin(email, password)
             .then(response => {
+                console.log(response.data)
                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
+
             }).catch(error => {
                 dispatch(authSigninFail(error.response.data));
                 console.log(error.response);
                 const errroMessage = new ErrorMessage(error.response);
-                const {errorMessage, errorMessageDetailsArray} = errroMessage.getErrorMessageData();
+                const { errorMessage, errorMessageDetailsArray } = errroMessage.getErrorMessageData();
                 dispatch(messageActions.setMessage(errorMessage, errorMessageDetailsArray, MESSAGE_TYPES.success));
 
             })
@@ -103,34 +105,54 @@ export const checkAuthTimeout = (expirationTime) => {
             dispatch(logout());
         }, expirationTime * 1000);
     };
-};
-
+}
 
 export const authCheckState = () => {
     return dispatch => {
-        const token = localStorage.getItem('token')
-        if (!token) {
-            dispatch(logout());
-        } else {
-            const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            if (expirationDate <= new Date()) {
+        userService.authCheck()
+            .then(response => {
+                console.log(response.data.token, response.data.userId);
+                dispatch(authSigninSuccess(response.data.token, response.data.userId));
+                dispatch(checkAuthTimeout(getExpirationTimeMilliseconds()));
+            })
+            .catch((error) => {
+                console.log(error);
+                if (error.response) {
+                    console.log('error response')
+                } else if (error.request) {
+                    console.log('error request')
+                } else {
+                    console.log('error')
+                }
+
                 dispatch(logout());
-            } else {
-                dispatch(authSigninStart());
-                const authHeader = { 'x-access-token': token };
-                axios.get('http://localhost:5000/api/auth/authUserCheck', { headers: authHeader })
-                    .then(response => {
-                        console.log(response.data.token, response.data.userId);
-                        dispatch(authSigninSuccess(response.data.token, response.data.userId));
-                        dispatch(checkAuthTimeout(response.data.expiresIn));
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        dispatch(logout());
-                        dispatch(authSigninFail(err.response.data));
-                    })
-            }
-        }
+                // dispatch(authSigninFail(err.response.data));
+            })
+
+        // const token = JSON.parse(localStorage.getItem('token'))
+        // console.log(token)
+        // if (!token) {
+        //     dispatch(logout());
+        // } else {
+        //     const expirationDate = new Date(JSON.parse(localStorage.getItem('expirationDate')));
+        //     if (expirationDate <= new Date()) {
+        //         dispatch(logout());
+        //     } else {
+        //         dispatch(authSigninStart());
+        //         const authHeader = { 'x-access-token': token };
+        //         axios.get('http://localhost:5000/api/auth/authUserCheck', { headers: authHeader })
+        //             .then(response => {
+        //                 console.log(response.data.token, response.data.userId);
+        //                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
+        //                 dispatch(checkAuthTimeout(Date.getTime(JSON.parse(localStorage.getItem('expirationDate')))));
+        //             })
+        //             .catch(err => {
+        //                 console.log(err)
+        //                 dispatch(logout());
+        //                 dispatch(authSigninFail(err.response.data));
+        //             })
+        //     }
+        // }
     }
 }
 

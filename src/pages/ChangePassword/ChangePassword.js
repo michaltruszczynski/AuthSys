@@ -121,7 +121,7 @@ class ChangePassword extends Component {
             isLoding: true
         })
 
-        axios.post(`http://localhost:5000/api/admin/reset-password/newpassword/${this.state.userId}/${this.state.token}`, passwordData)
+        axios.post(`http://localhost:5000/api/admin/reset-password/newpasswod/${this.state.userId}/${this.state.token}`, passwordData)
             .then(response => {
                 console.log(response)
                 this.setState({
@@ -135,8 +135,8 @@ class ChangePassword extends Component {
                 });
             })
             .catch(error => {
-                console.dir(error.response)
-                console.log(error.request)
+                console.log('error response', error.response)
+                console.log('error request', error.request)
                 this.setState({
                     newPassword: '',
                     newPasswordConfirm: '',
@@ -146,9 +146,9 @@ class ChangePassword extends Component {
                     redirect: '/resetpassword',
                     isLoding: false
                 });
-                const errorMsg = new ErrorMessage(error.response);
-                const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
-                this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
+                // const errorMsg = new ErrorMessage(error.response);
+                // const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
+                // this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
             });
 
     }
