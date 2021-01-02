@@ -29,7 +29,7 @@ export const uppercaseFirstLetter = (string) => {
 }
 
 export const getExpirationTimeMilliseconds = () => {
-    const tokenEpirationDate = new Date (JSON.parse(localStorage.getItem('expirationDate')));
+    const tokenEpirationDate = new Date(JSON.parse(localStorage.getItem('expirationDate')));
     const nowDateInMiliseconds = new Date().getTime();
     const tokenExpiresMilliseconds = tokenEpirationDate.getTime();
     const expirationTimeMilliseconds = tokenExpiresMilliseconds - nowDateInMiliseconds;
@@ -71,6 +71,22 @@ export class ErrorMessage {
     }
 }
 
+export class NewErrorMessage {
+    constructor(error) {
+        const errorCopy = cloneDeep(error)
+        if (errorCopy.response) {
+                this.errorMessage = errorCopy.response.data?.message ? errorCopy.response.data.message : '';
+                this.errorDetailsArray = errorCopy.response.data?.message ? errorCopy.response.data.message : [];
+        } else if (errorCopy.request) {
+            this.errorMessage = 'Connection problems.'
+            this.errorDetailsArray = ['Please try again later']
+        } else {
+            this.errorMessage = 'Connection problems.'
+            this.errorDetailsArray = ['Please try again later']
+        }
+    }
+}
+
 export class Message {
     constructor(message = '') {
         this.message = message;
@@ -92,7 +108,6 @@ export class Message {
         }, '');
     }
 
-
     getMessageData() {
         const message = this.message;
         const messageDetailsArray = this.getMessageDetailsArray();
@@ -100,3 +115,4 @@ export class Message {
         return { message, messageDetailsArray, messageDetails };
     }
 }
+

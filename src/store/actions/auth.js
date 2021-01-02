@@ -116,7 +116,7 @@ export const authCheckState = () => {
                 dispatch(checkAuthTimeout(getExpirationTimeMilliseconds()));
             })
             .catch((error) => {
-                console.log(error);
+                console.dir(error);
                 if (error.response) {
                     console.log('error response')
                 } else if (error.request) {
