@@ -6,7 +6,6 @@ export const setMessage = (message, messageArr, type) => {
         message: message,
         messageDetails: messageArr,
         messageType: type
-
     }
 }
 

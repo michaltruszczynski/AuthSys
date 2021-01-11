@@ -73,17 +73,54 @@ export class ErrorMessage {
 
 export class NewErrorMessage {
     constructor(error) {
-        const errorCopy = cloneDeep(error)
-        if (errorCopy.response) {
-                this.errorMessage = errorCopy.response.data?.message ? errorCopy.response.data.message : '';
-                this.errorDetailsArray = errorCopy.response.data?.message ? errorCopy.response.data.message : [];
-        } else if (errorCopy.request) {
+        this.errorObject = null;
+        if (error.response) {
+            this.errorObject = cloneDeep(error.response);
+            this.errorMessage = error.response.data?.message ? error.response.data.message : '';
+            this.errorDetailsArray = error.response.data?.data ? cloneDeep(error.response.data.data) : [];
+            console.log('error.response', error.response, this.errorObject);
+        } else if (error.request) {
+            this.errorObject = cloneDeep(error.request);
             this.errorMessage = 'Connection problems.'
             this.errorDetailsArray = ['Please try again later']
+            console.log('error.request', error.request, this.errorObject);
         } else {
-            this.errorMessage = 'Connection problems.'
-            this.errorDetailsArray = ['Please try again later']
+            this.errorMessage = error.message ? error.message : 'Connection problems.';
+            this.errorDetailsArray = error.message ? [] : ['Please try again later'];
+            console.dir(error.message)
+            console.log('error', this.errorObject)
         }
+    }
+
+    getErrorMessage() {
+        return this.errorMessage;
+    }
+
+    getErrorDetailsText() {
+        const errorDetailsArrayCopy = cloneDeep(this.errorDetailsArray)
+        return errorDetailsArrayCopy.reduce((text, message, id) => {
+            return id === 0 ? message.msg : text + ' ' + message.msg;
+        }, '');
+    }
+
+    getErrorDetailsArray() {
+        const errorDetailsArrayCopy = cloneDeep(this.errorDetailsArray)
+        return errorDetailsArrayCopy.map(message => message.msg);
+    }
+
+    addErrorDetails(newMessage) {
+        this.errorDetailsArray.push({ msg: newMessage });
+    }
+
+    getErrorMessageData() {
+        const errorMessage = this.getErrorMessage();
+        const errorDetailsArray = this.getErrorDetailsArray();
+        const errorDetailsText = this.getErrorDetailsText();
+        return { errorMessage, errorDetailsArray, errorDetailsText};
+    }
+
+    getErrorObject() {
+        return this.errorObject ? cloneDeep(this.errorObject) : this.getErrorMessageData();
     }
 }
 
@@ -103,7 +140,7 @@ export class Message {
     }
 
     getMessageDetailsText() {
-        return this.messageDetailsArr.reduce((text, message, id) => {
+        return this.messageDetailsArray.reduce((text, message, id) => {
             return id === 0 ? message.msg : text + ' ' + message.msg;
         }, '');
     }

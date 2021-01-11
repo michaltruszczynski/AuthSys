@@ -38,13 +38,11 @@ const logout = () => {
 const authCheck = () => {
     const token = JSON.parse(localStorage.getItem('token'));
     if (!token) {
-        logout();
         return Promise.reject(new Error('Token validation failed. Invalid token.'));
     }
 
     const expirationDate = new Date(JSON.parse(localStorage.getItem('expirationDate')));
     if (expirationDate <= new Date()) {
-        logout();
         return Promise.reject(new Error('Token validation failed. Invalid token.'));
     }
 

@@ -42,7 +42,7 @@ const signupForm = {
             placeholder: 'Password',
             label: 'Password'
         },
-        validators: [required, containNumber, length({ min: 4 })],
+        validators: [required, containNumber, containSpecialChar, containCapitalLetter, length({ min: 4 })],
         validationErrMsg: 'Please enter a valid password.',
         customValidation: true,
         refInputValue: false
@@ -91,7 +91,6 @@ class Signup2 extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        console.log('[Signup2] Submit clicked')
         const authData = {
             name: this.state.name,
             email: this.state.email,
@@ -120,7 +119,6 @@ class Signup2 extends Component {
     }
 
     render() {
-        console.log('[Signup2] rendering');
         const formElementKeys = Object.keys(signupForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,

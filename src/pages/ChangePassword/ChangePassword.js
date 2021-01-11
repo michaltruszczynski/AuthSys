@@ -9,7 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions';
 
 import { required, length, containSpecialChar, containCapitalLetter, containNumber, passwordMatch } from '../../utility/validators';
-import { ErrorMessage } from '../../utility/utility';
+import { NewErrorMessage } from '../../utility/utility';
 
 import { MESSAGE_TYPES } from '../../store/actions/messageTypes';
 
@@ -121,7 +121,7 @@ class ChangePassword extends Component {
             isLoding: true
         })
 
-        axios.post(`http://localhost:5000/api/admin/reset-password/newpasswor/${this.state.userId}/${this.state.token}`, passwordData)
+        axios.post(`http://localhost:5000/api/admin/reset-password/newpassword/${this.state.userId}/${this.state.token}`, passwordData)
             .then(response => {
                 console.log(response)
                 this.setState({
@@ -144,12 +144,12 @@ class ChangePassword extends Component {
                     userId: null,
                     token: null,
                     formIsValid: false,
-                    // redirect: '/resetpassword',
+                    redirect: '/resetpassword',
                     isLoding: false
                 });
-                // const errorMsg = new ErrorMessage(error.response);
-                // const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
-                // this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
+                const errorMsg = new NewErrorMessage(error);
+                const { errorMessage, errorDetailsArray } = errorMsg.getErrorMessageData();
+                this.props.onSetMessage(errorMessage, errorDetailsArray, MESSAGE_TYPES.error);
             });
 
     }

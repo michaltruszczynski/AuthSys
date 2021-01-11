@@ -52,7 +52,6 @@ class Signin2 extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        console.log('[Signin2] Submit clicked')
         const authData = {
             email: this.state.email,
             password: this.state.password
@@ -80,15 +79,12 @@ class Signin2 extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('[Signin2] componentDidUpdate')
         if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
             this.isFormValid();
         }
     }
 
-
     render() {
-        console.log('[Signin2] rendering')
         const formElementKeys = Object.keys(signinForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,

@@ -1,8 +1,7 @@
-import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as messageActions from './message'
 import { MESSAGE_TYPES } from './messageTypes';
-import { Message, ErrorMessage, getExpirationTimeMilliseconds } from '../../utility/utility';
+import { Message, NewErrorMessage, getExpirationTimeMilliseconds } from '../../utility/utility';
 import { userService } from '../../services/authService';
 
 export const authSignup = ({ name, email, password }) => {
@@ -10,7 +9,6 @@ export const authSignup = ({ name, email, password }) => {
         dispatch(authSignupStart());
         userService.signup(name, email, password)
             .then(response => {
-                console.log(response.data);
                 dispatch(authSignupSuccess());
                 const signupMessage = new Message('You have been successfully registered.');
                 signupMessage.addMessageDetails('Please signin.');
@@ -18,10 +16,10 @@ export const authSignup = ({ name, email, password }) => {
                 dispatch(messageActions.setMessage(message, messageDetailsArray, MESSAGE_TYPES.success));
             })
             .catch(error => {
-                dispatch(authSignupFail(error.response.data));
-                const errroMessage = new ErrorMessage(error.response);
-                const { errorMessage, errorMessageDetailsArray } = errroMessage.getErrorMessageData();
-                dispatch(messageActions.setMessage(errorMessage, errorMessageDetailsArray, MESSAGE_TYPES.success));
+                const errorMsg = new NewErrorMessage(error);
+                const { errorMessage, errorDetailsArray } = errorMsg.getErrorMessageData();
+                dispatch(authSignupFail(errorMsg.getErrorObject()));
+                dispatch(messageActions.setMessage(errorMessage, errorDetailsArray, MESSAGE_TYPES.success));
             })
     }
 }
@@ -56,17 +54,13 @@ export const authSignin = ({ email, password }) => {
         dispatch(authSigninStart());
         userService.signin(email, password)
             .then(response => {
-                console.log(response.data)
                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
                 dispatch(checkAuthTimeout(response.data.expiresIn));
-
             }).catch(error => {
-                dispatch(authSigninFail(error.response.data));
-                console.log(error.response);
-                const errroMessage = new ErrorMessage(error.response);
-                const { errorMessage, errorMessageDetailsArray } = errroMessage.getErrorMessageData();
-                dispatch(messageActions.setMessage(errorMessage, errorMessageDetailsArray, MESSAGE_TYPES.success));
-
+                const errorMsg = new NewErrorMessage(error);
+                const { errorMessage, errorDetailsArray } = errorMsg.getErrorMessageData();
+                dispatch(authSigninFail(errorMsg.getErrorObject()));
+                dispatch(messageActions.setMessage(errorMessage, errorDetailsArray, MESSAGE_TYPES.success));
             })
     }
 }
@@ -115,44 +109,11 @@ export const authCheckState = () => {
                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
                 dispatch(checkAuthTimeout(getExpirationTimeMilliseconds()));
             })
-            .catch((error) => {
-                console.dir(error);
-                if (error.response) {
-                    console.log('error response')
-                } else if (error.request) {
-                    console.log('error request')
-                } else {
-                    console.log('error')
-                }
-
+            .catch(error => {
+                const errorMsg = new NewErrorMessage(error);
+                dispatch(authSigninFail(errorMsg.getErrorObject()));
                 dispatch(logout());
-                // dispatch(authSigninFail(err.response.data));
             })
-
-        // const token = JSON.parse(localStorage.getItem('token'))
-        // console.log(token)
-        // if (!token) {
-        //     dispatch(logout());
-        // } else {
-        //     const expirationDate = new Date(JSON.parse(localStorage.getItem('expirationDate')));
-        //     if (expirationDate <= new Date()) {
-        //         dispatch(logout());
-        //     } else {
-        //         dispatch(authSigninStart());
-        //         const authHeader = { 'x-access-token': token };
-        //         axios.get('http://localhost:5000/api/auth/authUserCheck', { headers: authHeader })
-        //             .then(response => {
-        //                 console.log(response.data.token, response.data.userId);
-        //                 dispatch(authSigninSuccess(response.data.token, response.data.userId));
-        //                 dispatch(checkAuthTimeout(Date.getTime(JSON.parse(localStorage.getItem('expirationDate')))));
-        //             })
-        //             .catch(err => {
-        //                 console.log(err)
-        //                 dispatch(logout());
-        //                 dispatch(authSigninFail(err.response.data));
-        //             })
-        //     }
-        // }
     }
 }
 
