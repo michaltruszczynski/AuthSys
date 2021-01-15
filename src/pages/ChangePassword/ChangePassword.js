@@ -79,26 +79,26 @@ class ChangePassword extends Component {
         this.setState({
             userId: userId,
             token: token,
-            // isLoding: true
+            isLoding: true
         });
 
-        //     axios.get(`http://localhost:5000/api/admin/reset-password/usercheck/${userId}/${token}`)
-        //         .then(response => {
-        //             console.log(response.data);
-        //             this.setState({
-        //                 isLoding: false,
-        //                 redirect: '/signin'
-        //             });
-        //         })
-        //         .catch(error => {
-        //             this.setState({
-        //                 isLoding: false,
-        //                 redirect: '/resetpassword'
-        //             });
-        //             const errorMsg = new ErrorMessage(error.response);
-        //             const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
-        //             this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
-        //         })
+            axios.get(`http://localhost:5000/api/admin/reset-password/usercheck/${userId}/${token}`)
+                .then(response => {
+                    console.log(response.data);
+                    this.setState({
+                        isLoding: false,
+                        redirect: '/signin'
+                    });
+                })
+                .catch(error => {
+                    this.setState({
+                        isLoding: false,
+                        redirect: '/resetpassword'
+                    });
+                    const errorMsg = new ErrorMessage(error.response);
+                    const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
+                    this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
+                })
     }
 
     componentDidUpdate(prevProps, prevState) {
