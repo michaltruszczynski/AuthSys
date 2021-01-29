@@ -1,221 +1,152 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import Input from '../../components/Form/Input/Input';
-import PasswordInput from '../../components/Form/PasswordInput/PasswordInput';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import './Signin.module.css';
-
 import { required, email } from '../../utility/validators';
-import { updateObject } from '../../utility/utility';
 
 import * as actions from '../../store/actions/index';
+import styles from './Signin.module.css';
+
+const signinForm = {
+    email: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: 'Email address',
+            label: 'E-mail'
+        },
+        validators: [required, email],
+        validationErrMsg: 'Please enter a valid email.',
+        customValidation: false,
+        refInputValue: false
+    },
+    password: {
+        elementType: 'input',
+        elementConfig: {
+            type: 'password',
+            placeholder: 'Password',
+            label: 'Password'
+        },
+        validators: [required],
+        validationErrMsg: 'Please enter a valid password.',
+        customValidation: false,
+        refInputValue: false
+    }
+}
 
 class Signin extends Component {
     state = {
-        signinForm: {
-            email: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Email address',
-                    label: 'E-mail'
-                },
-                value: '',
-                valid: false,
-                touched: false,
-                validators: [required, email],
-                validationErrMsg: 'Please enter a valid email.'
-            },
-            password: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'Password',
-                    label: 'Password'
-                },
-                value: '',
-                valid: false,
-                touched: false,
-                validators: [required],
-                validationErrMsg: 'Please enter a valid password.'
-            }
-        },
+        email: '',
+        password: '',
         formIsValid: false
-    };
+    }
 
-    inputChangeHandler = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-
-        this.setState(prevState => {
-            let isValid = true;
-            for (const validator of prevState.signinForm[name].validators) {
-                isValid = isValid && validator(value)
-            }
-
-            const updatedSigninForm = updateObject(prevState.signinForm, {
-                [name]: updateObject(prevState.signinForm[name], {
-                    value: value,
-                    valid: isValid,
-                    touched: true
-                })
-            });
-
-            let formIsValid = true;
-            for (const inputName of Object.keys(updatedSigninForm)) {
-                formIsValid = formIsValid && updatedSigninForm[inputName].valid;
-            }
-
-            return {
-                signinForm: updatedSigninForm,
-                formIsValid: formIsValid
-            }
+    inputUpdate = (name, value) => {
+        this.setState({
+            [name]: value
         });
     }
 
     submitHandler = (event) => {
         event.preventDefault();
-        console.log('[Signin] Submit');
         const authData = {
-            email: this.state.signinForm.email.value,
-            password: this.state.signinForm.password.value
-        }
+            email: this.state.email,
+            password: this.state.password
+        };
+
+        this.setState({
+            email: '',
+            password: '',
+            formIsValid: false
+        })
+
         this.props.onAuthSignin(authData);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('[Signin] shouldComponentUpdate', nextState, nextProps);
-        return true;
-    }
-
-    componentDidUpdate() {
-        console.log('[Signin] componentDidUpdate ');
-    }
-
-    componentDidMount() {
-        console.log('[Signin] componentDidMount ');
-        if (this.props.authRedirectPath) {
-            this.props.onSetAuthRedirectPath(null);
+    isFormValid = () => {
+        if (this.state.email && this.state.password) {
+            this.setState({
+                formIsValid: true
+            });
+        } else {
+            this.setState({
+                formIsValid: false
+            });
         }
     }
 
-    componentWillUnmount() {
-        this.props.onSetAuthRedirectPath(null);
+    componentDidUpdate(prevProps, prevState) {
+        if ((this.state.email !== prevState.email) || (this.state.password !== prevState.password)) {
+            this.isFormValid();
+        }
     }
 
     render() {
-        console.log('rendering')
-        const formElementKeys = Object.keys(this.state.signinForm);
+        const formElementKeys = Object.keys(signinForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,
-            config: this.state.signinForm[key]
+            config: signinForm[key]
         }));
-        console.log(formElementArray);
-        let form = formElementArray.map(formElement => {
-            if (formElement.config.customValidation) {
-                return (
-                    <PasswordInput
-                        key={formElement.id}
-                        id={formElement.id}
-                        elementType={formElement.config.elementType}
-                        config={formElement.config.elementConfig}
-                        value={formElement.config.value}
-                        invalid={formElement.config.valid}
-                        shouldValidate={formElement.config.validators}
-                        touched={formElement.config.touched}
-                        errorMsg={formElement.config.validationErrMsg}
-                        changed={this.inputChangeHandler}
-                        validator={formElement.config.customValidationMessage}
-                        isFocused
-                    />
-                )
-            } else {
-                return (
-                    <Input
-                        key={formElement.id}
-                        id={formElement.id}
-                        elementType={formElement.config.elementType}
-                        config={formElement.config.elementConfig}
-                        value={formElement.config.value}
-                        invalid={formElement.config.valid}
-                        shouldValidate={formElement.config.validators}
-                        touched={formElement.config.touched}
-                        errorMsg={formElement.config.validationErrMsg}
-                        changed={this.inputChangeHandler}
-                    />
-                )
-            }
-        });
-
-        if (this.props.loading) {
-            form = <Spinner />
-        }
 
 
-        let message = 'You have been registered. Please sign in.';
-        let messageClass = ["form__message", "form__message-hidden"];
+        let formElements = formElementArray.map(formElement => (
+            <Input
+                key={formElement.id}
+                id={formElement.id}
+                elementType={formElement.config.elementType}
+                config={formElement.config.elementConfig}
+                validators={formElement.config.validators}
+                validationErrMsg={formElement.config.validationErrMsg}
+                customValidation={formElement.config.customValidation}
+                inputUpdate={this.inputUpdate}
+                refInputValidator={false}
+            />
+        ));
 
-        if (this.props.authSignupSuccess) {
-            messageClass = ["form__message", "form__message-success"];
-        }
+        let form = (
+            <div className={styles.Form__container}>
+                <form className={styles.Form} onSubmit={this.submitHandler}>
+                    <div className={styles.Form__title}>
+                        Sign In
+                        </div>
+                    <p className={styles.Form__description}>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
+                        impedit odit?
+                        </p>
+                    {formElements}
+                    <div className={styles.Form__item}>
+                        <button disabled={!this.state.formIsValid} className={styles.Form__btn} type="submit">Sign In</button>
+                    </div>
+                    <div className={styles.Form__item}>
+                        <p>Forgot password? <Link to="/resetpassword">Reset password</Link></p>
+                    </div>
+                </form>
+            </div>
+        )
 
-        let errMessage = 'Login failed. PLease provide correct credentials.';
-        let errMessageClass = ["form__message", "form__message-hidden"];
-
-        if (this.props.authSignupSuccess) {
-            errMessage = ["form__message", "form__message-error"];
-        }
-
-        let redirect = null;
-        if (this.props.authRedirectPath) {
-            redirect = <Redirect to={this.props.authRedirectPath} />
+        if (this.props.token) {
+            form = <Redirect to={"/"} />
         }
 
         return (
-            <>
-                <div className="form__container">
-                    {redirect}
-                    <form className="form" onSubmit={this.submitHandler}>
-                        <div className="form__title">
-                            Sign In
-                        </div>
-                        <p className={messageClass.join(' ')}>{message}</p>
-                        <p className="form__description">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto quos ipsam quae, delectus
-                            impedit odit?
-                        </p>
-                        <p className={errMessageClass.join(' ')}>{errMessage}</p>
-                        {form}
-                        <div className="form__item ">
-                            <button className="form__btn" type="submit">Sign In</button>
-                        </div>
-                        <div className="form__info-message">
-                            <p>Forgot password? <a href="3">Change password</a></p>
-                        </div>
-                    </form>
-                </div>
-            </>
+            this.props.loading ? <Spinner /> : form
         )
     }
 }
 
 const mapStateToProps = state => {
     return {
-        loading: state.loading,
-        error: state.error,
-        authRedirectPath: state.authRedirectPath,
-        authSignupSuccess: state.authSignupSuccess
-
+        loading: state.auth.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData)),
-        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
+        onAuthSignin: (userAuthData) => dispatch(actions.authSignin(userAuthData))
     }
 }
 

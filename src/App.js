@@ -5,8 +5,8 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Welcome from './pages/Welcome/Welcome';
 import Shop from './pages/Shop/Shop';
-import Signup2 from './pages/Auth/Signup2';
-import Signin2 from './pages/Auth/Signin2';
+import Signup from './pages/Auth/Signup';
+import Signin from './pages/Auth/Signin';
 import Logout from './pages/Auth/Logout';
 import TestPage from './pages/TestPage/TestPage';
 import AdminPage from './pages/AdminPage/AdminPage';
@@ -28,8 +28,8 @@ class App extends Component {
       <>
         <Layout>
           <Switch>
-            <Route path="/signup" component={Signup2} />
-            <Route path="/signin" component={Signin2} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/signin" component={Signin} />
             <Route path="/resetpassword" component={ResetPassword}/>
             <Route path="/test" component={Auth(() => <TestPage number={"Different route"} />)} />
             <Route path="/adminpage" component={AdminPage} />

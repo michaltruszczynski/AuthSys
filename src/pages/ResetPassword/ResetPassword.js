@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
-import Input2 from '../../components/Form/Input/Input2';
+import Input from '../../components/Form/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import { required, email } from '../../utility/validators';
-import { ErrorMessage } from '../../utility/utility';
+import { NewErrorMessage, Message } from '../../utility/utility';
 
 import * as actions from '../../store/actions/index';
 import { MESSAGE_TYPES } from '../../store/actions/messageTypes';
+
+import { resetPasswordService } from '../../services/resetPasswordService'
+
 import styles from './ResetPassword.module.css';
 
 const resetPasswordForm = {
@@ -57,38 +59,40 @@ class ResetPassword extends Component {
     submitHandler = (event) => {
         event.preventDefault();
         this.setState({
-            email: '',
-            isLoading: true,
-            formIsValid: false
+            isLoading: true
         })
-        axios.get('http://localhost:5000/api/admin/reset-password/' + this.state.email)
+        resetPasswordService.resetPasswordRequest(this.state.email)
             .then(() => {
                 this.setState({
+                    email: '',
+                    formIsValid: false,
                     isLoading: false,
                     redirect: '/'
-                })
+                });
+                const messageSuccess = new Message('Link to reset password form has been requested.');
+                messageSuccess.addMessageDetails('Please check your email and follow instructions received.');
+                const { message, messageDetailsArray } = messageSuccess.getMessageData();
+                this.props.onSetMessage(message, messageDetailsArray, MESSAGE_TYPES.success);
             })
             .catch(error => {
-                console.log(error.response)
                 this.setState({
+                    email: '',
+                    formIsValid: false,
                     isLoading: false
                 });
-                const errorMsg = new ErrorMessage(error.response);
-                const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
-                this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
+                const errorMsg = new NewErrorMessage(error);
+                const { errorMessage, errorDetailsArray } = errorMsg.getErrorMessageData();
+                this.props.onSetMessage(errorMessage, errorDetailsArray, MESSAGE_TYPES.error);
             })
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('[ResetPassword] componentDidUpdate')
         if ((this.state.email !== prevState.email)) {
             this.isFormValid();
         }
     }
 
     render() {
-
-        console.log('[ResetPassword] rendering')
         const formElementKeys = Object.keys(resetPasswordForm);
         const formElementArray = formElementKeys.map(key => ({
             id: key,
@@ -96,7 +100,7 @@ class ResetPassword extends Component {
         }));
 
         let formElements = formElementArray.map(formElement => (
-            <Input2
+            <Input
                 key={formElement.id}
                 id={formElement.id}
                 elementType={formElement.config.elementType}

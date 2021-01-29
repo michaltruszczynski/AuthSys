@@ -8,7 +8,7 @@ export const authSignup = ({ name, email, password }) => {
     return dispatch => {
         dispatch(authSignupStart());
         userService.signup(name, email, password)
-            .then(response => {
+            .then(() => {
                 dispatch(authSignupSuccess());
                 const signupMessage = new Message('You have been successfully registered.');
                 signupMessage.addMessageDetails('Please signin.');

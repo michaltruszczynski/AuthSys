@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
-import Input2 from '../../components/Form/Input/Input2';
+import Input from '../../components/Form/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import * as actions from '../../store/actions';
 
 import { required, length, containSpecialChar, containCapitalLetter, containNumber, passwordMatch } from '../../utility/validators';
-import { NewErrorMessage } from '../../utility/utility';
+import { NewErrorMessage, Message } from '../../utility/utility';
 
 import { MESSAGE_TYPES } from '../../store/actions/messageTypes';
+
+import { resetPasswordService } from '../../services/resetPasswordService';
 
 import styles from './ChangePassword.module.css';
 
@@ -64,16 +65,15 @@ class ChangePassword extends Component {
         if (this.state.newPassword && this.state.newPasswordConfirm) {
             this.setState({
                 formIsValid: true
-            })
+            });
         } else {
             this.setState({
                 formIsValid: false
-            })
+            });
         }
     }
 
     componentDidMount() {
-        console.log(this.props.match.params);
         const { userId, token } = this.props.match.params;
 
         this.setState({
@@ -82,27 +82,24 @@ class ChangePassword extends Component {
             isLoding: true
         });
 
-            axios.get(`http://localhost:5000/api/admin/reset-password/usercheck/${userId}/${token}`)
-                .then(response => {
-                    console.log(response.data);
-                    this.setState({
-                        isLoding: false,
-                        redirect: '/signin'
-                    });
-                })
-                .catch(error => {
-                    this.setState({
-                        isLoding: false,
-                        redirect: '/resetpassword'
-                    });
-                    const errorMsg = new ErrorMessage(error.response);
-                    const { errorMessage, errorDataArr } = errorMsg.getErrorMessageData();
-                    this.props.onSetMessage(errorMessage, errorDataArr, MESSAGE_TYPES.error);
-                })
+        resetPasswordService.changePasswordUserCheck(userId, token)
+            .then(() => {
+                this.setState({
+                    isLoding: false
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    isLoding: false,
+                    redirect: '/resetpassword'
+                });
+                const errorMsg = new NewErrorMessage(error);
+                const { errorMessage, errorDetailsArray } = errorMsg.getErrorMessageData();
+                this.props.onSetMessage(errorMessage, errorDetailsArray, MESSAGE_TYPES.error);
+            })
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('[Change Password] componentDidUpdate');
         if ((this.state.newPasswordConfirm !== prevState.newPasswordConfirm) || (this.state.newPassword !== prevState.newPassword)) {
             this.isFormValid();
         }
@@ -110,20 +107,17 @@ class ChangePassword extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        console.log('[ChangePassword] Dubmit clicked');
         const passwordData = {
             userId: this.state.userId,
             newPassword: this.state.newPassword
         };
 
         this.setState({
-            userId: null,
             isLoding: true
         })
 
-        axios.post(`http://localhost:5000/api/admin/reset-password/newpassword/${this.state.userId}/${this.state.token}`, passwordData)
-            .then(response => {
-                console.log(response)
+        resetPasswordService.changePasswordRequest(this.state.userId, this.state.token, passwordData)
+            .then(() => {
                 this.setState({
                     newPassword: '',
                     newPasswordConfirm: '',
@@ -133,11 +127,13 @@ class ChangePassword extends Component {
                     redirect: '/siginin',
                     isLoding: false
                 });
+
+                const messageSuccess = new Message('Password has been changed.');
+                messageSuccess.addMessageDetails('Please login using new credentials.');
+                const { message, messageDetailsArray } = messageSuccess.getMessageData();
+                this.props.onSetMessage(message, messageDetailsArray, MESSAGE_TYPES.success);
             })
             .catch(error => {
-                console.dir('error', error)
-                console.log('error response', error.response)
-                console.log('error request', error.request)
                 this.setState({
                     newPassword: '',
                     newPasswordConfirm: '',
@@ -151,7 +147,6 @@ class ChangePassword extends Component {
                 const { errorMessage, errorDetailsArray } = errorMsg.getErrorMessageData();
                 this.props.onSetMessage(errorMessage, errorDetailsArray, MESSAGE_TYPES.error);
             });
-
     }
 
     render() {
@@ -162,7 +157,7 @@ class ChangePassword extends Component {
         }));
 
         let formElements = formElementArray.map(formElement => (
-            <Input2
+            <Input
                 key={formElement.id}
                 id={formElement.id}
                 elementType={formElement.config.elementType}

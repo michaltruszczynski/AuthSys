@@ -39,7 +39,7 @@ export const getExpirationTimeMilliseconds = () => {
 export class ErrorMessage {
     constructor(errorObject) {
         this.errorObject = errorObject;
-        // errorObject.data.data ?? 
+        // errorObject.data.data ??
     }
 
     getErrorMessage() {
