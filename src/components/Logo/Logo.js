@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './Logo.css';
+import styles from './Logo.module.css';
 
-const Logo = props => (
-    <div className="logo">
-        <p className="logo__heading">TheSailingWeek</p>
+const Logo = () => (
+    <div className={styles.Logo}>
+        <p className={styles.Logo__heading}>TheSailingWeek</p>
     </div>
 )
 

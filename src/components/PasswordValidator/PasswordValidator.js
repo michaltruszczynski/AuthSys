@@ -39,9 +39,9 @@ class PasswordValidator extends Component {
         const rules = Object.keys(this.state.validators);
 
         validatorRulesMsg = rules.map(rule => (
-            <li className={`${styles.tooltip__item} ${this.state.validators[rule].validator(value) ? styles['tooltip__item--green'] : styles['tooltip__item--red']} `} key={rule}>
-                <i className={`${styles.tooltip__icon} fas fa-exclamation-circle`}></i>
-                <span className={styles.validator__message}>{this.state.validators[rule].message}</span>
+            <li className={`${styles['Validator-Item']} ${this.state.validators[rule].validator(value) ? styles['Validator-item--green'] : styles['Validator-item--red']} `} key={rule}>
+                <i className={`${styles.Tooltip__icon} fas fa-exclamation-circle`}></i>
+                <span className={styles.Validator__message}>{this.state.validators[rule].message}</span>
             </li>
         ))
 
@@ -50,7 +50,7 @@ class PasswordValidator extends Component {
         return (
             <ToggleContent show={show}>
                 <h3>Password rules</h3>
-                <ul className={`${styles.tooltip__list}`}>
+                <ul className={`${styles['Validator-list']}`}>
                     {validatorRulesMsg}
                 </ul>
             </ToggleContent>

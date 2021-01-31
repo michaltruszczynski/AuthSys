@@ -1,6 +1,6 @@
 import React, { useRef, useLayoutEffect } from 'react';
 
-import styles from './toggleContent.module.css'
+import styles from './ToggleContent.module.css'
 
 const ToggleContent = ({ show, children }) => {
     const contentContainerRef = useRef();
@@ -41,7 +41,7 @@ const ToggleContent = ({ show, children }) => {
     }
 
     return (
-        <div className={styles['toggle-container']} style={getWrapperStyle()}>
+        <div className={styles['Toggle-container']} style={getWrapperStyle()}>
             <div ref={contentContainerRef}>
                 {children}
             </div>

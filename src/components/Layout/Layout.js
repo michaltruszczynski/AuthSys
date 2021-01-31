@@ -7,7 +7,7 @@ import Modal from '../UI/Modal/Modal';
 
 import * as actions from '../../store/actions/index';
 
-import './Layout'
+import styles from'./Layout.module.css';
 
 class Layout extends Component {
     state = {
@@ -38,8 +38,8 @@ class Layout extends Component {
                     <MainNavigation isAuth={this.props.isAuth} mobileNavClicked={this.mobileNavHandler} mobileNavShow={this.state.showMobileNav} />
                 </header>
                 <main>
-                    <section className="section">
-                        <div className="section__container">
+                    <section className={styles.Section}>
+                        <div className={styles.Section__container}>
                             {this.props.children}
                         </div>
                     </section>

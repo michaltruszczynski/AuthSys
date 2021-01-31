@@ -1,9 +1,9 @@
-.section {
+.Section {
     max-width: 1280px;
     margin: 5.5rem auto;
 }
 
-.section__container {
+.Section__container {
     margin: 0 1.25rem;
     padding: 1.25rem 0;
 }

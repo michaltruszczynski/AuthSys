@@ -5,9 +5,9 @@ import ToggleContent from '../../ToggleContent/ToggleContent';
 
 import useSetTooltipPosition from '../../../hooks/useSetTooltipPosition';
 
-import './PasswordInput.css';
+import styles from './PasswordInput.module.css';
 
-const PasswordInput = ({ id, elementType, config, value, invalid, touched, changed, errorMsg, validator, isFocused }) => {
+const PasswordInput = ({ id, config, value, invalid, touched, changed, errorMsg}) => {
 
     const [isInputActive, setIsInputActive] = useState(false);
     const inputRef = useRef();
@@ -21,14 +21,14 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
         setIsInputActive(!isInputActive);
     };
 
-    let inputClasses = ["form__input"];
+    let inputClasses = [styles.Form__input];
     if (!invalid && touched) {
-        inputClasses.push("form__input--error")
+        inputClasses.push(styles['Form__input--error'])
     }
 
     return (
-        <div className="form__item">
-            <label htmlFor={id} className="form__label">{config.label}: </label>
+        <div className={styles.Form__item}>
+            <label htmlFor={id} className={styles.Form__label}>{config.label}: </label>
             <input
                 className={inputClasses.join(' ')}
                 type={config.type}
@@ -41,7 +41,7 @@ const PasswordInput = ({ id, elementType, config, value, invalid, touched, chang
                 onBlur={focusHandler}
                 ref={inputRef}
             />
-            <span className="form__input-error">{errorMsg}</span>
+            <span className={styles['Form__input-error']}>{errorMsg}</span>
             {
                 visible && <ToolTip ref={tooltipRef} show={!invalid && isInputActive}>
                     <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={true} />

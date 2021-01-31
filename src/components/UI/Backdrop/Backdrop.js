@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './Backdrop.css';
+import styles from './Backdrop.module.css';
 
 const Backdrop = ({ show, clicked }) => {
     return (
-        <div className={['backdrop', show ? 'backdrop--visible' : ''].join(' ')} onClick={clicked}>
+        <div className={[styles.Backdrop, show ? styles['Backdrop--visible'] : ''].join(' ')} onClick={clicked}>
 
         </div>
     );

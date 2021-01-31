@@ -1,9 +1,9 @@
-.logo__heading {
+.Logo__heading {
     padding: 2rem 1rem;
 }
 
 @media (max-width: 969px) {
-    .logo {
+    .Logo {
         position: relative;
         width: 100%;
     }
