@@ -1,21 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import PasswordValidator from '../../Validator/Validator';
-import ToolTip from '../../Tooltip/Tooltip';
 import ToggleContent from '../../ToggleContent/ToggleContent';
-
-import useSetTooltipPosition from '../../../hooks/useSetTooltipPosition';
 
 import styles from './PasswordInput.module.css';
 
-const PasswordInput = ({ id, config, value, invalid, touched, changed, errorMsg}) => {
+const PasswordInput = ({ id, config, value, invalid, touched, changed, errorMsg }) => {
 
     const [isInputActive, setIsInputActive] = useState(false);
-    const inputRef = useRef();
-    const [tooltipRef, visible] = useSetTooltipPosition(inputRef);
-
-    useEffect(() => {
-        console.log('[PasswordInput] rendering')
-    })
 
     const focusHandler = () => {
         setIsInputActive(!isInputActive);
@@ -39,20 +30,12 @@ const PasswordInput = ({ id, config, value, invalid, touched, changed, errorMsg}
                 onChange={changed}
                 onFocus={focusHandler}
                 onBlur={focusHandler}
-                ref={inputRef}
             />
             <span className={styles['Form__input-error']}>{errorMsg}</span>
             {
-                visible && <ToolTip ref={tooltipRef} show={!invalid && isInputActive}>
-                    <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={true} />
-                </ToolTip>
-            }
-            {
-                !visible ?
-                    <ToggleContent show={!invalid && isInputActive}>
-                        <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={false} />
-                    </ToggleContent>
-                    : null
+                <ToggleContent show={!invalid && isInputActive}>
+                    <PasswordValidator value={value} active={isInputActive} type={'tooltip'} large={false} />
+                </ToggleContent>
             }
         </div>
     )

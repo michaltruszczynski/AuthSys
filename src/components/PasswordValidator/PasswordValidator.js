@@ -40,7 +40,7 @@ class PasswordValidator extends Component {
 
         validatorRulesMsg = rules.map(rule => (
             <li className={`${styles['Validator-Item']} ${this.state.validators[rule].validator(value) ? styles['Validator-item--green'] : styles['Validator-item--red']} `} key={rule}>
-                <i className={`${styles.Tooltip__icon} fas fa-exclamation-circle`}></i>
+                <i className={`${styles.Validator__icon} fas fa-exclamation-circle`}></i>
                 <span className={styles.Validator__message}>{this.state.validators[rule].message}</span>
             </li>
         ))

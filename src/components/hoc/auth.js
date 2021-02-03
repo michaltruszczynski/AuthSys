@@ -8,7 +8,7 @@ const auth = (SpecificComponent, option) => {
             if (this.props.token) {
                 return <SpecificComponent {...this.props} />
             } else {
-                return <Redirect to="/signin" />
+                return <Redirect to="/" />
             }
         }
     }

@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
 import Welcome from './pages/Welcome/Welcome';
-import Shop from './pages/Shop/Shop';
+import Home from './pages/Home/Home';
 import Signup from './pages/Auth/Signup';
 import Signin from './pages/Auth/Signin';
 import Logout from './pages/Auth/Logout';
@@ -28,6 +28,7 @@ class App extends Component {
       <>
         <Layout>
           <Switch>
+            <Route path="/" exact component={Home} />
             <Route path="/signup" component={Signup} />
             <Route path="/signin" component={Signin} />
             <Route path="/resetpassword" component={ResetPassword}/>

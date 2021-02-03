@@ -9,7 +9,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import authReducer from './store/reducers/auth';
-import messageReducer from './store/reducers/message'
+import messageReducer from './store/reducers/message';
+import appStatusRedcer from './store/reducers/appstatus';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
   trace: true, // (action) => { return ‘trace as string’; }
@@ -18,7 +19,8 @@ const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  message: messageReducer
+  message: messageReducer,
+  appStatus: appStatusRedcer
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
