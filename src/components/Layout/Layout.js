@@ -54,7 +54,8 @@ const mapStateToProps = state => {
     return {
         isAuth: state.auth.token !== null,
         successMessage: state.message.message,
-        errorMessage: state.message.error
+        errorMessage: state.message.error,
+        navActite: state.appStatus.navBar
     }
 }
 
